@@ -248,6 +248,7 @@
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.esm.min.js.map" />
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.min.js.map" />
+    <Content Include="Content\HinhAnh\BaiTap\Chuong 4_Bao mat va an toan du lieu_Full.pdf" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -279,7 +280,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\HinhAnh\BaiTap\" />
     <Folder Include="Content\HinhAnh\DangKy_BaiTap\" />
     <Folder Include="Content\HinhAnh\GiamGia\" />
     <Folder Include="Content\HinhAnh\KhoaHoc\" />
