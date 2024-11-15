@@ -16,5 +16,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View();
         }
 
+
+
     }
 }
