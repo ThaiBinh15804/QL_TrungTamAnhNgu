@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -132,6 +133,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataClasses1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\HocVien_DiemDanh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +256,11 @@
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.min.js.map" />
     <Content Include="Content\HinhAnh\BaiTap\Chuong 4_Bao mat va an toan du lieu_Full.pdf" />
+    <Content Include="Models\DataClasses1.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -277,6 +289,15 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\GiangVien\Index.cshtml" />
+    <Content Include="Views\GiangVien\ChiTietLopHoc.cshtml" />
+    <Content Include="Views\GiangVien\LopHocCuaToi.cshtml" />
+    <Content Include="Views\GiangVien\Test.cshtml" />
+    <Content Include="Views\GiangVien\ThongTin.cshtml" />
+    <Content Include="Views\GiangVien\DangNhap.cshtml" />
+    <Content Include="Views\Shared\_LayoutGiangVien.cshtml" />
+    <Content Include="Views\GiangVien\HocVien.cshtml" />
+    <Content Include="Views\GiangVien\DiemDanh.cshtml" />
+    <Content Include="Views\GiangVien\CapNhatDiemDanh.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -286,10 +307,17 @@
     <Folder Include="Content\HinhAnh\LopHoc\" />
     <Folder Include="Content\HinhAnh\TaiLieu\" />
     <Folder Include="Content\HinhAnh\ThanhToan\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Models\DataClasses1.dbml.layout">
+      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
