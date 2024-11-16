@@ -1,0 +1,68 @@
+﻿@model QL_TrungTamAnhNgu.Models.view_baitap_theodangky
+
+@{
+    ViewBag.Title = "Chi tiết bài tập";
+    Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
+}
+
+<div class="container mt-4">
+    <h3 class="text-primary text-center mb-4">Chi tiết bài tập</h3>
+
+    @if (ViewBag.ThongBao != null)
+    {
+        <div class="alert alert-warning text-center">@ViewBag.ThongBao</div>
+    }
+
+    <table class="table table-bordered shadow-sm">
+        <tr>
+            <th>Tên bài tập</th>
+            <td>@Model.TenBaiTap</td>
+        </tr>
+        <tr>
+            <th>Mô tả</th>
+            <td>@Model.MoTa</td>
+        </tr>
+        <tr>
+            <th>Điểm</th>
+            <td>@Model.Diem</td>
+        </tr>
+        <tr>
+            <th>Trạng thái</th>
+            <td>
+                @if (Model.TrangThai == "Đã nộp")
+                {
+                    <span class="badge bg-success">Đã nộp</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Chưa nộp</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Ngày nộp</th>
+            <td>@(Model.NgayNop.HasValue ? Model.NgayNop.Value.ToString("dd/MM/yyyy") : "Không rõ")</td>
+        </tr>
+        <tr>
+            <th>Ngày chấm</th>
+            <td>@(Model.NgayCham.HasValue ? Model.NgayCham.Value.ToString("dd/MM/yyyy") : "Chưa chấm")</td>
+        </tr>
+        <tr>
+            <th>Bài tập</th>
+            <td>
+                @if (!string.IsNullOrEmpty(Model.FileUpload))
+                {
+                    <a href="~/Uploads/@Model.FileUpload" target="_blank" class="btn btn-primary">Nộp bài tập</a>
+                }
+                else
+                {
+                    <p class="text-danger">Bài tập chưa có file đính kèm.</p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Tên khóa học</th>
+            <td>@Model.TenKhoaHoc</td>
+        </tr>
+    </table>
+</div>

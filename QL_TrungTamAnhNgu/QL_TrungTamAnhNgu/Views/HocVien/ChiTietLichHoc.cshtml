@@ -1,0 +1,36 @@
+﻿@model List<QL_TrungTamAnhNgu.Models.view_lichhoc_chitiet_cua_lophoc>
+
+<h3>Lịch học của bạn</h3>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ngày học</th>
+                <th>Ca học</th>
+                <th>Phòng học</th>
+                <th>Giờ bắt đầu</th>
+                <th>Giờ kết thúc</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lich in Model)
+            {
+                <tr>
+                    <td>@lich.NgayHoc.ToString("dd/MM/yyyy")</td>
+                    <td>@lich.ThoiGianBatDau</td>
+                    <td>@lich.TenPhong</td>
+                    <td>@lich.ThoiGianBatDau</td>
+                    <td>@lich.ThoiGianKetThuc</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">
+        Bạn chưa có lịch học nào.
+    </div>
+}

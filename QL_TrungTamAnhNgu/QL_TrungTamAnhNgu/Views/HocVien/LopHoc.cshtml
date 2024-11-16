@@ -1,0 +1,67 @@
+﻿@model QL_TrungTamAnhNgu.Models.LopHoc
+
+@{
+    ViewBag.Title = "Chi tiết lớp học";
+    Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
+}
+
+<hr class="my-0">
+<div class="bg-light py-1 shadow-sm border-bottom mt-0">
+    <div class="container">
+        <ul class="nav justify-content-center mb-0">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="@Url.Action("LopHoc", "HocVien", new { id = Session["MaLop"] })">Thông tin lớp học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/BaiTap">Bài tập</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/TaiLieu">Tài liệu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/ChuyenCan">Chuyên cần</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container mt-4">
+    <h2 class="mb-4">Chi tiết lớp học</h2>
+
+    <table class="table table-bordered shadow-sm" style="max-width: 90%; margin: 0 auto;">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col">Tên Lớp</th>
+                <th scope="col">Thuộc Khóa Học</th>
+                <th scope="col">Phòng Dạy</th>
+                <th scope="col">Ngày Bắt Đầu</th>
+                <th scope="col">Ngày Kết Thúc</th>
+                <th scope="col">Trạng Thái</th>
+                <th scope="col">Số Lượng Tối Đa</th>
+                <th scope="col">Số Lượng Tối Thiểu</th>
+                <th scope="col">Thời Lượng</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.TenLop</td>
+                <td>@Model.KhoaHoc.TenKhoaHoc</td>
+                <td>@Model.MaPhong</td>
+                <td>@Model.NgayBatDau.ToString("dd/MM/yyyy")</td>
+                <td>@Model.NgayKetThuc.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @if (Model.TrangThai == "Đang hoạt động")
+                    {
+                        <span class="badge bg-success">@Model.TrangThai</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@Model.TrangThai</span>
+                    }
+                </td>
+                <td>@Model.SoLuongToiDa</td>
+                <td>@Model.SoLuongToiThieu</td>
+                <td>@Model.ThoiLuong giờ</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

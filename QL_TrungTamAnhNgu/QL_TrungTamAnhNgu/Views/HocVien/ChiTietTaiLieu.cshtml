@@ -1,0 +1,71 @@
+﻿@model QL_TrungTamAnhNgu.Models.view_tailieu_theokhoahoc
+
+@{
+    ViewBag.Title = "Chi tiết tài liệu";
+    Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
+}
+
+<div class="container mt-4">
+    <h3 class="text-primary text-center mb-4">Chi tiết tài liệu</h3>
+
+    @if (Model == null)
+    {
+        <div class="alert alert-warning text-center">Không tìm thấy thông tin chi tiết tài liệu.</div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <!-- Tên tài liệu -->
+                <h5 class="card-title text-primary">@Model.TenTaiLieu</h5>
+
+                <!-- Tên khóa học -->
+                <p class="card-text">
+                    <strong>Khóa học:</strong> @Model.TenKhoaHoc
+                </p>
+
+                <!-- Mô tả -->
+                <p class="card-text">
+                    <strong>Mô tả:</strong> @Model.MoTa
+                </p>
+
+                <!-- Ngày tạo -->
+                <p class="card-text">
+                    <strong>Ngày tạo:</strong>
+                    @if (Model.NgayTao.HasValue)
+                    {
+                        @Model.NgayTao.Value.ToString("dd/MM/yyyy")
+                    }
+                    else
+                    {
+                        <span>Không rõ</span>
+                    }
+                </p>
+
+
+                <!-- Trạng thái -->
+                <p class="card-text">
+                    <strong>Trạng thái:</strong>
+                    @if (Model.TrangThai == "Đang hoạt động")
+                    {
+                        <span class="badge bg-success">Đang hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@Model.TrangThai</span>
+                    }
+                </p>
+
+                <!-- File tải tài liệu -->
+                @if (!string.IsNullOrEmpty(Model.FileTaiLieu))
+                {
+                    <a href="~/Uploads/@Model.FileTaiLieu" class="btn btn-primary" target="_blank">Tải tài liệu</a>
+                }
+                else
+                {
+                    <p class="text-danger">Tài liệu chưa có file đính kèm.</p>
+                }
+            </div>
+        </div>
+    }
+</div>
