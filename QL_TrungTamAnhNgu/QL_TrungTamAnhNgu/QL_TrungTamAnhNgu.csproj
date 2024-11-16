@@ -200,11 +200,16 @@
     <Content Include="Content\HinhAnh\GiaoDien\user.png" />
     <Content Include="Content\HinhAnh\GiaoDien\yola-english-high-resolution-logo.png" />
     <Content Include="Content\HinhAnh\GiaoDien\youtube.jpg" />
+    <Content Include="Content\HinhAnh\KhoaHoc\GiaoTiepCoBan.jpg" />
+    <Content Include="Content\HinhAnh\KhoaHoc\GiaoTiepNangCao.jpg" />
+    <Content Include="Content\HinhAnh\KhoaHoc\GiaoTiepQuocTe.jpg" />
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_1.png" />
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_2.png" />
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_3.png" />
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_4.png" />
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_5.png" />
+    <Content Include="Content\HinhAnh\KhoaHoc\LuyenThi_IELTS.jpg" />
+    <Content Include="Content\HinhAnh\KhoaHoc\LuyenThi_Toeic.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
