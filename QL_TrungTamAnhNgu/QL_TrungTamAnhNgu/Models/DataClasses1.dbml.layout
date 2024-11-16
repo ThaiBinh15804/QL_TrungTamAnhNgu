@@ -212,7 +212,7 @@
         <classShapeMoniker Id="646c53db-d0fd-4ef9-baa0-d38ec05f120e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 15.15625); (11.1973319189203 : 15.15625 : JumpStart); (11.3639985855869 : 15.15625 : JumpEnd); (11.75 : 15.15625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.25 : 15.15625); (11.75 : 15.15625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/GiangVien/GiangVien_LopHoc" />
       <nodes>
         <classShapeMoniker Id="a432d461-fbca-4197-8a08-781544bae542" />
@@ -282,7 +282,7 @@
         <classShapeMoniker Id="b2ed4a51-97e2-464c-830c-9e095363c340" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11 : 13.40625); (11.2916666666667 : 13.40625 : JumpStart); (11.4583333333333 : 13.40625 : JumpEnd); (11.4791666666667 : 13.40625 : JumpStart); (11.6458333333333 : 13.40625 : JumpEnd); (14.5 : 13.40625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(11 : 13.40625); (11.2916666666667 : 13.40625 : JumpStart); (11.4583333333333 : 13.40625 : JumpEnd); (14.5 : 13.40625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/ThanhToan/ThanhToan_DangKy" />
       <nodes>
         <classShapeMoniker Id="54d5ba0f-98df-41a1-81ae-8ce609be0353" />

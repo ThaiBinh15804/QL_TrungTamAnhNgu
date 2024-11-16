@@ -1,0 +1,143 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.ViewModel.BangDiem>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Danh Sách Điểm Các Học Viên</h2>
+
+    @using (Html.BeginForm("LuuBangDiem", "GiangVien", FormMethod.Post))
+    {
+        <div class="mb-3 text-end">
+            <button id="btn-cham-diem" type="button" class="btn btn-primary mb-3">Sửa điểm</button>
+            <button id="btn-luu" type="submit" class="btn btn-success mb-3 d-none">Lưu</button>
+            <button id="btn-huy" type="button" class="btn btn-secondary mb-3 d-none">Hủy</button>
+        </div>
+
+        <table class="table table-bordered table-striped text-center">
+            <thead class="thead-light">
+                <tr>
+                    <th>Tên học viên</th>
+                    @if (Model.Any() && Model.First().ds.Any())
+                    {
+                        foreach (var diemBaiTap in Model.SingleOrDefault().ds)
+                        {
+                            <th>@diemBaiTap.bt.TenBaiTap</th> <!-- Tên bài tập -->
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    var hocVien = Model.ElementAt(i);
+                    <tr>
+                        <td>
+                            @hocVien.hv.HoTen
+                            @Html.HiddenFor(model => model.ElementAt(i).hv.MaHocVien)
+                        </td>
+                        @for (int j = 0; j < hocVien.ds.Count(); j++)
+                        {
+                            <td>
+                                <span class="diem-danh-text">
+                                    @if (hocVien.ds[j].Diem == -1)
+                                    {
+                                        @:Chưa nộp bài
+                                    }
+                                    else if (hocVien.ds[j].Diem == -2)
+                                    {
+                                        @:Chưa chấm
+                                    }
+                                    else
+                                    {
+                                        @hocVien.ds[j].Diem
+                                    }
+                                </span>
+                                <input type="text" id="Diem_@i@j" name="dsBangDiem[@i].ds[@j].Diem"
+                                       value="@((hocVien.ds[j].Diem == -1 || hocVien.ds[j].Diem == -2) ? "" : hocVien.ds[j].Diem.ToString())"
+                                       class="diem-danh-input d-none text-center w-100"
+                                       data-hocvien-index="@i" data-baitap-index="@j" />
+
+                            </td>
+
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var btnChamDiem = $("#btn-cham-diem");
+        var btnLuu = $("#btn-luu");
+        var btnHuy = $("#btn-huy");
+        var textElements = $(".diem-danh-text");
+        var inputElements = $(".diem-danh-input");
+
+        // Hiển thị các input và ẩn các span khi nhấn nút Chấm điểm
+        btnChamDiem.on("click", function () {
+            textElements.addClass("d-none");
+            inputElements.removeClass("d-none");
+
+            btnChamDiem.addClass("d-none");
+            btnLuu.removeClass("d-none");
+            btnHuy.removeClass("d-none");
+        });
+
+        // Hủy và trở về chế độ ban đầu
+        btnHuy.on("click", function () {
+            inputElements.addClass("d-none");
+            textElements.removeClass("d-none");
+
+            btnChamDiem.removeClass("d-none");
+            btnLuu.addClass("d-none");
+            btnHuy.addClass("d-none");
+        });
+
+        // Lắng nghe sự kiện thay đổi giá trị của input
+        inputElements.on("blur", function () {
+            var hocVienIndex = $(this).data("hocvien-index");
+            var baiTapIndex = $(this).data("baitap-index");
+
+            if (hocVienIndex !== undefined && baiTapIndex !== undefined) {
+                var newDiem = $(this).val();
+                console.log(newDiem);
+
+                // Gửi dữ liệu qua AJAX tới controller
+                $.ajax({
+                    url: '@Url.Action("CapNhatBangDiem", "GiangVien")',
+                    type: 'POST',
+                    data: {
+                        hocVienIndex: hocVienIndex,
+                        baiTapIndex: baiTapIndex,
+                        diem: newDiem
+                    },
+                    success: function (response) {
+                        console.log("Cập nhật điểm thành công!");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Có lỗi xảy ra: " + error);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<style>
+    .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .diem-danh-text {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .diem-danh-input {
+        padding: 0;
+        border: 1px solid #ccc;
+    }
+</style>

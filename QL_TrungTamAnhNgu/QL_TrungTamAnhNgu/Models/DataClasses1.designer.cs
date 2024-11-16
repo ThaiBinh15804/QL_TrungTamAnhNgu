@@ -456,6 +456,12 @@ namespace QL_TrungTamAnhNgu.Models
 		{
 			return this.CreateMethodCallQuery<fn_DSHocVienCuaLopResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), maLop);
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.fn_BaiTapCuaLop", IsComposable=true)]
+		public IQueryable<fn_BaiTapCuaLopResult> fn_BaiTapCuaLop([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MALOP", DbType="VarChar(10)")] string mALOP)
+		{
+			return this.CreateMethodCallQuery<fn_BaiTapCuaLopResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), mALOP);
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BaiTap")]
@@ -6696,6 +6702,122 @@ namespace QL_TrungTamAnhNgu.Models
 				if ((this._SoBuoiVang != value))
 				{
 					this._SoBuoiVang = value;
+				}
+			}
+		}
+	}
+	
+	public partial class fn_BaiTapCuaLopResult
+	{
+		
+		private string _MaBaiTap;
+		
+		private string _TenBaiTap;
+		
+		private string _MoTa;
+		
+		private string _FileUpload;
+		
+		private System.Nullable<System.DateTime> _NgayTao;
+		
+		private string _TrangThai;
+		
+		public fn_BaiTapCuaLopResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaBaiTap", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string MaBaiTap
+		{
+			get
+			{
+				return this._MaBaiTap;
+			}
+			set
+			{
+				if ((this._MaBaiTap != value))
+				{
+					this._MaBaiTap = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenBaiTap", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string TenBaiTap
+		{
+			get
+			{
+				return this._TenBaiTap;
+			}
+			set
+			{
+				if ((this._TenBaiTap != value))
+				{
+					this._TenBaiTap = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(255)")]
+		public string MoTa
+		{
+			get
+			{
+				return this._MoTa;
+			}
+			set
+			{
+				if ((this._MoTa != value))
+				{
+					this._MoTa = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileUpload", DbType="VarChar(MAX)")]
+		public string FileUpload
+		{
+			get
+			{
+				return this._FileUpload;
+			}
+			set
+			{
+				if ((this._FileUpload != value))
+				{
+					this._FileUpload = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayTao", DbType="DateTime")]
+		public System.Nullable<System.DateTime> NgayTao
+		{
+			get
+			{
+				return this._NgayTao;
+			}
+			set
+			{
+				if ((this._NgayTao != value))
+				{
+					this._NgayTao = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrangThai", DbType="NVarChar(20)")]
+		public string TrangThai
+		{
+			get
+			{
+				return this._TrangThai;
+			}
+			set
+			{
+				if ((this._TrangThai != value))
+				{
+					this._TrangThai = value;
 				}
 			}
 		}

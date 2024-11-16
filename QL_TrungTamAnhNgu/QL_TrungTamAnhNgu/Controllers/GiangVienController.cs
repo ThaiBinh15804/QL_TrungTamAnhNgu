@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 using QL_TrungTamAnhNgu.Models;
 using System.Configuration;
 using System.Web.Configuration;
@@ -76,6 +77,18 @@ namespace QL_TrungTamAnhNgu.Controllers
             return RedirectToAction("Index", "GiangVien");
         }
 
+        public ActionResult DangXuat()
+        {
+            // Xóa session của người dùng
+            Session["User"] = null;
+
+            // Hủy cookie xác thực của FormsAuthentication (nếu sử dụng FormsAuthentication)
+            FormsAuthentication.SignOut();
+
+            // Chuyển hướng về trang đăng nhập
+            return RedirectToAction("DangNhap", "GiangVien");
+        }
+
 
         public ActionResult Test()
         {
@@ -89,6 +102,14 @@ namespace QL_TrungTamAnhNgu.Controllers
         {
             GiangVien gv = (GiangVien)Session["User"];
             return View(data.LopHocs.Where(t => t.MaGiangVien == gv.MaGiangVien).ToList());
+        }
+
+
+        public ActionResult TimKiem(FormCollection c)
+        {
+            GiangVien gv = (GiangVien)Session["User"];
+            string tenlop = c["TenLop"];
+            return View(data.LopHocs.Where(t => t.MaGiangVien == gv.MaGiangVien && t.TenLop.Contains(tenlop)).ToList());
         }
 
         public ActionResult ChiTietLopHoc(string malop)
@@ -206,5 +227,143 @@ namespace QL_TrungTamAnhNgu.Controllers
             return Json(new { success = true });
         }
 
+        public ActionResult ChamDiem(string malop)
+        {
+            return PartialView(data.DangKy_BaiTaps.Where(t => t.DangKy.MaLop == malop && t.Diem == null).OrderBy(u => u.NgayNop));
+        }
+
+        public ActionResult ChamDiemBaiTap(string madk, string mabt)
+        {
+            return View(data.DangKy_BaiTaps.FirstOrDefault(t => t.MaBaiTap == mabt && t.MaDangKy == madk));
+        }
+
+        public ActionResult XuLyChamDiemBaiTap(DangKy_BaiTap k)
+        {
+            DangKy_BaiTap moi = data.DangKy_BaiTaps.FirstOrDefault(t => t.MaDangKy == k.MaDangKy && t.MaBaiTap == k.MaBaiTap);
+            
+            if (k.Diem != null)
+            {
+                moi.Diem = k.Diem;
+                data.SubmitChanges();
+            }
+
+            TempData["DieuHuong"] = "ChamDiem";
+            return RedirectToAction("ChiTietLopHoc", new { malop = moi.DangKy.MaLop });
+        }
+
+        public ActionResult BangDiem(string malop)
+        {
+            var lst = data.HocViens.Where(t => t.ThanhToans.Where(u => u.DangKies.Where(i => i.MaLop == malop).Any()).Any());
+
+            List<BangDiem> ds = new List<BangDiem>();
+
+            foreach (HocVien item in lst)
+            {
+                BangDiem a = new BangDiem(item.MaHocVien, malop, data);
+                ds.Add(a);
+            }
+
+            Session["dsBangDiem"] = ds;
+            TempData["MaLop"] = malop;
+
+            return PartialView(ds);
+
+        }
+
+
+        [HttpPost]
+        public ActionResult LuuBangDiem()
+        {
+            var dsBangDiem = Session["dsBangDiem"] as List<BangDiem>;
+
+            foreach (var i in dsBangDiem)
+            {
+                foreach (var j in i.ds)
+                {
+                    // Lấy thông tin điểm danh hiện tại từ bảng ChuyenCans
+                    var dkbt = data.DangKy_BaiTaps.FirstOrDefault(t => t.BaiTap.MaBaiTap == j.bt.MaBaiTap && t.DangKy.ThanhToan.HocVien.MaHocVien == i.hv.MaHocVien);
+
+                    // Chuyển đổi trạng thái mới từ input
+                    var diemMoi = double.Parse(j.Diem.ToString());
+
+                    if (dkbt != null && diemMoi >= 0 && diemMoi <= 10 && dkbt.Diem != null)
+                    {
+                        // Chỉ cập nhật khi trạng thái mới khác với trạng thái cũ
+                        if (double.Parse(dkbt.Diem.ToString()) != diemMoi)
+                        {
+                            dkbt.Diem = decimal.Parse(diemMoi.ToString());
+                        }
+                    }
+
+                }
+            }
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            data.SubmitChanges();
+
+            // Chuyển hướng lại trang chi tiết lớp học
+            return RedirectToAction("ChiTietLopHoc", new { malop = TempData["MaLop"] });
+        }
+
+        [HttpPost]
+        public ActionResult CapNhatBangDiem(int hocVienIndex, int baiTapIndex, double diem)
+        {
+            // Lấy dữ liệu dsDiemDanh từ session
+            var dsBangDiem = Session["dsBangDiem"] as List<BangDiem>;
+            if (dsBangDiem != null)
+            {
+                // Tìm và cập nhật trạng thái cho học viên và điểm danh tương ứng
+                var hocVien = dsBangDiem[hocVienIndex];
+                var baitap = hocVien.ds[baiTapIndex];
+                baitap.Diem = diem;
+
+                // Lưu lại dsDiemDanh vào session
+                Session["dsDiemDanh"] = dsBangDiem;
+            }
+
+            return Json(new { success = true });
+        }
+
+        public ActionResult ThongTinNguoiDung()
+        {
+            GiangVien gv = Session["User"] as GiangVien;
+            return View(gv);
+        }
+
+        [HttpPost]
+        public ActionResult SuaThongTinNguoiDung(FormCollection c, HttpPostedFileBase anh)
+        {
+            GiangVien gv = (GiangVien)Session["User"];
+            GiangVien cu = data.GiangViens.FirstOrDefault(t => t.MaGiangVien == gv.MaGiangVien);
+
+            cu.SoDienThoai = c["sdt"];
+            cu.Email = c["email"];
+            cu.HoTen = c["hoten"];
+
+            if (anh != null)
+            {
+                string fileName = Path.GetFileName(anh.FileName);
+                string duongdan = Path.Combine(Server.MapPath("~/Content/GiangVien/HinhAnh/Avatar"), fileName);
+                anh.SaveAs(duongdan);
+                cu.NguoiDung.AnhDaiDien = fileName;
+            }
+
+            Session["User"] = cu;
+
+            data.SubmitChanges();
+
+            return RedirectToAction("ThongTinNguoiDung");
+        }
+
+        public ActionResult LichGiangDay()
+        {
+            GiangVien gv = Session["User"] as GiangVien;
+            return View(data.LichHocs.Where(t => t.LopHoc.MaGiangVien == gv.MaGiangVien && t.NgayHoc >= DateTime.Now).OrderBy(u => u.NgayHoc).Take(10).ToList());
+        }
+
+        public ActionResult LichHoc(string malop)
+        {
+            return PartialView(data.LichHocs.Where(t => t.MaLop == malop).OrderBy(t => t.NgayHoc).ToList());
+        }
     }
 }
