@@ -1,0 +1,31 @@
+﻿@model List<QL_TrungTamAnhNgu.Models.LopHocTrungTam>
+@{
+    int index = 1; // Bắt đầu từ 1 nếu bạn muốn thứ tự bắt đầu từ 1
+}
+
+@if (Model != null && Model.Any())
+{
+    <div style="background-color: white;">
+        <h1 style="font-size: 16px; font-weight: 500;" class="p-3">Thông tin các lớp học của Trung tâm</h1>
+        <div style="display:flex; border-bottom: 1px solid #dadada">
+            <span style="flex: 1; text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500; ">STT</span>
+            <span style="flex: 1; text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500; ">Tên lớp</span>
+            <span style="flex: 1; text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500; ">Giảng viên</span>
+            <span style="flex: 1; text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500; ">Phòng</span>
+            <span style="flex: 1; text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500; ">Trạng thái</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center;">
+            @foreach (var user in Model)
+            {
+                <div style="display: flex; width: 100%">
+                    <span style="flex: 1" class="item">@index</span>
+                    <span style="flex: 1" class="item">@user.TenLop</span>
+                    <span style="flex: 1" class="item">@user.HoTen</span>
+                    <span style="flex: 1" class="item">@user.TenPhong</span>
+                    <span style="flex: 1" class="item">@user.TrangThai</span>
+                </div> 
+                index++;
+            }
+        </div>
+    </div>
+}
