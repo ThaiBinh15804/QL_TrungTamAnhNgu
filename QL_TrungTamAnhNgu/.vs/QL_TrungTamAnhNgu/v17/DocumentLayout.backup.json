@@ -1,0 +1,126 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|d:\\vs\\c#\\asp.net\\anhnguyola\\ql_trungtamanhngu\\ql_trungtamanhngu\\ql_trungtamanhngu\\views\\shared\\_layoutquantrivien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|solutionrelative:ql_trungtamanhngu\\views\\shared\\_layoutquantrivien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|d:\\vs\\c#\\asp.net\\anhnguyola\\ql_trungtamanhngu\\ql_trungtamanhngu\\ql_trungtamanhngu\\views\\quantrivien\\chitietkhoahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|solutionrelative:ql_trungtamanhngu\\views\\quantrivien\\chitietkhoahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|d:\\vs\\c#\\asp.net\\anhnguyola\\ql_trungtamanhngu\\ql_trungtamanhngu\\ql_trungtamanhngu\\controllers\\quantriviencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|solutionrelative:ql_trungtamanhngu\\controllers\\quantriviencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|d:\\vs\\c#\\asp.net\\anhnguyola\\ql_trungtamanhngu\\ql_trungtamanhngu\\ql_trungtamanhngu\\models\\quantrivienmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|solutionrelative:ql_trungtamanhngu\\models\\quantrivienmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|d:\\vs\\c#\\asp.net\\anhnguyola\\ql_trungtamanhngu\\ql_trungtamanhngu\\ql_trungtamanhngu\\views\\quantrivien\\danhsachkhoahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|solutionrelative:ql_trungtamanhngu\\views\\quantrivien\\danhsachkhoahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|d:\\vs\\c#\\asp.net\\anhnguyola\\ql_trungtamanhngu\\ql_trungtamanhngu\\ql_trungtamanhngu\\views\\quantrivien\\timkiemkhoahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DB3B2055-FAAC-4AA6-ABB6-88D676A206CF}|QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu.csproj|solutionrelative:ql_trungtamanhngu\\views\\quantrivien\\timkiemkhoahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_LayoutQuanTriVien.cshtml",
+              "DocumentMoniker": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\Shared\\_LayoutQuanTriVien.cshtml",
+              "RelativeDocumentMoniker": "QL_TrungTamAnhNgu\\Views\\Shared\\_LayoutQuanTriVien.cshtml",
+              "ToolTip": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\Shared\\_LayoutQuanTriVien.cshtml",
+              "RelativeToolTip": "QL_TrungTamAnhNgu\\Views\\Shared\\_LayoutQuanTriVien.cshtml",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAiwFkAAABeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T08:28:50.179Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "TimKiemKhoaHoc.cshtml",
+              "DocumentMoniker": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\QuanTriVien\\TimKiemKhoaHoc.cshtml",
+              "RelativeDocumentMoniker": "QL_TrungTamAnhNgu\\Views\\QuanTriVien\\TimKiemKhoaHoc.cshtml",
+              "ToolTip": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\QuanTriVien\\TimKiemKhoaHoc.cshtml",
+              "RelativeToolTip": "QL_TrungTamAnhNgu\\Views\\QuanTriVien\\TimKiemKhoaHoc.cshtml",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAFcAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T20:27:15.664Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DanhSachKhoaHoc.cshtml",
+              "DocumentMoniker": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\QuanTriVien\\DanhSachKhoaHoc.cshtml",
+              "RelativeDocumentMoniker": "QL_TrungTamAnhNgu\\Views\\QuanTriVien\\DanhSachKhoaHoc.cshtml",
+              "ToolTip": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\QuanTriVien\\DanhSachKhoaHoc.cshtml",
+              "RelativeToolTip": "QL_TrungTamAnhNgu\\Views\\QuanTriVien\\DanhSachKhoaHoc.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEgAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T19:11:50.78Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ChiTietKhoaHoc.cshtml",
+              "DocumentMoniker": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\QuanTriVien\\ChiTietKhoaHoc.cshtml",
+              "RelativeDocumentMoniker": "QL_TrungTamAnhNgu\\Views\\QuanTriVien\\ChiTietKhoaHoc.cshtml",
+              "ToolTip": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Views\\QuanTriVien\\ChiTietKhoaHoc.cshtml",
+              "RelativeToolTip": "QL_TrungTamAnhNgu\\Views\\QuanTriVien\\ChiTietKhoaHoc.cshtml",
+              "ViewState": "AgIAABcAAAAAAAAAAAAowC0AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T06:22:48.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "QuanTriVienModel.cs",
+              "DocumentMoniker": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Models\\QuanTriVienModel.cs",
+              "RelativeDocumentMoniker": "QL_TrungTamAnhNgu\\Models\\QuanTriVienModel.cs",
+              "ToolTip": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Models\\QuanTriVienModel.cs",
+              "RelativeToolTip": "QL_TrungTamAnhNgu\\Models\\QuanTriVienModel.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAADwvykAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T19:10:50.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "QuanTriVienController.cs",
+              "DocumentMoniker": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Controllers\\QuanTriVienController.cs",
+              "RelativeDocumentMoniker": "QL_TrungTamAnhNgu\\Controllers\\QuanTriVienController.cs",
+              "ToolTip": "D:\\VS\\C#\\ASP.net\\AnhNguYola\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\QL_TrungTamAnhNgu\\Controllers\\QuanTriVienController.cs",
+              "RelativeToolTip": "QL_TrungTamAnhNgu\\Controllers\\QuanTriVienController.cs",
+              "ViewState": "AgIAAPIAAAAAAAAAAAAIwAoBAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T18:53:53.561Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

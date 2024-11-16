@@ -1,6 +1,153 @@
-﻿@{
+﻿@using QL_TrungTamAnhNgu.Models;
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
 
-<h2>Index</h2>
+<div>
+    <header style="background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0px 16px; border-bottom: 1px solid #edede9; height: 80px;">
+        <div style="display: flex; align-items: center; column-gap: 8px;">
+            <i class="fa-solid fa-bars" style="color: black; font-size: 20px;"></i>
+            <h2 style="font-size: 18px; color: #000; font-weight: 500;">Quản lý Trung tâm Anh ngữ Yola</h2>
+        </div>
+        <div style="position: relative">
+            <button onclick="handleClickUser(event)" style="display: flex; align-items: center; column-gap: 4px; color: #000">
+                <span style="font-size: 16px; font-weight: 500; color: #000">
+                    Xin chào,
+                    @if (Session["user"] != null)
+                    {
+                        NguoiDung user = Session["user"] as NguoiDung;
+                        <span>@user.TenTaiKhoan</span>
+                    }
+                </span>
+                <img src="~/Content/HinhAnh/GiaoDien/avatar.jpg" alt="Alternate Text" style="width: 30px; height: 30px; border-radius: 999px;" />
+            </button>
+            <div style="position: absolute; right: 0; top: 25px;" class="user">
+                <div class="d-flex flex-column mt-3 user__body">
+                    <a class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; display: block; text-align: center; font-size: 15px;">Thông tin tài khoản</a>
+                    <a href="/QuanTriVien/DangXuat" class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; border-top: 0px; display: block; text-align: center; font-size: 15px;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="padding:8px 20px;">
+        <div class="d-flex gap-2 mt-2">
+            <i style="color: #343a40" class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #343a40">Thống kê</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; column-gap: 16px;" class="py-3">
+            <!-- g-2 tương đương với khoảng cách 8px giữa các cột -->
+            <div style="flex: 1;">
+                <div class="p-3 d-flex justify-content-between" style="background-color: #3a86ff; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                    <div>
+                        <span style="font-size: 22px; color: white; font-weight: 500;">
+                            @ViewBag.SoLuongHocVien
+                        </span>
+                        <span class="mt-2" style="display: block; font-size: 14px; color: white; font-weight: 400;">
+                            Số lượng học viên
+                        </span>
+                    </div>
+                    <div>
+                        <img src="~/Content/HinhAnh/GiaoDien/iconStudent.png" alt="icon Giảng viên" style="width: 60px; height: 60px; opacity: 0.5" />
+                    </div>
+                </div>
+                <div class="px-3 py-2 d-flex justify-content-center gap-1" style="text-align: center; background-color: #3a86ff; opacity: 0.9; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                    <span style="color: white; font-size: 15px;">Xem thêm</span>
+                    <div class="d-flex justify-content-center align-items-center" style="width: 15px; height: 15px; background-color: white; border-radius: 999px;">
+                        <img src="~/Content/HinhAnh/GiaoDien/right-arrow.png" alt="Alternate Text" style="width: 8px; height: 8px; opacity: 0.8 " />
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div class="p-3 d-flex justify-content-between" style="background-color: #34a0a4; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                    <div>
+                        <span style="font-size: 22px; color: white; font-weight: 500;">
+                            @ViewBag.soLuongGiangVien
+                        </span>
+                        <span class="mt-2" style="display: block; font-size: 14px; color: white; font-weight: 400;">
+                            Số lượng giảng viên
+                        </span>
+                    </div>
+                    <div>
+                        <img src="~/Content/HinhAnh/GiaoDien/iconTeacher.png" alt="icon Giảng viên" style="width: 60px; height: 60px; opacity: 0.5" />
+                    </div>
+                </div>
+                <div class="px-3 py-2 d-flex justify-content-center gap-1" style="text-align: center; background-color: #34a0a4; opacity: 0.9; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                    <span style="color: white; font-size: 15px;">Xem thêm</span>
+                    <div class="d-flex justify-content-center align-items-center" style="width: 15px; height: 15px; background-color: white; border-radius: 999px;">
+                        <img src="~/Content/HinhAnh/GiaoDien/right-arrow.png" alt="Alternate Text" style="width: 8px; height: 8px; opacity: 0.8" />
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div class="p-3 d-flex justify-content-between" style="background-color: #d62828; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                    <div>
+                        <span style="font-size: 22px; color: white; font-weight: 500;">
+                            @ViewBag.SoLuongKhoaHoc
+                        </span>
+                        <span class="mt-2" style="display: block; font-size: 14px; color: white; font-weight: 400;">
+                            Số lượng khóa học
+                        </span>
+                    </div>
+                    <div>
+                        <img src="~/Content/HinhAnh/GiaoDien/iconCourse.png" alt="icon Giảng viên" style="width: 60px; height: 60px; opacity: 0.5" />
+                    </div>
+                </div>
+                <div class="px-3 py-2 d-flex justify-content-center gap-1" style="text-align: center; background-color: #d62828; opacity: 0.9; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; ">
+                    <span style="color: white; font-size: 15px;">Xem thêm</span>
+                    <div class="d-flex justify-content-center align-items-center" style="width: 15px; height: 15px; background-color: white; border-radius: 999px;">
+                        <img src="~/Content/HinhAnh/GiaoDien/right-arrow.png" alt="Alternate Text" style="width: 8px; height: 8px; opacity: 0.8" />
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div class="p-3 d-flex justify-content-between" style="background-color: #ffbe0b; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                    <div>
+                        <span style="font-size: 22px; color: white; font-weight: 500;">
+                            @ViewBag.SoLuongPhongHoc
+                        </span>
+                        <span class="mt-2" style="display: block; font-size: 14px; color: white; font-weight: 400;">
+                            Số lượng phòng học
+                        </span>
+                    </div>
+                    <div>
+                        <img src="~/Content/HinhAnh/GiaoDien/iconSidebar/iconSideBar10.png" alt="icon Giảng viên" style="width: 60px; height: 60px; opacity: 0.5" />
+                    </div>
+                </div>
+                <div class="px-3 py-2 d-flex justify-content-center gap-1" style="text-align: center; background-color: #ffbe0b; opacity: 0.9; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; ">
+                    <span style="color: white; font-size: 15px;">Xem thêm</span>
+                    <div class="d-flex justify-content-center align-items-center" style="width: 15px; height: 15px; background-color: white; border-radius: 999px;">
+                        <img src="~/Content/HinhAnh/GiaoDien/right-arrow.png" alt="Alternate Text" style="width: 8px; height: 8px; opacity: 0.8" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; column-gap: 16px;" class="py-3">
+            <div style="flex: 1">
+                @Html.Action("GetLopHocTrungTam")
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; column-gap: 16px;" class="py-3">
+            <div style="flex: 1">
+                @Html.Action("GetDangKyTheoThang")
+            </div>
+            <div style="flex: 1">
+                @Html.Action("GetDoanhThuTheoThang")
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; column-gap: 16px;" class="py-3">
+            <div style="flex: 1">
+                @Html.Action("GetThongKeSoTuoi")
+            </div>
+            <div style="flex: 1">
+                @Html.Action("GetThongKeGioiTinh")
+            </div>
+        </div>
+    </div>
+</div>
+
+

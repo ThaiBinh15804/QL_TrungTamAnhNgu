@@ -96,15 +96,12 @@ namespace QL_TrungTamAnhNgu.Models
     partial void InsertVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
     partial void UpdateVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
     partial void DeleteVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
-    #endregion
-		
-		public DataClasses1DataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["QL_TrungTamAnhNguConnectionString"].ConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
-		
-		public DataClasses1DataContext(string connection) : 
+        #endregion
+        public DataClasses1DataContext() : base(global::System.Configuration.ConfigurationManager.ConnectionStrings["QL_TrungTamAnhNguConnectionString"].ConnectionString, mappingSource)
+        {
+            //Hàm này quan trọng lưu lại mai mốt mà sài
+        }
+        public DataClasses1DataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();

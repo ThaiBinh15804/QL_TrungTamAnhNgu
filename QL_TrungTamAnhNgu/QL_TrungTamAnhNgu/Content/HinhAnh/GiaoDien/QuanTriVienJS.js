@@ -3,26 +3,26 @@ const user = document.querySelector(".user")
 const iconEye = document.querySelector(".iconEye")
 const inputPassWord = document.getElementById("inputMatKhau")
 
-const form1 = document.querySelector(".myForm1");
-const form2 = document.querySelector(".myForm2");
-const form3 = document.querySelector(".myForm3");
-const form4 = document.querySelector(".myForm4");
+//const form1 = document.querySelector(".myForm1");
+//const form2 = document.querySelector(".myForm2");
+//const form3 = document.querySelector(".myForm3");
+//const form4 = document.querySelector(".myForm4");
 
-if (form1) {
-    form1.addEventListener("submit", handleForm1)
-}
+//if (form1) {
+//    form1.addEventListener("submit", handleForm1)
+//}
 
-if (form2) {
-    form2.addEventListener("submit", handleForm2)
-}
+//if (form2) {
+//    form2.addEventListener("submit", handleForm2)
+//}
 
-if (form3) {
-    form3.addEventListener("submit", handleForm3)
-}
+//if (form3) {
+//    form3.addEventListener("submit", handleForm3)
+//}
 
-if (form4) {
-    form4.addEventListener("submit", handleForm4)
-}
+//if (form4) {
+//    form4.addEventListener("submit", handleForm4)
+//}
 
 function handleClickUser(event) {
     event.stopPropagation(); // Ngăn sự kiện nhấp lan truyền ra ngoài
