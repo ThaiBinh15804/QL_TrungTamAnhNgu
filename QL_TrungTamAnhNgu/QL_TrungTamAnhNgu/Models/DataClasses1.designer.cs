@@ -33,9 +33,6 @@ namespace QL_TrungTamAnhNgu.Models
     partial void InsertBaiTap(BaiTap instance);
     partial void UpdateBaiTap(BaiTap instance);
     partial void DeleteBaiTap(BaiTap instance);
-    partial void InsertBaoCaoThang(BaoCaoThang instance);
-    partial void UpdateBaoCaoThang(BaoCaoThang instance);
-    partial void DeleteBaoCaoThang(BaoCaoThang instance);
     partial void InsertChuyenCan(ChuyenCan instance);
     partial void UpdateChuyenCan(ChuyenCan instance);
     partial void DeleteChuyenCan(ChuyenCan instance);
@@ -96,12 +93,15 @@ namespace QL_TrungTamAnhNgu.Models
     partial void InsertVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
     partial void UpdateVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
     partial void DeleteVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
-        #endregion
-        public DataClasses1DataContext() : base(global::System.Configuration.ConfigurationManager.ConnectionStrings["QL_TrungTamAnhNguConnectionString"].ConnectionString, mappingSource)
-        {
-            //Hàm này quan trọng lưu lại mai mốt mà sài
-        }
-        public DataClasses1DataContext(string connection) : 
+    #endregion
+		
+		public DataClasses1DataContext() : 
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["QL_TrungTamAnhNguConnectionString"].ConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
+		
+		public DataClasses1DataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -130,14 +130,6 @@ namespace QL_TrungTamAnhNgu.Models
 			get
 			{
 				return this.GetTable<BaiTap>();
-			}
-		}
-		
-		public System.Data.Linq.Table<BaoCaoThang> BaoCaoThangs
-		{
-			get
-			{
-				return this.GetTable<BaoCaoThang>();
 			}
 		}
 		
@@ -299,6 +291,13 @@ namespace QL_TrungTamAnhNgu.Models
 			{
 				return this.GetTable<VaiTro_NhomNguoiDung>();
 			}
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CreateUserAccount")]
+		public int CreateUserAccount([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TenTaiKhoan", DbType="NVarChar(50)")] string tenTaiKhoan, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhau", DbType="NVarChar(50)")] string matKhau, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaNhomND", DbType="NVarChar(10)")] string maNhomND)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), tenTaiKhoan, matKhau, maNhomND);
+			return ((int)(result.ReturnValue));
 		}
 	}
 	
@@ -537,188 +536,6 @@ namespace QL_TrungTamAnhNgu.Models
 		{
 			this.SendPropertyChanging();
 			entity.BaiTap = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BaoCaoThang")]
-	public partial class BaoCaoThang : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private System.Nullable<System.DateTime> _NgayBaoCao;
-		
-		private System.Nullable<int> _TongSoHocVien;
-		
-		private System.Nullable<decimal> _TongDoanhThu;
-		
-		private System.Nullable<int> _LopHoatDong;
-		
-		private System.Nullable<int> _TongKhoaHoc;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNgayBaoCaoChanging(System.Nullable<System.DateTime> value);
-    partial void OnNgayBaoCaoChanged();
-    partial void OnTongSoHocVienChanging(System.Nullable<int> value);
-    partial void OnTongSoHocVienChanged();
-    partial void OnTongDoanhThuChanging(System.Nullable<decimal> value);
-    partial void OnTongDoanhThuChanged();
-    partial void OnLopHoatDongChanging(System.Nullable<int> value);
-    partial void OnLopHoatDongChanged();
-    partial void OnTongKhoaHocChanging(System.Nullable<int> value);
-    partial void OnTongKhoaHocChanged();
-    #endregion
-		
-		public BaoCaoThang()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayBaoCao", DbType="Date")]
-		public System.Nullable<System.DateTime> NgayBaoCao
-		{
-			get
-			{
-				return this._NgayBaoCao;
-			}
-			set
-			{
-				if ((this._NgayBaoCao != value))
-				{
-					this.OnNgayBaoCaoChanging(value);
-					this.SendPropertyChanging();
-					this._NgayBaoCao = value;
-					this.SendPropertyChanged("NgayBaoCao");
-					this.OnNgayBaoCaoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TongSoHocVien", DbType="Int")]
-		public System.Nullable<int> TongSoHocVien
-		{
-			get
-			{
-				return this._TongSoHocVien;
-			}
-			set
-			{
-				if ((this._TongSoHocVien != value))
-				{
-					this.OnTongSoHocVienChanging(value);
-					this.SendPropertyChanging();
-					this._TongSoHocVien = value;
-					this.SendPropertyChanged("TongSoHocVien");
-					this.OnTongSoHocVienChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TongDoanhThu", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> TongDoanhThu
-		{
-			get
-			{
-				return this._TongDoanhThu;
-			}
-			set
-			{
-				if ((this._TongDoanhThu != value))
-				{
-					this.OnTongDoanhThuChanging(value);
-					this.SendPropertyChanging();
-					this._TongDoanhThu = value;
-					this.SendPropertyChanged("TongDoanhThu");
-					this.OnTongDoanhThuChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LopHoatDong", DbType="Int")]
-		public System.Nullable<int> LopHoatDong
-		{
-			get
-			{
-				return this._LopHoatDong;
-			}
-			set
-			{
-				if ((this._LopHoatDong != value))
-				{
-					this.OnLopHoatDongChanging(value);
-					this.SendPropertyChanging();
-					this._LopHoatDong = value;
-					this.SendPropertyChanged("LopHoatDong");
-					this.OnLopHoatDongChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TongKhoaHoc", DbType="Int")]
-		public System.Nullable<int> TongKhoaHoc
-		{
-			get
-			{
-				return this._TongKhoaHoc;
-			}
-			set
-			{
-				if ((this._TongKhoaHoc != value))
-				{
-					this.OnTongKhoaHocChanging(value);
-					this.SendPropertyChanging();
-					this._TongKhoaHoc = value;
-					this.SendPropertyChanged("TongKhoaHoc");
-					this.OnTongKhoaHocChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
