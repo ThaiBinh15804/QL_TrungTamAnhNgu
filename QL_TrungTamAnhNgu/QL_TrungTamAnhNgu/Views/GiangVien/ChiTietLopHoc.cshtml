@@ -1,0 +1,159 @@
+﻿@model QL_TrungTamAnhNgu.Models.LopHoc
+
+@{
+    ViewBag.Title = "ChiTietLopHoc";
+    Layout = "~/Views/Shared/_LayoutGiangVien.cshtml";
+}
+
+
+
+<div class="row">
+    <div id="sidebar" class="col-2 sidebar d-flex flex-column  align-items-center" style="box-shadow: 3px 0 5px rgba(0, 0, 0, 0.1);">
+
+        <!-- Navigation Menu -->
+        <ul class="nav text-dark nav-pills flex-column mt-3">
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center px-0 py-2" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=ThongTin">
+                    <i class=" me-1 fa-solid fa-info-circle me-2"></i> 
+                    <span>Thông tin lớp</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center px-0 py-2" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=HocVien">
+                    <i class=" me-1 fa-solid fa-user-graduate me-2"></i>
+                    <span>Học viên</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center px-0 py-2" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=DiemDanh">
+                    <i class=" me-1 fa-solid fa-check-circle me-2"></i> 
+                    <span>Điểm danh</span>
+                </a>
+            </li>
+
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center px-0 py-2" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=LichHoc">
+                    <i class=" me-1 fa-solid fa-calendar me-2"></i> 
+                    <span>Lịch học</span>
+                </a>
+            </li>
+
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center px-0 py-2" onclick="toggleSubMenu('baiTapSubMenu')" style="cursor: pointer;">
+                    <i class="me-1 fa-solid fa-tasks me-2"></i> 
+                    <span>Bài tập</span>
+                    <i id="baiTapArrow" class="ms-auto fa fa-chevron-down"></i>
+                </a>
+                
+                <ul id="baiTapSubMenu" class="nav flex-column ps-4 d-none" style="border-left: 2px solid #ddd; padding-left: 10px;">
+                    <li class="nav-item">
+                        <a class="nav-link px-0 py-1 text-secondary" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=ChamDiem" style="cursor: pointer;">
+                            <i class="me-1 fa-solid fa-pen me-2"></i> 
+                            Chấm bài
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 py-1 text-secondary" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=BangDiem" style="cursor: pointer;">
+                            <i class="me-1 fa-solid fa-table me-2"></i> 
+                            Bảng điểm
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+
+
+    <div id="contentArea" class="col-10" style="height: 600px; overflow-y: auto; transition: margin-left 0.3s;">
+        @{
+            string dieuHuong = TempData["DieuHuong"] as string;
+
+            switch (dieuHuong)
+            {
+                case "ThongTin":
+                    @Html.Action("ThongTin", "GiangVien", new { malop = Model.MaLop })
+                    break;
+                case "DiemDanh":
+                @Html.Action("DiemDanh", "GiangVien")
+                    break;
+                case "ChamDiem":
+                @Html.Action("ChamDiem", "GiangVien")
+                    break;
+                case "BangDiem":
+                @Html.Action("BangDiem", "GiangVien")
+                    break;
+                case "HocVien":
+                @Html.Action("HocVien", "GiangVien")
+                    break;
+                case "LichHoc":
+                @Html.Action("LichHoc", "GiangVien")
+                    break;
+                default:
+                @Html.Action("ThongTin", "GiangVien")
+                    break;
+            }
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4" id="modalContent">
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSubMenu(subMenuId) {
+        const subMenu = document.getElementById(subMenuId);
+        if (subMenu) {
+            subMenu.classList.toggle("d-none"); // Hiển thị hoặc ẩn
+        }
+    }
+
+    function openModal(actionUrl) {
+        $.ajax({
+            url: actionUrl,
+            type: "GET",
+            success: function (data) {
+                $("#modalContent").html(data);
+                $("#dynamicModal").modal("show");
+            },
+            error: function () {
+                alert("Không thể tải nội dung, vui lòng thử lại.");
+            }
+        });
+    }
+</script>
+
+<style>
+    /* Làm rõ phân cấp submenu */
+    #baiTapSubMenu {
+        border-left: 2px solid #ddd;
+        padding-left: 5px;
+    }
+
+        /* Thụt lề và hiển thị rõ submenu */
+        #baiTapSubMenu li a {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+            /* Đổi màu khi hover submenu */
+            #baiTapSubMenu li a:hover {
+                color: #007bff;
+                text-decoration: underline;
+            }
+
+    /* Chỉ mục chính */
+    .nav-item > a {
+        font-weight: bold;
+    }
+
+    /* Mũi tên xoay */
+    .rotate-arrow {
+        transform: rotate(90deg);
+        transition: transform 0.3s ease;
+    }
+</style>
