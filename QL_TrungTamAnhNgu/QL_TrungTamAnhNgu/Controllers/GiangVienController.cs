@@ -41,35 +41,11 @@ namespace QL_TrungTamAnhNgu.Controllers
             string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password + ";";
             data = new DataClasses1DataContext(newConnectionString);
 
-            //// Lấy đối tượng Configuration hiện tại từ web.config
-            //Configuration config = WebConfigurationManager.OpenWebConfiguration("~");
-
-            //// Lấy phần tử connectionStrings từ cấu hình
-            //ConnectionStringsSection connectionStringsSection = config.GetSection("connectionStrings") as ConnectionStringsSection;
-
-            //if (connectionStringsSection != null)
-            //{
-            //    // Tìm chuỗi kết nối theo tên trong cấu hình
-            //    ConnectionStringSettings connectionString = connectionStringsSection.ConnectionStrings["QL_TrungTamAnhNguConnectionString"];
-
-            //    if (connectionString != null)
-            //    {
-            //        // Cập nhật chuỗi kết nối với giá trị mới
-            //        connectionString.ConnectionString = newConnectionString;
-
-            //        // Lưu lại các thay đổi vào file web.config
-            //        config.Save(ConfigurationSaveMode.Modified);
-
-            //        // Đảm bảo các thay đổi được áp dụng ngay lập tức
-            //        ConfigurationManager.RefreshSection("connectionStrings");
-            //    }
-            //}
-
 
             var user = data.NguoiDungs.FirstOrDefault(u => u.TenTaiKhoan == username && u.MatKhau == password);
             if (user != null)
             {
-                GiangVien gv = user.GiangViens.SingleOrDefault();
+                GiangVien gv = data.GiangViens.FirstOrDefault(t => t.MaGiangVien == user.MaNguoiDung);
                 Session["User"] = gv;
 
                 FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
@@ -343,7 +319,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (anh != null)
             {
                 string fileName = Path.GetFileName(anh.FileName);
-                string duongdan = Path.Combine(Server.MapPath("~/Content/GiangVien/HinhAnh/Avatar"), fileName);
+                string duongdan = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
                 anh.SaveAs(duongdan);
                 cu.NguoiDung.AnhDaiDien = fileName;
             }
