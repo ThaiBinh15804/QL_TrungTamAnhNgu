@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QL_TrungTamAnhNgu" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=PHAMTHUAN\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Encrypt=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QL_TrungTamAnhNguConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=PHAMTHUAN\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QL_TrungTamAnhNguConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BaiTap" Member="BaiTaps">
     <Type Name="BaiTap">
       <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -77,9 +77,8 @@
       <Column Name="TrinhDo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="ChuyenMon" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="NgayVaoLam" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="MaNguoiDung" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Association Name="GiangVien_LopHoc" Member="LopHocs" ThisKey="MaGiangVien" OtherKey="MaGiangVien" Type="LopHoc" />
-      <Association Name="NguoiDung_GiangVien" Member="NguoiDung" ThisKey="MaNguoiDung" OtherKey="MaNguoiDung" Type="NguoiDung" IsForeignKey="true" />
+      <Association Name="NguoiDung_GiangVien" Member="NguoiDung" ThisKey="MaGiangVien" OtherKey="MaNguoiDung" Type="NguoiDung" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.HocVien" Member="HocViens">
@@ -94,9 +93,8 @@
       <Column Name="TrinhDo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="NgayThamGia" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="MucTieuHocTap" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="MaNguoiDung" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Association Name="HocVien_ThanhToan" Member="ThanhToans" ThisKey="MaHocVien" OtherKey="MaHocVien" Type="ThanhToan" />
-      <Association Name="NguoiDung_HocVien" Member="NguoiDung" ThisKey="MaNguoiDung" OtherKey="MaNguoiDung" Type="NguoiDung" IsForeignKey="true" />
+      <Association Name="NguoiDung_HocVien" Member="NguoiDung" ThisKey="MaHocVien" OtherKey="MaNguoiDung" Type="NguoiDung" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.KhoaHoc" Member="KhoaHocs">
@@ -183,9 +181,9 @@
       <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="NgayTao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="MaNhomND" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Association Name="NguoiDung_GiangVien" Member="GiangViens" ThisKey="MaNguoiDung" OtherKey="MaNguoiDung" Type="GiangVien" />
-      <Association Name="NguoiDung_HocVien" Member="HocViens" ThisKey="MaNguoiDung" OtherKey="MaNguoiDung" Type="HocVien" />
-      <Association Name="NguoiDung_QuanTriVien" Member="QuanTriViens" ThisKey="MaNguoiDung" OtherKey="MaNguoiDung" Type="QuanTriVien" />
+      <Association Name="NguoiDung_GiangVien" Member="GiangVien" ThisKey="MaNguoiDung" OtherKey="MaGiangVien" Type="GiangVien" Cardinality="One" />
+      <Association Name="NguoiDung_HocVien" Member="HocVien" ThisKey="MaNguoiDung" OtherKey="MaHocVien" Type="HocVien" Cardinality="One" />
+      <Association Name="NguoiDung_QuanTriVien" Member="QuanTriVien" ThisKey="MaNguoiDung" OtherKey="MaQTV" Type="QuanTriVien" Cardinality="One" />
       <Association Name="NhomNguoiDung_NguoiDung" Member="NhomNguoiDung" ThisKey="MaNhomND" OtherKey="MaNhomND" Type="NhomNguoiDung" IsForeignKey="true" />
     </Type>
   </Table>
@@ -212,13 +210,12 @@
   <Table Name="dbo.QuanTriVien" Member="QuanTriViens">
     <Type Name="QuanTriVien">
       <Column Name="MaQTV" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="MaNguoiDung" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="HoTen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="SoDienThoai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="ChucVu" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="QuanTriVien_KhoaHoc" Member="KhoaHocs" ThisKey="MaQTV" OtherKey="NguoiTao" Type="KhoaHoc" />
-      <Association Name="NguoiDung_QuanTriVien" Member="NguoiDung" ThisKey="MaNguoiDung" OtherKey="MaNguoiDung" Type="NguoiDung" IsForeignKey="true" />
+      <Association Name="NguoiDung_QuanTriVien" Member="NguoiDung" ThisKey="MaQTV" OtherKey="MaNguoiDung" Type="NguoiDung" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TaiLieu" Member="TaiLieus">
@@ -266,5 +263,26 @@
     <Parameter Name="MatKhau" Parameter="matKhau" Type="System.String" DbType="NVarChar(50)" />
     <Parameter Name="MaNhomND" Parameter="maNhomND" Type="System.String" DbType="NVarChar(10)" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fn_DemSoLuongHocVienTrongLop" Method="fn_DemSoLuongHocVienTrongLop" IsComposable="true">
+    <Parameter Name="MaLop" Parameter="maLop" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fn_DSHocVienCuaLop" Method="fn_DSHocVienCuaLop" IsComposable="true">
+    <Parameter Name="MaLop" Parameter="maLop" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="fn_DSHocVienCuaLopResult">
+      <Column Name="MaHocVien" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HoTen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="SoDienThoai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="TrinhDo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NgayThamGia" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="MucTieuHocTap" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SoBuoiDaHoc" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SoBuoiVang" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
   </Function>
 </Database>

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Providers.Entities;
 using Newtonsoft.Json;
 using QL_TrungTamAnhNgu.Models;
+using QL_TrungTamAnhNgu.ViewModel;
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
@@ -153,23 +154,23 @@ namespace QL_TrungTamAnhNgu.Controllers
                 db = new DataClasses1DataContext(newConnectionString);
 
 
-                if (user.TrangThai == "Đã khóa" && (user.MaNhomND == "ND002" || user.MaNhomND == "ND004" || user.MaNhomND == "ND005" || user.MaNhomND == "ND006"))
+                if (user.TrangThai == "Đã khóa" && (user.MaNhomND == "NND002" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
                     ViewBag.text = "Tài khoản đã bị đình chỉ!";
                     return View();
                 }
 
-                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "ND001" || user.MaNhomND == "ND004" || user.MaNhomND == "ND005" || user.MaNhomND == "ND006"))
+                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
                     Session["user"] = user;
                     return RedirectToAction("Index", "QuanTriVien");
                 }
-                else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "ND002")
+                else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND002")
                 {
                     Session["user"] = user;
                     return RedirectToAction("Index", "GiangVien");
                 }
-                else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "ND003")
+                else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND003")
                 {
                     ViewBag.text = "Tài khoản không đủ quyền truy cập!";
                 }
@@ -374,6 +375,26 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             return View(quanTriVienDetail);
         }
+        [HttpPost]
+        public ActionResult ChiTietQuanTriVien(QuanTriVien qtv)
+        {
+            var quanTriVienExists = db.QuanTriViens.FirstOrDefault(k => k.MaQTV == qtv.MaQTV);
+            if (quanTriVienExists != null)
+            {
+                if (string.IsNullOrEmpty(qtv.NguoiDung.AnhDaiDien))
+                {
+                    qtv.NguoiDung.AnhDaiDien = quanTriVienExists.NguoiDung.AnhDaiDien;
+                }
+                quanTriVienExists.HoTen = qtv.HoTen;
+                quanTriVienExists.Email = qtv.Email;
+                quanTriVienExists.SoDienThoai = qtv.SoDienThoai;
+                quanTriVienExists.NguoiDung.TrangThai = qtv.NguoiDung.TrangThai;
+                quanTriVienExists.NguoiDung.AnhDaiDien = qtv.NguoiDung.AnhDaiDien;
+                db.SubmitChanges();
+                return RedirectToAction("QuanTriVien");
+            }
+            return View(qtv);
+        }
 
         public ActionResult GiangVien(int page = 1, int pageSize = 5)
         {
@@ -451,7 +472,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                         AnhDaiDien = gv.NguoiDung.AnhDaiDien,
                         NgayTao = DateTime.Now,
                         TrangThai = "Đang hoạt động",
-                        MaNhomND = "ND002"
+                        MaNhomND = "NND002"
                     };
 
                     db.NguoiDungs.InsertOnSubmit(nguoiDung);
@@ -463,8 +484,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                     // Thêm giảng viên vào bảng GiangVien
                     var giangVien = new GiangVien
                     {
-                        MaNguoiDung = nguoiDung.MaNguoiDung,
-                        MaGiangVien = gv.MaGiangVien,
+                        MaGiangVien = nguoiDung.MaNguoiDung,
                         HoTen = gv.HoTen,
                         GioiTinh = gv.GioiTinh,
                         NgaySinh = gv.NgaySinh,
@@ -626,7 +646,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                         AnhDaiDien = hv.NguoiDung.AnhDaiDien,
                         NgayTao = DateTime.Now,
                         TrangThai = "Đang hoạt động",
-                        MaNhomND = "ND003"
+                        MaNhomND = "NND003"
                     };
 
                     db.NguoiDungs.InsertOnSubmit(nguoiDung);
@@ -636,8 +656,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                     var hocVien = new HocVien
                     {
-                        MaNguoiDung = nguoiDung.MaNguoiDung,
-                        MaHocVien = hv.MaHocVien,
+                        MaHocVien = nguoiDung.MaNguoiDung,
                         HoTen = hv.HoTen,
                         GioiTinh = hv.GioiTinh,
                         NgaySinh = hv.NgaySinh,
@@ -787,6 +806,10 @@ namespace QL_TrungTamAnhNgu.Controllers
         [HttpPost]
         public ActionResult ChiTietPhongHoc(PhongHoc ph)
         {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
             var phongHocExists = db.PhongHocs.FirstOrDefault(k => k.MaPhong == ph.MaPhong);
             if (phongHocExists != null)
             {
@@ -798,6 +821,65 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("DanhSachPhongHoc");
             }
             return View(ph);
+        }
+
+        public ActionResult DanhSachLopHoc(string maKH)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            List<LopHoc> dsLopHoc = db.LopHocs.Where(k => k.MaKhoaHoc == maKH).ToList();
+            return View(dsLopHoc);
+        }
+
+        public ActionResult ChiTietLopHoc(string malop)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            LopHoc lopHocDetail = db.LopHocs.FirstOrDefault(k => k.MaLop == malop);
+            return View(lopHocDetail);
+        }
+
+        public ActionResult XuLyDieuHuong(string malop, string page)
+        {
+            TempData["DieuHuong"] = page;
+            return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+        }
+
+        public ActionResult ThongTinLopHoc(string malop)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            ViewBag.SlgHVHT = db.fn_DemSoLuongHocVienTrongLop(malop);
+            LopHoc lopHocDetail = db.LopHocs.FirstOrDefault(k => k.MaLop == malop);
+            return PartialView(lopHocDetail);
+        }
+
+        public ActionResult HocVienLopHoc(string malop)
+        {
+            return PartialView(db.fn_DSHocVienCuaLop(malop).ToList());
+        }
+
+        public ActionResult DiemDanh(string malop)
+        {
+            var lst = db.HocViens.Where(t => t.ThanhToans.Where(u => u.DangKies.Where(i => i.MaLop == malop).Any()).Any());
+
+            List<HocVien_DiemDanh> ds = new List<HocVien_DiemDanh>();
+
+            foreach (HocVien item in lst)
+            {
+                HocVien_DiemDanh a = new HocVien_DiemDanh(item.MaHocVien, malop, db);
+                ds.Add(a);
+            }
+
+            Session["dsDiemDanh"] = ds;
+
+            return PartialView(ds);
         }
     }
 }

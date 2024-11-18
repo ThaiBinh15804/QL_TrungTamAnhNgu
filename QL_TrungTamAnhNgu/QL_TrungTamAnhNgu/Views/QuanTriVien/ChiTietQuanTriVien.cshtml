@@ -44,7 +44,7 @@
             <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thông tin quản trị viên</h1>
         </div>
         <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
-            <form class="myForm" action="/QuanTriVien/ChiTietKhoaHoc" method="post">
+            <form class="myForm" action="/QuanTriVien/ChiTietQuanTriVien" method="post">
                 <div style="width: 100%;" class="d-flex">
                     <div style="width: 60%;">
                         <div class="d-flex justify-content-between gap-4">
@@ -116,10 +116,17 @@
                             </div>
                             <div style="width: 100%">
                                 <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TrangThai">Trạng thái:</label>
-                                <select disabled id="TrangThai" name="TrangThai" class="form-control mt-2">
+                                @if (@Model.NguoiDung.MaNhomND == "NND001")
+                                {
+                                    @Html.TextBoxFor(model => model.NguoiDung.TrangThai, new { @readonly = "readonly", @id = "TrangThai_1", @class = "form-control mt-2" }) 
+                                }
+                                else
+                                {
+                                      <select id="TrangThai" name="NguoiDung.TrangThai" class="form-control mt-2" disabled>
                                     <option value="Đang hoạt động" @(Model.NguoiDung.TrangThai == "Đang hoạt động" ? "selected" : "")>Đang hoạt động</option>
                                     <option value="Đã khóa" @(Model.NguoiDung.TrangThai == "Đã khóa" ? "selected" : "")>Đã khóa</option>
                                 </select>
+                                }
                             </div>
                         </div>
                     </div>
@@ -135,7 +142,6 @@
                     </div>
                 </div>
                 <div style="margin-top: 10px; width: 100%" class="d-flex justify-content-end gap-2">
-                    <button id="btnHuy" type="button" disabled class="btn btn-danger">Hủy</button>
                     <button id="btnSua" type="button" class="btn btn-primary">Sửa</button>
                     <button id="btnLuu" type="submit" disabled class="btn btn-success">Lưu</button>
                 </div>

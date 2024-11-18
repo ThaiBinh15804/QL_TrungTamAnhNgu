@@ -142,6 +142,8 @@
     </Compile>
     <Compile Include="Models\QuanTriVienModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\BangDiem.cs" />
+    <Compile Include="ViewModel\HocVien_DiemDanh.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\HinhAnh\Avatar\avt1.jpg" />
@@ -344,6 +346,11 @@
     <Content Include="Views\QuanTriVien\ChiTietPhongHoc.cshtml" />
     <Content Include="Views\QuanTriVien\ThemGiangVien.cshtml" />
     <Content Include="Views\QuanTriVien\ThemHocVien.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachLopHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\ChiTietLopHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\ThongTinLopHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\HocVienLopHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\DiemDanh.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
