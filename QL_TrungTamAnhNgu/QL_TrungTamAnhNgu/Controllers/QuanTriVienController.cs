@@ -132,7 +132,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             ViewBag.tk = username;
             ViewBag.mk = password;
-            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.TenTaiKhoan == username && k.MatKhau == password);
+            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.TenTaiKhoan == username && k.MatKhau == MaHoaMatKhau.HashPasswordSHA256(password));
             if (!string.IsNullOrEmpty(username) && username.Contains(" "))
             {
                 ViewBag.text = "Tên đăng nhập không chứa khoảng trắng!";
@@ -291,6 +291,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 khoaHocExists.HocPhi = kh.HocPhi;
                 khoaHocExists.CapDo = kh.CapDo;
                 khoaHocExists.AnhBia = kh.AnhBia;
+                khoaHocExists.TrangThai = kh.TrangThai;
 
                 db.SubmitChanges();
                 return RedirectToAction("DanhSachKhoaHoc");
@@ -361,6 +362,81 @@ namespace QL_TrungTamAnhNgu.Controllers
             };
 
             return View(model);
+        }
+        public string getChucVu(string MaNhomND) {
+            if (MaNhomND == "NND001")
+            {
+                return "Quản trị viên";
+            }
+            else if (MaNhomND == "NND004")
+            {
+                return "Kĩ thuật viên";
+            } else if (MaNhomND == "NND005")
+            {
+                return "Thu ngân";
+            } 
+            return "Quản lý cơ sở vật chất";
+        }
+        public ActionResult ThemQuanTriVien()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var model = new QuanTriVien();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ThemQuanTriVien(QuanTriVien qtv)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            try
+            {
+                // Thêm người dùng vào bảng NguoiDung
+                var nguoiDung = new NguoiDung
+                {
+                    MaNguoiDung = qtv.NguoiDung.MaNguoiDung,
+                    TenTaiKhoan = qtv.NguoiDung.TenTaiKhoan,
+                    MatKhau = MaHoaMatKhau.HashPasswordSHA256(qtv.NguoiDung.MatKhau),
+                    AnhDaiDien = qtv.NguoiDung.AnhDaiDien,
+                    NgayTao = DateTime.Now,
+                    TrangThai = "Đang hoạt động",
+                    MaNhomND = qtv.NguoiDung.MaNhomND
+                };
+
+                db.NguoiDungs.InsertOnSubmit(nguoiDung);
+                db.SubmitChanges();
+
+                string k = nguoiDung.MaNhomND;
+                db.CreateUserAccount(nguoiDung.TenTaiKhoan, nguoiDung.MatKhau, nguoiDung.MaNhomND);
+
+                var quanTriVien = new QuanTriVien
+                {
+                    MaQTV = nguoiDung.MaNguoiDung,
+                    HoTen = qtv.HoTen,
+                    SoDienThoai = qtv.SoDienThoai,
+                    Email = qtv.Email,
+                    ChucVu = getChucVu(qtv.NguoiDung.MaNhomND),
+                };
+
+                db.QuanTriViens.InsertOnSubmit(quanTriVien);
+                db.SubmitChanges();
+
+                return RedirectToAction("QuanTriVien");
+            }
+            catch (SqlException sqlEx)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
+                return View(qtv);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+                return View(qtv);
+            }
         }
 
         public ActionResult ChiTietQuanTriVien(string maQTV)
@@ -481,7 +557,6 @@ namespace QL_TrungTamAnhNgu.Controllers
                     // Gọi procedure tạo tài khoản người dùng
                     int k = db.CreateUserAccount(nguoiDung.TenTaiKhoan, nguoiDung.MatKhau, nguoiDung.MaNhomND);
 
-                    // Thêm giảng viên vào bảng GiangVien
                     var giangVien = new GiangVien
                     {
                         MaGiangVien = nguoiDung.MaNguoiDung,
