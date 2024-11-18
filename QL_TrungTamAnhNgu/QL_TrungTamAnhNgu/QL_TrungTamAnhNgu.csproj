@@ -146,6 +146,7 @@
     <Content Include="Content\HinhAnh\Avatar\avt3.jfif" />
     <Content Include="Content\HinhAnh\Avatar\avt4.jfif" />
     <Content Include="Content\HinhAnh\Avatar\DangNhap.png" />
+    <Content Include="Content\HinhAnh\Avatar\Default_Avatar.png" />
     <Content Include="Content\HinhAnh\Avatar\user.png" />
     <Content Include="Content\bootstrap-5.0.2-dist\css\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-5.0.2-dist\css\bootstrap-grid.min.css" />
@@ -170,9 +171,11 @@
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.js" />
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.min.js" />
     <Content Include="Content\HinhAnh\GiaoDien\bell.png" />
+    <Content Include="Content\HinhAnh\GiaoDien\email-icon.png" />
     <Content Include="Content\HinhAnh\GiaoDien\fb.jpg" />
     <Content Include="Content\HinhAnh\GiaoDien\github.png" />
     <Content Include="Content\HinhAnh\GiaoDien\linkedin.jpg" />
+    <Content Include="Content\HinhAnh\GiaoDien\phone-icon.png" />
     <Content Include="Content\HinhAnh\GiaoDien\twitter.png" />
     <Content Include="Content\HinhAnh\GiaoDien\user.png" />
     <Content Include="Content\HinhAnh\GiaoDien\yola-english-high-resolution-logo.png" />
@@ -180,6 +183,11 @@
     <Content Include="Content\HinhAnh\KhoaHoc\GiaoTiepCoBan.jpg" />
     <Content Include="Content\HinhAnh\KhoaHoc\GiaoTiepNangCao.jpg" />
     <Content Include="Content\HinhAnh\KhoaHoc\GiaoTiepQuocTe.jpg" />
+    <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_1.png" />
+    <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_2.png" />
+    <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_3.png" />
+    <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_4.png" />
+    <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_5.png" />
     <Content Include="Content\HinhAnh\KhoaHoc\LuyenThi_IELTS.jpg" />
     <Content Include="Content\HinhAnh\KhoaHoc\LuyenThi_Toeic.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -294,7 +302,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LayoutHocVien.cshtml" />
-    <Content Include="Views\HocVien\TrangChu.cshtml" />
     <Content Include="Views\HocVien\LopHoc.cshtml" />
     <Content Include="Views\HocVien\DangNhap.cshtml" />
     <Content Include="Views\HocVien\ChuyenCan.cshtml" />
@@ -303,6 +310,11 @@
     <Content Include="Views\HocVien\BaiTap.cshtml" />
     <Content Include="Views\HocVien\ChiTietBaiTap.cshtml" />
     <Content Include="Views\HocVien\ChiTietLichHoc.cshtml" />
+    <Content Include="Views\HocVien\LopHocCuaToi.cshtml" />
+    <Content Include="Views\HocVien\TrangChu.cshtml" />
+    <Content Include="Views\HocVien\ThongTinNguoiDung.cshtml" />
+    <Content Include="Views\HocVien\ThanhToan.cshtml" />
+    <Content Include="Views\HocVien\NopBaiTap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

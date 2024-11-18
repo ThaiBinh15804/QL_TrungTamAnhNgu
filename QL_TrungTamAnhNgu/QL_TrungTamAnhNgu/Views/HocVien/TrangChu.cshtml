@@ -1,59 +1,34 @@
-﻿@model List<QL_TrungTamAnhNgu.Models.view_lophoc_dangky>
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.KhoaHoc>
 @using System.Globalization
-
 @{
     ViewBag.Title = "TrangChu";
     Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
 }
 
+<!-- Nội dung chính của trang chủ -->
 <div class="container mt-4">
-    <h3 class="text-primary text-center mb-4">Danh sách lớp học đã đăng ký</h3>
+    <h3>Danh sách các khóa học</h3>
     <div class="row">
-        @if (Model == null || !Model.Any())
+        @foreach (var item in Model)
         {
-            <div class="col-12">
-                <div class="alert alert-warning text-center" role="alert">
-                    Bạn chưa đăng ký lớp học nào.
-                </div>
-            </div>
-        }
-        else
-        {
-            foreach (var item in Model)
-            {
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="@Url.Action("LopHoc", "HocVien", new { id = item.MaLop })" class="text-decoration-none text-dark">
-                        <div class="card h-100 shadow-sm">
-                            <!-- Hình ảnh đại diện -->
-                            <img src="~/Content/HinhAnh/Avatar/avt3.jfif"
-                                 class="card-img-top" alt="Ảnh lớp học" style="height: 150px; object-fit: cover;">
-                            <div class="card-body">
-                                <!-- Tên lớp học -->
-                                <h5 class="card-title text-truncate">@item.TenLop</h5>
-
-                                <!-- Thời gian -->
-                                <p class="card-text">
-                                    <strong>Thời gian:</strong>
-                                    @item.NgayBatDau.ToString("dd/MM/yyyy") - @item.NgayKetThuc.ToString("dd/MM/yyyy")
-                                </p>
-
-                                <!-- Trạng thái -->
-                                <p class="card-text">
-                                    <strong>Trạng thái:</strong>
-                                    @if (item.TrangThai == "Đang hoạt động")
-                                    {
-                                        <span class="badge bg-success">Đang hoạt động</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">@item.TrangThai</span>
-                                    }
-                                </p>
-                            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                @*<a href="@Url.Action("ChiTietKhoaHoc", "HocVien", new { id = item.MaKhoaHoc })" class="text-decoration-none text-dark">*@
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/Content/HinhAnh/KhoaHoc/@item.AnhBia"
+                             class="card-img-top" alt="Ảnh khóa học" style="height: 150px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate">@item.TenKhoaHoc</h5>
+                            <p class="card-text text-warning">
+                                @for (var i = 0; i < 5; i++)
+                                { <i class="bi bi-star-fill"></i> } <!-- Thêm ngôi sao đánh giá -->
+                                <span class="text-dark">(100)</span>
+                            </p>
+                            <p class="card-text text-danger fw-bold">@String.Format(CultureInfo.InvariantCulture, "{0:N0} đ", item.HocPhi)</p>
                         </div>
-                    </a>
-                </div>
-            }
+
+                    </div>
+                @*</a>*@
+            </div>
         }
     </div>
 </div>

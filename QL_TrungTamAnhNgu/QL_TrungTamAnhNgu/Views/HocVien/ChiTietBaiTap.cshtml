@@ -52,11 +52,12 @@
             <td>
                 @if (!string.IsNullOrEmpty(Model.FileUpload))
                 {
-                    <a href="~/Uploads/@Model.FileUpload" target="_blank" class="btn btn-primary">Nộp bài tập</a>
+                    
+                    <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-primary">Nộp bài tập</a>
                 }
                 else
                 {
-                    <p class="text-danger">Bài tập chưa có file đính kèm.</p>
+                    <a href="@Url.Content("~/Uploads/" + Model.FileUpload)" target="_blank" class="btn btn-primary">Xem bài tập đã nộp</a>
                 }
             </td>
         </tr>

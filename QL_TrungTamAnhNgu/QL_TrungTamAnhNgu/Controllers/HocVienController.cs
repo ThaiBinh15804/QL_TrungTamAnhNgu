@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using QL_TrungTamAnhNgu.Models;
+using System.Text.RegularExpressions;
+using System.IO;  
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
@@ -12,6 +14,11 @@ namespace QL_TrungTamAnhNgu.Controllers
         // GET: /HocVien/
         DataClasses1DataContext db = new DataClasses1DataContext();
         public ActionResult TrangChu()
+        {
+            var kh = db.KhoaHocs.ToList();
+            return View(kh);
+        }
+        public ActionResult LopHocCuaToi()
         {
             if (Session["MaHocVien"] == null)
             {
@@ -132,51 +139,285 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult ChiTietLichHoc()
         {
-            // Lấy mã học viên từ session (lúc đăng nhập)
             var maHocVien = Session["MaHocVien"].ToString();
-            if (string.IsNullOrEmpty(maHocVien))
-            {
-                ViewBag.ThongBao = "Không tìm thấy mã học viên.";
-                return RedirectToAction("TrangChu", "HocVien"); // Redirect về trang chủ nếu không có mã học viên
-            }
-
-            // Lấy thông tin mã thanh toán từ bảng ThanhToan dựa trên mã học viên
-            var maThanhToan = db.ThanhToans
-                                .Where(t => t.MaHocVien == maHocVien)
-                                .Select(t => t.MaThanhToan)
-                                .FirstOrDefault();
-
+            var maThanhToan = db.ThanhToans.Where(t => t.MaHocVien == maHocVien).Select(t => t.MaThanhToan).FirstOrDefault();
             if (string.IsNullOrEmpty(maThanhToan))
             {
                 ViewBag.ThongBao = "Không tìm thấy thông tin thanh toán cho học viên này.";
-                return View(); // Nếu không có thanh toán, hiển thị thông báo
+                return View(); 
             }
-
-            // Lấy danh sách lớp học mà sinh viên đã đăng ký từ bảng DangKy thông qua MaThanhToan
-            var danhSachLopHoc = db.DangKies
-                                   .Where(dk => dk.MaThanhToan == maThanhToan)  // Lọc theo mã thanh toán
-                                   .Select(dk => dk.MaLop)  // Lấy danh sách mã lớp
-                                   .ToList();
-
-            if (!danhSachLopHoc.Any())
-            {
-                ViewBag.ThongBao = "Bạn chưa đăng ký lớp học nào.";
-                return View(); // Nếu không có lớp học, hiển thị thông báo
-            }
-
-            // Lấy thông tin lịch học chi tiết của các lớp mà sinh viên đã đăng ký
-            var danhSachLichHoc = db.view_lichhoc_chitiet_cua_lophocs
-                                    .Where(lh => danhSachLopHoc.Contains(lh.MaLop)) // Kiểm tra các lớp đã đăng ký
-                                    .ToList();
-
+            var danhSachLopHoc = db.DangKies.Where(dk => dk.MaThanhToan == maThanhToan).Select(dk => dk.MaLop) .ToList();
+            var danhSachLichHoc = db.view_lichhoc_chitiet_cua_lophocs.Where(lh => danhSachLopHoc.Contains(lh.MaLop)).ToList();
             if (!danhSachLichHoc.Any())
             {
                 ViewBag.ThongBao = "Không tìm thấy lịch học cho các lớp đã đăng ký.";
-                return View(); // Nếu không có lịch học, hiển thị thông báo
+                return View(); 
+            }
+            return View(danhSachLichHoc); 
+        }
+
+        // THONG TIN NGUOI DUNG
+        public ActionResult ThongTinNguoiDung()
+        {
+            var userId = Session["UserId"];
+            if (userId != null)
+            {
+                var nguoiDung = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
+                var hocVien = db.HocViens.FirstOrDefault(hv => hv.MaHocVien == nguoiDung.MaNguoiDung);
+                if (nguoiDung != null)
+                {
+                    ViewBag.TenDangNhap = nguoiDung.TenTaiKhoan ?? string.Empty;
+                    ViewBag.Email = hocVien.Email ?? string.Empty;
+
+                    if (hocVien != null)
+                    {
+                        ViewBag.HoTen = hocVien.HoTen ?? string.Empty;
+                        ViewBag.GioiTinh = hocVien.GioiTinh ?? string.Empty;
+                        ViewBag.SoDienThoai = hocVien.SoDienThoai ?? string.Empty;
+                        ViewBag.DiaChi = hocVien.DiaChi ?? string.Empty;
+                        ViewBag.NgaySinh = hocVien.NgaySinh.HasValue ? hocVien.NgaySinh.Value.ToString("dd/MM/yyyy") : "Chưa xác định";
+                    }
+                    else
+                    {
+                        ViewBag.HoTen = string.Empty;
+                        ViewBag.GioiTinh = string.Empty;
+                        ViewBag.SoDienThoai = string.Empty;
+                        ViewBag.DiaChi = string.Empty;
+                        ViewBag.NgaySinh = "Chưa xác định";
+                    }
+                    ViewBag.AnhBia = Session["AnhBia"] ?? "~/Content/HocVien/Images/Default_Avatar.png";
+                    return View();
+                }
+            }
+            return RedirectToAction("DangNhap", "HocVien");
+        }
+
+        [HttpPost]
+        public ActionResult UploadAvatar(HttpPostedFileBase avatar)
+        {
+            if (avatar != null && avatar.ContentLength > 0)
+            {
+                // Đường dẫn lưu ảnh
+                string fileName = Path.GetFileName(avatar.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar/"), fileName);
+                Session["AnhBia"] = fileName;
+                // Lưu ảnh vào thư mục
+                avatar.SaveAs(path);
+
+                // Cập nhật đường dẫn ảnh vào cơ sở dữ liệu
+                var userId = Session["UserId"];
+                var user = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
+                if (user != null)
+                {
+                    user.AnhDaiDien = fileName; // Lưu tên file ảnh vào cơ sở dữ liệu
+                    db.SubmitChanges();
+                }
+
+                return Json(new { success = true, filename = fileName });
+            }
+            return Json(new { success = false, message = "Có lỗi xảy ra khi tải lên ảnh." });
+        }
+
+
+        [HttpPost]
+        public ActionResult ChinhSua(string email, string hoTen, DateTime? ngaySinh, string gioiTinh, string soDienThoai, string diaChi)
+        {
+            try
+            {
+                var userId = Session["UserId"];
+                if (userId != null)
+                {
+                    var nguoiDung = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
+                    var hocVien = db.HocViens.FirstOrDefault(hv => hv.MaHocVien == nguoiDung.MaNguoiDung);
+
+                    if (nguoiDung != null && hocVien != null)
+                    {
+                        hocVien.Email = email ?? hocVien.Email;
+                        hocVien.HoTen = hoTen ?? hocVien.HoTen;
+                        hocVien.NgaySinh = ngaySinh ?? hocVien.NgaySinh;
+                        hocVien.GioiTinh = gioiTinh ?? hocVien.GioiTinh;
+                        hocVien.SoDienThoai = soDienThoai ?? hocVien.SoDienThoai;
+                        hocVien.DiaChi = diaChi ?? hocVien.DiaChi;
+                        db.SubmitChanges();
+                        return Json(new { success = true, message = "Thông tin đã được cập nhật thành công!" });
+                    }
+                }
+                return Json(new { success = false, message = "Có lỗi xảy ra khi cập nhật thông tin. Người dùng không tồn tại." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Cập nhật thất bại: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ChinhSuaEmail(string email)
+        {
+            try
+            {
+                var userId = Session["UserId"];
+                if (userId != null)
+                {
+                    var nguoiDung = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
+                    var hocVien = db.HocViens.FirstOrDefault(hv => hv.MaHocVien == nguoiDung.MaNguoiDung);
+
+                    if (hocVien != null)
+                    {
+                        hocVien.Email = email;
+                        db.SubmitChanges();
+                        return Json(new { success = true, message = "Email đã được cập nhật thành công!" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Người dùng không tồn tại." });
+                    }
+                }
+                return Json(new { success = false, message = "Bạn cần đăng nhập để thực hiện chức năng này." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Cập nhật thất bại: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ChinhSuaSoDienThoai(string soDienThoai)
+        {
+            try
+            {
+                var userId = Session["UserId"];
+                if (userId != null)
+                {
+                    var hocVien = db.HocViens.FirstOrDefault(hv => hv.MaHocVien == userId);
+                    if (hocVien != null)
+                    {
+                        hocVien.SoDienThoai = soDienThoai;
+                        db.SubmitChanges();
+                        return Json(new { success = true, message = "Số điện thoại đã được cập nhật thành công!" });
+                    }
+                }
+                return Json(new { success = false, message = "Có lỗi xảy ra khi cập nhật số điện thoại. Người dùng không tồn tại." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Cập nhật thất bại: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DoiMatKhau(string currentPassword, string newPassword)
+        {
+            var userId = Session["UserId"];
+            if (userId == null)
+            {
+                return Json(new { success = false, message = "Bạn cần đăng nhập để đổi mật khẩu." });
+            }
+            var nguoiDung = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
+            if (nguoiDung == null || nguoiDung.MatKhau != currentPassword)
+            {
+                return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
+            }
+            if (!Regex.IsMatch(newPassword, @"[A-Z]")) 
+            {
+                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự in hoa." });
             }
 
-            return View(danhSachLichHoc); // Trả lại view với danh sách lịch học
+            if (!Regex.IsMatch(newPassword, @"[0-9]")) 
+            {
+                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một chữ số." });
+            }
+            if (!Regex.IsMatch(newPassword,"[!@#$%^&*(),.?\":{}|<>]"))
+            {
+                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt." });
+            }
+            nguoiDung.MatKhau = newPassword;
+            db.SubmitChanges();  
+            return Json(new { success = true, message = "Mật khẩu đã được cập nhật thành công!" });
         }
+
+
+       public ActionResult ThanhToan()
+        {
+            var maHocVien = Session["MaHocVien"].ToString();
+            var thanhToanList = db.ThongTinThanhToans.Where(tt => tt.MaHocVien == maHocVien) .ToList(); 
+
+            if (thanhToanList == null || !thanhToanList.Any())
+            {
+                ViewBag.ThongBao = "Không có dữ liệu thanh toán.";
+                return View();
+            }
+            return View(thanhToanList);
+        }
+
+       public ActionResult NopBaiTap(string maBaiTap)
+       {
+           if (string.IsNullOrEmpty(maBaiTap))
+           {
+               return RedirectToAction("BaiTap", "HocVien");
+           }
+
+           ViewBag.MaBaiTap = maBaiTap;
+           return View();
+       }
+
+       [HttpPost]
+       public ActionResult XuLyNopBaiTap(string maBaiTap, HttpPostedFileBase fileUpload)
+       {
+           if (fileUpload != null && fileUpload.ContentLength > 0)
+           {
+               try
+               {
+                   // Tạo thư mục nếu chưa tồn tại
+                   string uploadFolder = Server.MapPath("~/Uploads");
+                   if (!Directory.Exists(uploadFolder))
+                   {
+                       Directory.CreateDirectory(uploadFolder);
+                   }
+
+                   // Kiểm tra kích thước file
+                   if (fileUpload.ContentLength > 5 * 1024 * 1024) // Giới hạn 5MB
+                   {
+                       TempData["Error"] = "Dung lượng file vượt quá giới hạn (5MB).";
+                       TempData["Success"] = null; // Xóa thông báo thành công nếu có
+                       return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+                   }
+
+                   // Lưu file
+                   string fileName = Path.GetFileName(fileUpload.FileName);
+                   string path = Path.Combine(uploadFolder, fileName);
+                   fileUpload.SaveAs(path);
+
+                   // Cập nhật cơ sở dữ liệu
+                   var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap);
+                   if (baiTap != null)
+                   {
+                       baiTap.FileUpload = fileName;
+                       baiTap.TrangThai = "Đã nộp";
+                       baiTap.NgayNop = DateTime.Now;
+                       db.SubmitChanges();
+                   }
+
+                   // Xóa thông báo lỗi nếu có và hiển thị thông báo thành công
+                   TempData["Error"] = null;
+                   TempData["Success"] = "Bài tập đã được nộp thành công!";
+               }
+               catch (Exception ex)
+               {
+                   // Xóa thông báo thành công nếu có và hiển thị thông báo lỗi
+                   TempData["Success"] = null;
+                   TempData["Error"] = "Có lỗi xảy ra: " + ex.Message;
+                   return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+               }
+           }
+           else
+           {
+               // Hiển thị lỗi khi chưa chọn file
+               TempData["Success"] = null; // Xóa thông báo thành công nếu có
+               TempData["Error"] = "Bạn chưa chọn file!";
+           }
+
+           return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+       }
 
 
 
@@ -191,7 +432,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult DangNhap(string username, string password)
         {
             var user = db.NguoiDungs.FirstOrDefault(u => u.TenTaiKhoan == username && u.MatKhau == password);
-            var hocVien = db.HocViens.FirstOrDefault(hv => hv.MaNguoiDung == user.MaNguoiDung);
+            var hocVien = db.HocViens.FirstOrDefault(hv => hv.MaHocVien == user.MaNguoiDung);
             if (user != null)
             {
                 Session["UserId"] = user.MaNguoiDung;
