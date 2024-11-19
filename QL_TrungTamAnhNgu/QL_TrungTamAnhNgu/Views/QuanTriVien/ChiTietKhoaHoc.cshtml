@@ -43,12 +43,6 @@
         </div>
         <div class="d-flex justify-content-between">
             <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thông tin khóa học</h1>
-            @if (TempData["ErrorMessageKhoaHoc"] != null)
-            {
-                <div class="alert alert-danger">
-                    @TempData["ErrorMessageKhoaHoc"]
-                </div>
-            }
             <div>
                 <a href="/QuanTriVien/DanhSachLopHoc?makh=@Model.MaKhoaHoc" class="btn btn-primary">Xem danh sách lớp</a>
                 <button type="button" class="btn btn-danger" id="btnXoaKhoaHoc" data-makh="@Model.MaKhoaHoc">
@@ -129,11 +123,6 @@
                     <button id="btnLuu" type="submit" disabled class="btn btn-success">Lưu</button>
                 </div>
             </form>
-        </div>
-        <h1 style="font-size: 18px; font-weight: 600; color: #000; margin-top: 20px;">Tài liệu khóa học</h1>
-        <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
-            @Html.Action("ViewDanhSachTaiLieu", "QuanTriVien", new { makh = Model.MaKhoaHoc })
-
         </div>
         <h1 style="font-size: 18px; font-weight: 600; color: #000; margin-top: 20px;">Các khóa học bạn có thể tham khảo</h1>
         <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">

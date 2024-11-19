@@ -264,58 +264,6 @@ namespace QL_TrungTamAnhNgu.Controllers
             var model = new KhoaHoc();
             return View(model);
         }
-        [HttpPost]
-        public ActionResult ThemKhoaHoc(KhoaHoc kh)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            try
-            {
-                string maKH = db.KhoaHocs.OrderByDescending(t => t.MaKhoaHoc).FirstOrDefault().MaKhoaHoc;
-                int k = maKH != null ? (int.Parse(maKH.Substring(2)) + 1) : 1;
-                string maKHMoi = "KH" + k.ToString("D3");
-                // Thêm người dùng vào bảng NguoiDung
-                var khoahoc = new KhoaHoc
-                {
-                    MaKhoaHoc = maKHMoi,
-                    TenKhoaHoc = kh.TenKhoaHoc,
-                    MoTa = kh.MoTa,
-                    HocPhi = kh.HocPhi,
-                    AnhBia = kh.AnhBia,
-                    NguoiTao = kh.NguoiTao,
-                    CapDo = kh.CapDo,
-                    NgayTao = DateTime.Now,
-                    TrangThai = "Đang hoạt động",
-                };
-
-                db.KhoaHocs.InsertOnSubmit(khoahoc);
-                db.SubmitChanges();
-
-                return RedirectToAction("DanhSachKhoaHoc");
-            }
-            catch (SqlException sqlEx)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
-                return View(kh);
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
-                return View(kh);
-            }
-        }
-        public ActionResult ViewDanhSachTaiLieu(string makh)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            List<KhoaHoc_TaiLieu> dsTaiLieuHienThi = db.KhoaHoc_TaiLieus.Where(t => t.MaKhoaHoc == makh).ToList();
-            return PartialView(dsTaiLieuHienThi);
-        }
-
         public ActionResult ChiTietKhoaHoc(string makh)
         {
             if (Session["user"] == null)
@@ -328,7 +276,6 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             return View(KhoaHocDetail);
         }
-
         [HttpPost]
         public ActionResult ChiTietKhoaHoc(KhoaHoc kh)
         {
@@ -358,14 +305,12 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
-            KhoaHoc khoaHoc = db.KhoaHocs.FirstOrDefault(k => k.MaKhoaHoc == makh);
-            if (khoaHoc.LopHocs.Any())
+            var khoaHoc = db.KhoaHocs.FirstOrDefault(k => k.MaKhoaHoc == makh);
+            if (khoaHoc != null)
             {
-                TempData["ErrorMessageKhoaHoc"] = "Khóa học này đang được sử dụng, nên không thể xóa ngay lúc này!";
-                return RedirectToAction("ChiTietKhoaHoc", new { makh = makh });
+                db.KhoaHocs.DeleteOnSubmit(khoaHoc);
+                db.SubmitChanges();
             }
-            db.KhoaHocs.DeleteOnSubmit(khoaHoc);
-            db.SubmitChanges();
             return RedirectToAction("DanhSachKhoaHoc");
         }
 
@@ -450,13 +395,10 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
-                string maND = db.NguoiDungs.OrderByDescending(t => t.MaNguoiDung).FirstOrDefault().MaNguoiDung;
-                int k = maND != null ? (int.Parse(maND.Substring(2)) + 1) : 1;
-                string maMoi = "ND" + k.ToString("D3");
                 // Thêm người dùng vào bảng NguoiDung
                 var nguoiDung = new NguoiDung
                 {
-                    MaNguoiDung = maMoi,
+                    MaNguoiDung = qtv.NguoiDung.MaNguoiDung,
                     TenTaiKhoan = qtv.NguoiDung.TenTaiKhoan,
                     MatKhau = MaHoaMatKhau.HashPasswordSHA256(qtv.NguoiDung.MatKhau),
                     AnhDaiDien = qtv.NguoiDung.AnhDaiDien,
@@ -468,6 +410,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 db.NguoiDungs.InsertOnSubmit(nguoiDung);
                 db.SubmitChanges();
 
+                string k = nguoiDung.MaNhomND;
                 db.CreateUserAccount(nguoiDung.TenTaiKhoan, nguoiDung.MatKhau, nguoiDung.MaNhomND);
 
                 var quanTriVien = new QuanTriVien
@@ -596,13 +539,10 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
                 try
                 {
-                    string maND = db.NguoiDungs.OrderByDescending(t => t.MaNguoiDung).FirstOrDefault().MaNguoiDung;
-                    int k = maND != null ? (int.Parse(maND.Substring(2)) + 1) : 1;
-                    string maMoi = "ND" + k.ToString("D3");
                     // Thêm người dùng vào bảng NguoiDung
                     var nguoiDung = new NguoiDung
                     {
-                        MaNguoiDung = maMoi,
+                        MaNguoiDung = gv.NguoiDung.MaNguoiDung,
                         TenTaiKhoan = gv.NguoiDung.TenTaiKhoan,
                         MatKhau = gv.NguoiDung.MatKhau,
                         AnhDaiDien = gv.NguoiDung.AnhDaiDien,
@@ -615,7 +555,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                     db.SubmitChanges(); // Lưu thay đổi vào bảng NguoiDung
 
                     // Gọi procedure tạo tài khoản người dùng
-                    db.CreateUserAccount(nguoiDung.TenTaiKhoan, nguoiDung.MatKhau, nguoiDung.MaNhomND);
+                    int k = db.CreateUserAccount(nguoiDung.TenTaiKhoan, nguoiDung.MatKhau, nguoiDung.MaNhomND);
 
                     var giangVien = new GiangVien
                     {
@@ -713,7 +653,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             List<HocVien> dsStudent = db.HocViens.ToList();
             var totalRecords = dsStudent.Count();
 
-            var studentList = dsStudent.OrderByDescending(q => q.NguoiDung.NgayTao).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var studentList = dsStudent.OrderBy(q => q.MaHocVien).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
             var model = new HocVienPagedList
@@ -770,15 +710,12 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("DangNhap");
             }
 
-            try
-            {
-                    string maND = db.NguoiDungs.OrderByDescending(t => t.MaNguoiDung).FirstOrDefault().MaNguoiDung;
-                    int k = maND != null ? (int.Parse(maND.Substring(2)) + 1) : 1;
-                    string maMoi = "ND" + k.ToString("D3");
+                try
+                {
                     // Thêm người dùng vào bảng NguoiDung
                     var nguoiDung = new NguoiDung
                     {
-                        MaNguoiDung = maMoi,
+                        MaNguoiDung = hv.NguoiDung.MaNguoiDung,
                         TenTaiKhoan = hv.NguoiDung.TenTaiKhoan,
                         MatKhau = hv.NguoiDung.MatKhau,
                         AnhDaiDien = hv.NguoiDung.AnhDaiDien,
@@ -878,408 +815,6 @@ namespace QL_TrungTamAnhNgu.Controllers
             return RedirectToAction("HocVien");
         }
 
-        public ActionResult DanhSachMaGiamGia(int page = 1, int pageSize = 5)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            List<GiamGia> giamGiaList = db.GiamGias.ToList();
-            var totalRecords = giamGiaList.Count();
-
-            var dsGiamGiaList = giamGiaList.OrderBy(q => q.MaGiamGia).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-            var model = new GiamGiaPagedList
-            {
-                giamGiaList = dsGiamGiaList,
-                CurrentPage = page,
-                TotalPages = totalPages,
-                PageSize = pageSize
-            };
-            return View(model);
-        }
-        [HttpGet]
-        public ActionResult TimKiemGiamGia(string search, int page = 1, int pageSize = 5)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var sql = "select * from fn_timKiemMaGiamGia(N'" + search + "')";
-            List<GiamGia> giamGiaList = db.ExecuteQuery<GiamGia>(sql).ToList();
-            var totalRecords = giamGiaList.Count();
-
-            var dsGiamGiaList = giamGiaList.OrderBy(q => q.MaGiamGia).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-            var model = new GiamGiaPagedList
-            {
-                giamGiaList = dsGiamGiaList,
-                CurrentPage = page,
-                TotalPages = totalPages,
-                PageSize = pageSize,
-                SearchQuery = search
-            };
-            return View(model);
-        }
-
-        public ActionResult ThemGiamGia()
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var giamGia = new GiamGia();
-            return View(giamGia);
-        }
-        [HttpPost]
-        public ActionResult ThemGiamGia(GiamGia gg)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            try
-            {
-                string maGiamGia = db.GiamGias.OrderByDescending(t => t.MaGiamGia).FirstOrDefault().MaGiamGia;
-                int k = maGiamGia != null ? (int.Parse(maGiamGia.Substring(2)) + 1) : 1;
-                string maGiamGiaMoi = "GG" + k.ToString("D3"); 
-                var giamGia = new GiamGia
-                {
-                    MaGiamGia = maGiamGiaMoi,
-                    TenGiamGia = gg.TenGiamGia,
-                    MoTa = gg.MoTa,
-                    TiLeGiam = gg.TiLeGiam,
-                    NgayBatDau = gg.NgayBatDau,
-                    NgayKetThuc = gg.NgayKetThuc,
-                    NgayTao = DateTime.Now,
-                    TrangThai = "Đang hoạt động",
-                };
-
-                db.GiamGias.InsertOnSubmit(giamGia);
-                db.SubmitChanges();
-
-                return RedirectToAction("DanhSachMaGiamGia");
-            }
-            catch (SqlException sqlEx)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
-                return View(gg);
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
-                return View(gg);
-            }
-        }
-
-        public ActionResult XoaGiamGia(string maGG)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            GiamGia giamGia = db.GiamGias.FirstOrDefault(k => k.MaGiamGia == maGG);
-            if (giamGia.KhoaHoc_GiamGias.Any())
-            {
-                TempData["ErrorMessageGiamGia"] = "Mã Giảm giá đang được sử dụng, nên không thể xóa!";
-                return RedirectToAction("ChiTietGiamGia", new { maGG = maGG });
-            }
-            db.GiamGias.DeleteOnSubmit(giamGia);
-            db.SubmitChanges();
-            return RedirectToAction("DanhSachMaGiamGia");
-        }
-
-        public ActionResult ChiTietGiamGia(string maGG)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            GiamGia giamGia = db.GiamGias.FirstOrDefault(t => t.MaGiamGia == maGG);
-            return View(giamGia);
-        }
-        [HttpPost]
-        public ActionResult ChiTietGiamGia(GiamGia giamgia)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var giamGiaExists = db.GiamGias.FirstOrDefault(k => k.MaGiamGia == giamgia.MaGiamGia);
-            if (giamGiaExists != null)
-            {
-                giamGiaExists.TenGiamGia = giamgia.TenGiamGia;
-                giamGiaExists.MoTa = giamgia.MoTa;
-                giamGiaExists.TrangThai = giamgia.TrangThai;
-                giamGiaExists.NgayBatDau = giamgia.NgayBatDau;
-                giamGiaExists.NgayKetThuc = giamgia.NgayKetThuc;
-                giamGiaExists.TiLeGiam = giamgia.TiLeGiam;
-                db.SubmitChanges();
-                return RedirectToAction("DanhSachMaGiamGia");
-            }
-            return View(giamgia);
-        }
-
-        public ActionResult DanhSachGiamGiaThuocKhoaHoc(string maGG)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            ViewBag.MaGiamGia = maGG;
-            GiamGia checkTrangThaiGiamGia = db.GiamGias.FirstOrDefault(t => t.MaGiamGia == maGG);
-            if (checkTrangThaiGiamGia.TrangThai == "Hết hạn")
-            {
-                ViewBag.TrangThaiKhoaHoc = "Mã giảm giá hết hạn, nên không thể thêm khóa học";
-            }
-            List<KhoaHoc_GiamGia> dsGiamGiaThuocKhoaHoc = db.KhoaHoc_GiamGias.Where(k => k.MaGiamGia == maGG).ToList();
-            return View(dsGiamGiaThuocKhoaHoc);
-        }
-        public ActionResult XoaKhoaHoc_GiamGia(string maKH, string maGG)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            KhoaHoc_GiamGia khoaHoc_giamGia = db.KhoaHoc_GiamGias.FirstOrDefault(t => t.MaGiamGia == maGG && t.MaKhoaHoc == maKH);
-            db.KhoaHoc_GiamGias.DeleteOnSubmit(khoaHoc_giamGia);
-            db.SubmitChanges();
-            return RedirectToAction("DanhSachGiamGiaThuocKhoaHoc", new { maGG = maGG });
-        }
-        public ActionResult ThemKhoaHoc_GiamGia(string maGG)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            ViewBag.MaGiamGia = maGG;
-            var khoahoc_giamgia = new KhoaHoc_GiamGia();
-            return View(khoahoc_giamgia);
-        }
-        [HttpPost]
-        public ActionResult ThemKhoaHoc_GiamGia(KhoaHoc_GiamGia khgg)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var khoahoc_giamgia = new KhoaHoc_GiamGia
-            {
-                MaKhoaHoc = khgg.MaKhoaHoc,
-                MaGiamGia = khgg.MaGiamGia
-            };
-            KhoaHoc_GiamGia findKhoaHocGiamGia = db.KhoaHoc_GiamGias.FirstOrDefault(t => t.MaGiamGia == khoahoc_giamgia.MaGiamGia && t.MaKhoaHoc == khoahoc_giamgia.MaKhoaHoc);
-            if (findKhoaHocGiamGia != null)
-            {
-                TempData["ErrorMessageKhoaHocGiamGia"] = "Khóa học đã tồn tại mã giảm giá này!";
-                return RedirectToAction("ThemKhoaHoc_GiamGia", new { maGG = khoahoc_giamgia.MaGiamGia });
-            }
-            db.KhoaHoc_GiamGias.InsertOnSubmit(khoahoc_giamgia);
-            db.SubmitChanges();
-            return RedirectToAction("DanhSachGiamGiaThuocKhoaHoc", new { maGG = khoahoc_giamgia.MaGiamGia });
-        }
-
-        public ActionResult DanhSachTaiLieu(int page = 1, int pageSize = 5)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            List<TaiLieu> taiLieuList = db.TaiLieus.ToList();
-            var totalRecords = taiLieuList.Count();
-
-            var dsTaiLieuList = taiLieuList.OrderBy(q => q.MaTaiLieu).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-            var model = new TaiLieuPagedList
-            {
-                taiLieuList = dsTaiLieuList,
-                CurrentPage = page,
-                TotalPages = totalPages,
-                PageSize = pageSize
-            };
-            return View(model);
-        }
-        [HttpGet]
-        public ActionResult TimKiemTaiLieu(string search, int page = 1, int pageSize = 5)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var sql = "select * from fn_timKiemTaiLieu(N'" + search + "')";
-            List<TaiLieu> taiLieuList = db.ExecuteQuery<TaiLieu>(sql).ToList();
-            var totalRecords = taiLieuList.Count();
-
-            var dsTaiLieuList = taiLieuList.OrderBy(q => q.MaTaiLieu).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-            var model = new TaiLieuPagedList
-            {
-                taiLieuList = dsTaiLieuList,
-                CurrentPage = page,
-                TotalPages = totalPages,
-                PageSize = pageSize,
-                SearchQuery = search
-            };
-            return View(model);
-        }
-
-        public ActionResult ThemTaiLieu()
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var tailieu = new TaiLieu();
-            return View(tailieu);
-        }
-        [HttpPost]
-        public ActionResult ThemTaiLieu(TaiLieu tl)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            try
-            {
-                string maTaiLieu = db.TaiLieus.OrderByDescending(t => t.MaTaiLieu).FirstOrDefault().MaTaiLieu;
-                int k = maTaiLieu != null ? (int.Parse(maTaiLieu.Substring(2)) + 1) : 1;
-                string maTaiLieuMoi = "TL" + k.ToString("D3"); 
-                var tailieu = new TaiLieu
-                {
-                    MaTaiLieu = maTaiLieuMoi,
-                    TenTaiLieu = tl.TenTaiLieu,
-                    MoTa = tl.MoTa,
-                    FileUpload = tl.FileUpload,
-                    NgayTao = DateTime.Now,
-                    TrangThai = "Đang hoạt động",
-                };
-
-                db.TaiLieus.InsertOnSubmit(tailieu);
-                db.SubmitChanges();
-
-                return RedirectToAction("DanhSachTaiLieu");
-            }
-            catch (SqlException sqlEx)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
-                return View(tl);
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
-                return View(tl);
-            }
-        }
-        public ActionResult XoaTaiLieu(string maTL)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            TaiLieu taiLieu = db.TaiLieus.FirstOrDefault(k => k.MaTaiLieu == maTL);
-            if (taiLieu.KhoaHoc_TaiLieus.Any())
-            {
-                TempData["ErrorMessageTaiLieu"] = "Tài liệu này đang được sử dụng, nên không thể xóa!";
-                return RedirectToAction("ChiTietTaiLieu", new { maTL = maTL });
-            }
-            db.TaiLieus.DeleteOnSubmit(taiLieu);
-            db.SubmitChanges();
-            return RedirectToAction("DanhSachTaiLieu");
-        }
-
-        public ActionResult ChiTietTaiLieu(string maTL)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            TaiLieu tailieu = db.TaiLieus.FirstOrDefault(t => t.MaTaiLieu == maTL);
-            return View(tailieu);
-        }
-        [HttpPost]
-        public ActionResult ChiTietTaiLieu(TaiLieu tailieu)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var taiLieuExists = db.TaiLieus.FirstOrDefault(k => k.MaTaiLieu == tailieu.MaTaiLieu);
-            if (taiLieuExists != null)
-            {
-                if (string.IsNullOrEmpty(tailieu.FileUpload))
-                {
-                    tailieu.FileUpload = taiLieuExists.FileUpload;
-                }
-                taiLieuExists.TenTaiLieu = tailieu.TenTaiLieu;
-                taiLieuExists.MoTa = tailieu.MoTa;
-                taiLieuExists.TrangThai = tailieu.TrangThai;
-                taiLieuExists.FileUpload = tailieu.FileUpload;
-                db.SubmitChanges();
-                return RedirectToAction("DanhSachTaiLieu");
-            }
-            return View(tailieu);
-        }
-
-        public ActionResult DanhSachTaiLieuThuocKhoaHoc(string maTL)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            ViewBag.MaTaiLieu = maTL;
-            TaiLieu checkTrangThaiTaiLieu = db.TaiLieus.FirstOrDefault(t => t.MaTaiLieu == maTL);
-           if (checkTrangThaiTaiLieu.TrangThai == "Không sử dụng")
-            {
-                ViewBag.TrangThaiKhoaHoc = "Tài liệu không sử dụng, nên không thể thêm khóa học";
-            }
-            List<KhoaHoc_TaiLieu> dsTaiLieuThuocKhoaHoc = db.KhoaHoc_TaiLieus.Where(k => k.MaTaiLieu == maTL).ToList();
-            return View(dsTaiLieuThuocKhoaHoc);
-        }
-
-        public ActionResult XoaKhoaHoc_TaiLieu(string maKH, string maTL)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            KhoaHoc_TaiLieu khoaHoc_taiLieu = db.KhoaHoc_TaiLieus.FirstOrDefault(t => t.MaTaiLieu == maTL && t.MaKhoaHoc == maKH);
-            db.KhoaHoc_TaiLieus.DeleteOnSubmit(khoaHoc_taiLieu);
-            db.SubmitChanges();
-            return RedirectToAction("DanhSachTaiLieuThuocKhoaHoc", new { maTL = maTL });
-        }
-
-        public ActionResult ThemKhoaHoc_TaiLieu(string maTL)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            ViewBag.MaTaiLieu = maTL;
-            var khoahoc_tailieu = new KhoaHoc_TaiLieu();
-            return View(khoahoc_tailieu);
-        }
-        [HttpPost]
-        public ActionResult ThemKhoaHoc_TaiLieu(KhoaHoc_TaiLieu khtl)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var khoahoc_tailieu = new KhoaHoc_TaiLieu
-            {
-                MaKhoaHoc = khtl.MaKhoaHoc,
-                MaTaiLieu = khtl.MaTaiLieu
-            };
-            KhoaHoc_TaiLieu findKhoaHocTaiLieu = db.KhoaHoc_TaiLieus.FirstOrDefault(t => t.MaTaiLieu == khoahoc_tailieu.MaTaiLieu && t.MaKhoaHoc == khoahoc_tailieu.MaKhoaHoc);
-            if (findKhoaHocTaiLieu != null)
-            {
-                TempData["ErrorMessageKhoaHocTaiLieu"] = "Khóa học đã tồn tại tài liệu này!";
-                return RedirectToAction("ThemKhoaHoc_TaiLieu", new { maTL = khoahoc_tailieu.MaTaiLieu });
-            }
-            db.KhoaHoc_TaiLieus.InsertOnSubmit(khoahoc_tailieu);
-            db.SubmitChanges();
-            return RedirectToAction("DanhSachTaiLieuThuocKhoaHoc", new { maTL = khoahoc_tailieu.MaTaiLieu });
-        }
         public ActionResult DanhSachPhongHoc(int page = 1, int pageSize = 5)
         {
             if (Session["user"] == null)
@@ -1332,72 +867,6 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
         }
 
-        public ActionResult ThemPhongHoc()
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            var model = new PhongHoc();
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult ThemPhongHoc(PhongHoc phong)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-            try
-            {
-                string maPH = db.PhongHocs.OrderByDescending(t => t.MaPhong).FirstOrDefault().MaPhong;
-                int k = maPH != null ? (int.Parse(maPH.Substring(2)) + 1) : 1;
-                string maPHMoi = "PH" + k.ToString("D3");
-                var phongHoc = new PhongHoc
-                {
-                    MaPhong = maPHMoi,
-                    TenPhong = phong.TenPhong,
-                    SucChua = phong.SucChua,
-                    ThietBi = phong.ThietBi,
-                    ViTri = phong.ViTri,
-                    TrangThai = "Đang hoạt động",
-                };
-
-                db.PhongHocs.InsertOnSubmit(phongHoc);
-                db.SubmitChanges(); 
-
-                return RedirectToAction("DanhSachPhongHoc");
-            }
-            catch (SqlException sqlEx)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
-                return View(phong);
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
-                return View(phong);
-            }
-        }
-
-        public ActionResult XoaPhongHoc(string maPH)
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
-
-            PhongHoc phong = db.PhongHocs.FirstOrDefault(t => t.MaPhong == maPH);
-            if (phong.LopHocs.Any())
-            {
-                TempData["ErrorMessagePhongHoc"] = "Phòng học đang được sử dụng, nên không thể xóa ngay lúc này!";
-                return RedirectToAction("DanhSachPhongHoc");
-            }
-            db.PhongHocs.DeleteOnSubmit(phong);
-            db.SubmitChanges();
-            return RedirectToAction("DanhSachPhongHoc");
-        }
-
         public ActionResult ChiTietPhongHoc(string maPH)
         {
             if (Session["user"] == null)
@@ -1423,7 +892,6 @@ namespace QL_TrungTamAnhNgu.Controllers
                 phongHocExists.SucChua = ph.SucChua;
                 phongHocExists.ThietBi =ph.ThietBi;
                 phongHocExists.ViTri = ph.ViTri;
-                phongHocExists.TrangThai = ph.TrangThai;
                 db.SubmitChanges();
                 return RedirectToAction("DanhSachPhongHoc");
             }
