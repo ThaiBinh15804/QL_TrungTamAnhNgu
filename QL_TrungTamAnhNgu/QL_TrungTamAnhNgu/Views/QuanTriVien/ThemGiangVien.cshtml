@@ -38,7 +38,7 @@
             <i class="fa-solid fa-angle-right"></i>
             <span style="color: #343a40">Danh sách giảng viên</span>
             <i class="fa-solid fa-angle-right"></i>
-            <span style="color: #000; ">Chi tiết</span>
+            <span style="color: #000; ">Thêm giảng viên</span>
         </div>
         <div class="d-flex justify-content-between">
             <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thêm giảng viên</h1>
@@ -47,13 +47,6 @@
             <form class="myForm" action="/QuanTriVien/ThemGiangVien" method="post">
                 <div style="width: 100%;" class="d-flex">
                     <div style="width: 60%;">
-                        <div class="d-flex justify-content-between gap-4">
-                            <div style="width: 100%">
-                                <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaQTV">Mã giảng viên: </label>
-                                @Html.TextBoxFor(model => model.NguoiDung.MaNguoiDung, new { @id = "MaQTV", @class = "form-control mt-2", placeholder = "Nhập mã giảng viên" })
-                                <span style="min-height: 20px; display: inline-block; color: red; font-size: 14px; margin-top: 5px;" class="errTenLoai"></span>
-                            </div>
-                        </div>
                         <div class="d-flex justify-content-between gap-4">
                             <div style="width: 100%">
                                 <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TaiKhoan">Tài khoản: </label>
@@ -169,7 +162,6 @@
                     }
                 </div>
                 <div style="margin-top: 10px; width: 100%" class="d-flex justify-content-end gap-2">
-                    <button id="btnClearForm" type="button" class="btn btn-danger">Xóa</button>
                     <button id="btnLuu" type="submit" class="btn btn-success">Tạo</button>
                 </div>
             </form>
