@@ -80,13 +80,15 @@
                         </div>
                         <div style="width: 100%">
                             <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TrangThai_1">Trạng thái: </label>
-                            @Html.TextBoxFor(model => model.TrangThai, new { @readonly = "readonly", @id = "TrangThai_1", @class = "form-control mt-2" })
+                            <select id="TrangThai" name="TrangThai" class="form-control mt-2" disabled>
+                                <option value="Đang hoạt động" @(Model.TrangThai == "Đang hoạt động" ? "selected" : "")>Đang hoạt động</option>
+                                <option value="Đã ngưng sử dụng" @(Model.TrangThai == "Đã ngưng sử dụng" ? "selected" : "")>Đã ngưng sử dụng</option>
+                            </select>
                             <span style="min-height: 20px; display: inline-block; color: red; font-size: 14px; margin-top: 5px;" class="errMoTa"></span>
                         </div>
                     </div>
                 </div>
                 <div style="margin-top: 10px; width: 100%" class="d-flex justify-content-end gap-2">
-                    <button id="btnHuy" type="button" disabled class="btn btn-danger">Hủy</button>
                     <button id="btnSua" type="button" class="btn btn-primary">Sửa</button>
                     <button id="btnLuu" type="submit" disabled class="btn btn-success">Lưu</button>
                 </div>
