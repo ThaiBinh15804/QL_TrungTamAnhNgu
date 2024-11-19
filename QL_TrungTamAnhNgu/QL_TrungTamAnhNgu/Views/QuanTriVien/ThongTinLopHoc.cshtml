@@ -6,80 +6,137 @@
             <h3>Thông Tin Lớp Học</h3>
         </div>
         <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-chalkboard-teacher me-2 text-primary"></i> <strong>Tên lớp:</strong>
+            @using (Html.BeginForm("ChiTietLopHoc", "QuanTriVien", FormMethod.Post)) // Form bắt đầu
+            {
+                @Html.HiddenFor(model => model.MaLop)
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-chalkboard-teacher me-2 text-primary"></i>
+                        <strong>Tên lớp:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.TenLop, new { @id = "TenLop", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
                 </div>
-                <div class="col-sm-8">@Html.DisplayFor(model => model.TenLop)</div>
-            </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-book me-2 text-info"></i> <strong>Mã Khóa học:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.KhoaHoc.MaKhoaHoc, new { @id = "TenKhoaHoc", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
+                </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-book me-2 text-info"></i> <strong>Khóa học:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-school me-2 text-warning"></i> <strong>Phòng học:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.PhongHoc.MaPhong, new { @id = "PhongHoc", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
                 </div>
-                <div class="col-sm-8">@Html.DisplayFor(model => model.KhoaHoc.TenKhoaHoc)</div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-school me-2 text-warning"></i> <strong>Phòng học:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-user-minus me-2 text-muted"></i> <strong>Giảng viên:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.MaGiangVien, new { @id = "GiangVien", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
                 </div>
-                <div class="col-sm-8">@Html.DisplayFor(model => model.PhongHoc.TenPhong)</div>
-            </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-calendar-alt me-2 text-success"></i> <strong>Ngày bắt đầu:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @if (Model.NgayBatDau != DateTime.MinValue)
+                        {
+                            @Html.TextBoxFor(model => model.NgayBatDau, new
+                        {
+                            @id = "NgayBatDau",
+                            @readonly = "readonly",
+                            @type = "date",
+                            @class = "form-control mt-2",
+                            Value = Model.NgayBatDau.ToString("yyyy-MM-dd")
+                        })
+                        }
+                        else
+                        {
+                            <input type="date" id="NgayBatDau" class="form-control mt-2" readonly />
+                        }
+                    </div>
+                </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-calendar-alt me-2 text-success"></i> <strong>Ngày bắt đầu:</strong>
-                </div>
-                <div class="col-sm-8">@Model.NgayBatDau.ToString("dd/MM/yyyy")</div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-calendar-check me-2 text-danger"></i> <strong>Ngày kết thúc:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-calendar-alt me-2 text-success"></i> <strong>Ngày kết thúc:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.NgayKetThuc, new
+                {
+                    @id = "NgayKetThuc",
+                    @readonly = "readonly",
+                    @type = "date",
+                    @class = "form-control mt-2",
+                    Value = Model.NgayKetThuc.ToString("yyyy-MM-dd")
+                })
+                    </div>
                 </div>
-                <div class="col-sm-8">@Model.NgayKetThuc.ToString("dd/MM/yyyy")</div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-info-circle me-2 text-secondary"></i> <strong>Trạng thái:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2 text-secondary"></i> <strong>Trạng thái:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        <select disabled class="form-control mt-2" name="TrangThai" id="TrangThai">
+                            <option value="Đang hoạt động" @(Model.TrangThai == "Đang hoạt động" ? "selected" : "")>Đang hoạt động</option>
+                            <option value="Chờ xác nhận" @(Model.TrangThai == "Chờ xác nhận" ? "selected" : "")>Chờ xác nhận</option>
+                            <option value="Đã kết thúc" @(Model.TrangThai == "Đã kết thúc" ? "selected" : "")>Đã kết thúc</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-sm-8">
-                    <span class="badge @(Model.TrangThai == "Đang hoạt động" ? "bg-success" : "bg-secondary")">
-                        @Html.DisplayFor(model => model.TrangThai)
-                    </span>
-                </div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-users me-2 text-dark"></i> <strong>Số lượng học viên tối đa:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-users me-2 text-dark"></i> <strong>Số lượng học viên tối đa:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.SoLuongToiDa, new { @id = "SoLuongToiDa", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
                 </div>
-                <div class="col-sm-8">@Html.DisplayFor(model => model.SoLuongToiDa)</div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-user-minus me-2 text-muted"></i> <strong>Số lượng học viên tối thiểu:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-user-minus me-2 text-muted"></i> <strong>Số lượng học viên tối thiểu:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.SoLuongToiThieu, new { @id = "SoLuongToiThieu", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
                 </div>
-                <div class="col-sm-8">@Html.DisplayFor(model => model.SoLuongToiThieu)</div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-user-check me-2 text-primary"></i> <strong>Số lượng học viên hiện tại:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-user-check me-2 text-primary"></i> <strong>Số lượng học viên hiện tại:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        <input id="slHVHienTai" readonly type="number" class="form-control mt-2" value="@ViewBag.SlgHVHT" min="0" />
+                    </div>
                 </div>
-                <div class="col-sm-8">@ViewBag.SlgHVHT</div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <i class="fas fa-clock me-2 text-secondary"></i> <strong>Số tiết học:</strong>
+                <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-clock me-2 text-secondary"></i> <strong>Số tiết học:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.ThoiLuong, new { @id = "ThoiLuong", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
                 </div>
-                <div class="col-sm-8">@Html.DisplayFor(model => model.ThoiLuong) giờ</div>
-            </div>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button id="btnSua" type="button" class="btn btn-primary">Sửa</button>
+                    <button id="btnLuu" type="submit" class="btn btn-success">Lưu</button>
+                </div>
+            }
         </div>
-
     </div>
 </div>

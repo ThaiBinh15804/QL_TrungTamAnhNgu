@@ -292,6 +292,8 @@
       <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Content\HinhAnh\TaiLieu\Chuong 3_Function.pdf" />
+    <Content Include="Content\HinhAnh\TaiLieu\github-git-cheat-sh.pdf" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -352,6 +354,21 @@
     <Content Include="Views\QuanTriVien\HocVienLopHoc.cshtml" />
     <Content Include="Views\QuanTriVien\DiemDanh.cshtml" />
     <Content Include="Views\QuanTriVien\ThemQuanTriVien.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemPhongHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachTaiLieu.cshtml" />
+    <Content Include="Views\QuanTriVien\ChiTietTaiLieu.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachTaiLieuThuocKhoaHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemKhoaHoc_TaiLieu.cshtml" />
+    <Content Include="Views\QuanTriVien\ViewDanhSachTaiLieu.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemTaiLieu.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachMaGiamGia.cshtml" />
+    <Content Include="Views\QuanTriVien\TimKiemTaiLieu.cshtml" />
+    <Content Include="Views\QuanTriVien\TimKiemGiamGia.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemGiamGia.cshtml" />
+    <Content Include="Views\QuanTriVien\ChiTietGiamGia.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachGiamGiaThuocKhoaHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemKhoaHoc_GiamGia.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemLopHoc.cshtml" />
     <Content Include="Views\QuanTriVien\test.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyNhomND.cshtml" />
     <Content Include="Views\QuanTriVien\SuaQuyen.cshtml" />
@@ -365,7 +382,6 @@
     <Folder Include="Content\HinhAnh\DangKy_BaiTap\" />
     <Folder Include="Content\HinhAnh\GiamGia\" />
     <Folder Include="Content\HinhAnh\LopHoc\" />
-    <Folder Include="Content\HinhAnh\TaiLieu\" />
     <Folder Include="Content\HinhAnh\ThanhToan\" />
   </ItemGroup>
   <ItemGroup>

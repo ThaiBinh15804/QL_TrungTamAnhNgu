@@ -80,6 +80,14 @@ const diaChiInput = document.getElementById("DiaChi")
 const mucLuongInput = document.getElementById("MucLuong")
 const gioiTinhInput = document.getElementById("GioiTinh")
 const ngaySinhInput = document.getElementById("NgaySinh")
+const ngayBatDauInput = document.getElementById("NgayBatDau")
+const ngayKetThucInput = document.getElementById("NgayKetThuc")
+const tiLeGiamInput = document.getElementById("TiLeGiam")
+const soLuongToiDaInput = document.getElementById("SoLuongToiDa")
+const soLuongToiThieuInput = document.getElementById("SoLuongToiThieu")
+const phongHocInput = document.getElementById("PhongHoc")
+const giangVienInput = document.getElementById("GiangVien")
+const thoiLuongInput = document.getElementById("ThoiLuong")
 
 const tenPhongInput = document.getElementById("TenPhong")
 const sucChuaInput = document.getElementById("SucChua")
@@ -150,6 +158,31 @@ if (btnSua) {
         }
         if (thietBiInput) {
             thietBiInput.removeAttribute("readonly")
+        }
+
+        if (ngayBatDauInput) {
+            ngayBatDauInput.removeAttribute("readonly")
+        }
+        if (ngayKetThucInput) {
+            ngayKetThucInput.removeAttribute("readonly")
+        }
+        if (tiLeGiamInput) {
+            tiLeGiamInput.removeAttribute("readonly")
+        }
+        if (soLuongToiThieuInput) {
+            soLuongToiThieuInput.removeAttribute("readonly")
+        }
+        if (soLuongToiDaInput) {
+            soLuongToiDaInput.removeAttribute("readonly")
+        }
+        if (phongHocInput) {
+            phongHocInput.removeAttribute("readonly")
+        }
+        if (giangVienInput) {
+            giangVienInput.removeAttribute("readonly")
+        }
+        if (thoiLuongInput) {
+            thoiLuongInput.removeAttribute("readonly")
         }
     })
 }
