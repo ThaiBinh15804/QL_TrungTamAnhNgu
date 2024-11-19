@@ -31,11 +31,13 @@
                     <h5 class="mb-0">Hồ Sơ học viên</h5>
                 </div>
                 <div class="card-body">
-                    <!-- Input hidden để lưu User ID -->
+                    
                     <input type="hidden" id="maNguoiDung" value="@Session["UserId"]" />
 
                     <div class="row">
                         <div class="col-md-5">
+                            <label class="form-label" style="font-weight:bold">Mã học viên:</label>
+                            <span class="form-control" style="background-color: #e9ecef; border: none;">@ViewBag.MaHocVien</span>
                             <label for="hoTen" class="form-label" style="font-weight:bold">Họ tên:</label>
                             <input type="text" id="hoTen" class="form-control" value="@ViewBag.HoTen" />
                             <label for="ngaySinh" class="form-label" style="font-weight: bold;">Ngày sinh:</label>

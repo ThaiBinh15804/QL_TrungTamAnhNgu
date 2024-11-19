@@ -171,6 +171,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                     if (hocVien != null)
                     {
+                        ViewBag.MaHocVien = hocVien.MaHocVien ?? string.Empty;
                         ViewBag.HoTen = hocVien.HoTen ?? string.Empty;
                         ViewBag.GioiTinh = hocVien.GioiTinh ?? string.Empty;
                         ViewBag.SoDienThoai = hocVien.SoDienThoai ?? string.Empty;
