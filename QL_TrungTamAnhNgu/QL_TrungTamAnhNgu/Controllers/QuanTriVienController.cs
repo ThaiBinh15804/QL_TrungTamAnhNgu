@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using System.Web.DynamicData;
 using System.Web.Mvc;
 using System.Web.Providers.Entities;
-using System.Web.Security;
 using Newtonsoft.Json;
 using QL_TrungTamAnhNgu.Models;
 using QL_TrungTamAnhNgu.ViewModel;
-using System.IO;
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
-    [Authorize]
     public class QuanTriVienController : Controller
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
@@ -65,7 +61,6 @@ namespace QL_TrungTamAnhNgu.Controllers
                 // Chuyển dữ liệu sang chuỗi JSON
                 var jsonResult = JsonConvert.SerializeObject(result);
                 ViewBag.DoanhThuData = jsonResult;
-                
 
                 return PartialView(result);
             }
@@ -125,13 +120,10 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View();
         }
 
-        [AllowAnonymous]
         public ActionResult DangNhap()
         {
             return View();
         }
-
-        [AllowAnonymous]
         [HttpPost]
         public ActionResult DangNhap(FormCollection col)
         {
@@ -140,7 +132,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             ViewBag.tk = username;
             ViewBag.mk = password;
-            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.MaNguoiDung == db.AuthenticateUser(username, password));
+            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.TenTaiKhoan == username && k.MatKhau == MaHoaMatKhau.HashPasswordSHA256(password));
             if (!string.IsNullOrEmpty(username) && username.Contains(" "))
             {
                 ViewBag.text = "Tên đăng nhập không chứa khoảng trắng!";
@@ -171,13 +163,11 @@ namespace QL_TrungTamAnhNgu.Controllers
                 if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
                     Session["user"] = user;
-                    FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
                     return RedirectToAction("Index", "QuanTriVien");
                 }
                 else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND002")
                 {
                     Session["user"] = user;
-                    FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
                     return RedirectToAction("Index", "GiangVien");
                 }
                 else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND003")
@@ -198,7 +188,6 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (Session["user"] != null)
             {
                 Session["user"] = null;
-                FormsAuthentication.SignOut();
             }
             return RedirectToAction("DangNhap");
         }
@@ -469,7 +458,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 {
                     MaNguoiDung = maMoi,
                     TenTaiKhoan = qtv.NguoiDung.TenTaiKhoan,
-                    MatKhau = qtv.NguoiDung.MatKhau,
+                    MatKhau = MaHoaMatKhau.HashPasswordSHA256(qtv.NguoiDung.MatKhau),
                     AnhDaiDien = qtv.NguoiDung.AnhDaiDien,
                     NgayTao = DateTime.Now,
                     TrangThai = "Đang hoạt động",
@@ -1499,314 +1488,5 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             return PartialView(ds);
         }
-
-        public ActionResult QuanLyNhomND()
-        {
-            return View(db.NhomNguoiDungs.ToList());
-        }
-
-        public ActionResult SuaQuyen(string MaNhomND)
-        {
-            TempData["roleNhomND"] = db.NhomNguoiDungs.FirstOrDefault(t => t.MaNhomND == MaNhomND).VaiTro_NhomNguoiDungs.ToList() as List<VaiTro_NhomNguoiDung>;
-            TempData["role"] = db.fn_VaiTro_KhongThuocNND(MaNhomND).ToList();
-            
-            return View(db.NhomNguoiDungs.FirstOrDefault(t => t.MaNhomND == MaNhomND));
-        }
-
-        public ActionResult ThemNhomNguoiDung()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult XuLyThemNhomNguoiDung(NhomNguoiDung ng)
-        {
-            if (ng != null)
-            {
-                db.NhomNguoiDungs.InsertOnSubmit(ng);
-                db.CreateRoleAndGrantPermissions(ng.TenNhomND);
-                db.SubmitChanges();
-            }
-
-            return RedirectToAction("QuanLyNhomND");
-        }
-
-        [HttpPost]
-        public ActionResult XuLySuaQuyen(string MaNhomND, string new_permissions, string removed_permissions)
-        {
-            //var lst = TempData["roleNhomND"] as List<VaiTro_NhomNguoiDung>;
-            var newPermissionsList = string.IsNullOrEmpty(new_permissions) ? new List<string>() : new_permissions.Split(',').ToList();
-            var removedPermissionsList = string.IsNullOrEmpty(removed_permissions) ? new List<string>() : removed_permissions.Split(',').ToList();
-
-            if (newPermissionsList.Any())
-            {
-                foreach (var item in newPermissionsList)
-                {
-                    if (!db.VaiTro_NhomNguoiDungs.Any(t => t.MaVaiTro == item && t.MaNhomND == MaNhomND))
-                    {
-                        db.GrantPermissionsToUserGroup(item, MaNhomND);
-                        
-                    }
-                }
-            }
-
-
-            if (removedPermissionsList.Any())
-            {
-                foreach (var item in removedPermissionsList)
-                {
-                    var existingRole = db.VaiTro_NhomNguoiDungs.FirstOrDefault(t => t.MaVaiTro == item && t.MaNhomND == MaNhomND);
-                    if (existingRole != null)
-                    {
-                        db.RevokePermissionsFromUserGroup(item, MaNhomND);
-                    }
-                }
-            }
-
-            return Json(new { success = true });
-        }
-
-        public ActionResult QuanLyThanhToan()
-        {
-            return View(db.ThanhToans.OrderByDescending(t => t.NgayThucHien).ToList());
-        }
-
-
-        public ActionResult TaoThanhToan()
-        {
-
-            string ma = db.ThanhToans.OrderByDescending(t => t.MaThanhToan).FirstOrDefault().MaThanhToan;
-
-            int k;
-
-            if (ma != null)
-            {
-                k = int.Parse(ma.Substring(2, 3)) + 1;
-            }
-            else
-            {
-                k = 1;
-            }
-
-            string mamoi = "TT" + k.ToString("D3");
-
-            ThanhToan tt = new ThanhToan()
-            {
-                MaThanhToan = mamoi,
-                NgayThucHien = DateTime.Now,
-                TongTien = 0 // Mặc định ban đầu
-            };
-
-            Session["ThanhToan"] = tt;
-
-            return RedirectToAction("TaoDangKy");
-        }
-
-        public ActionResult TaoDangKy()
-        {
-            // Lấy danh sách khóa học
-            var khoaHocs = db.KhoaHocs.ToList();
-            return View(khoaHocs);
-        }
-
-
-        [HttpPost]
-        public JsonResult LayDanhSachLopHoc(string MaKH)
-        {
-            var lopHocs = db.LopHocs.Where(t => t.MaKhoaHoc == MaKH).ToList();
-
-            List<LopHoc> lh = new List<LopHoc>();
-
-            foreach (var item in lopHocs)
-            {
-                LopHoc a = new LopHoc()
-                {
-                    MaLop = item.MaLop,
-                    TenLop = item.TenLop,
-                    MaKhoaHoc = item.MaKhoaHoc,
-                    MaPhong = item.MaPhong,
-                    MaGiangVien = item.MaGiangVien,
-                    NgayBatDau = item.NgayBatDau,
-                    NgayKetThuc = item.NgayKetThuc,
-                    TrangThai = item.TrangThai,
-                    SoLuongToiDa = item.SoLuongToiDa,
-                    SoLuongToiThieu = item.SoLuongToiThieu,
-                    ThoiLuong = item.ThoiLuong
-                };
-                lh.Add(a);
-            }    
-
-
-            if (lh.Any())
-            {
-                return Json(new { success = true, lh});
-            }
-            else
-            {
-                return Json(new { success = false, message = "Không có lớp học nào." });
-            }
-        }
-
-        [HttpPost]
-        public JsonResult LayDanhSachGiamGia(string MaKH)
-        {
-            var giamGias = db.GiamGias.Where(t => t.KhoaHoc_GiamGias.Where(u => u.MaKhoaHoc == MaKH).Any()).ToList();
-
-            List<GiamGia> gg = new List<GiamGia>();
-
-            foreach (var item in giamGias)
-            {
-                GiamGia a = new GiamGia()
-                {
-                    MaGiamGia = item.MaGiamGia,
-                    TenGiamGia = item.TenGiamGia,
-                    MoTa = item.MoTa,
-                    TiLeGiam = item.TiLeGiam,
-                    NgayBatDau = item.NgayBatDau,
-                    NgayKetThuc = item.NgayKetThuc,
-                    NgayTao = item.NgayTao,
-                    TrangThai = item.TrangThai
-                };
-                gg.Add(a);
-            }
-
-            return Json(new { success = true, gg });
-        }
-
-        [HttpPost]
-        public JsonResult ThemDangKy(string LopHocId, string GiamGiaId)
-        {
-            var lopHoc = db.LopHocs.FirstOrDefault(t => t.MaLop == LopHocId);
-            var giamGia = db.GiamGias.FirstOrDefault(t => t.MaGiamGia == GiamGiaId);
-
-
-            if (lopHoc == null)
-            {
-                return Json(new { success = false });
-            }
-
-            // Tính toán tiền gốc và giảm giá
-            var soTien = lopHoc.KhoaHoc.HocPhi;
-            var tienGiam = giamGia != null ? soTien * giamGia.TiLeGiam / 100 : 0;
-            var thucTra = soTien - tienGiam;
-
-            string ma = db.DangKies.OrderByDescending(t => t.MaDangKy).FirstOrDefault().MaDangKy;
-
-            int k;
-
-            if (ma != null)
-            {
-                k = int.Parse(ma.Substring(2, 3)) + 1;
-            }
-            else
-            {
-                k = 1;
-            }
-
-            string mamoi = "DK" + k.ToString("D3");
-            var thanhToan = Session["ThanhToan"] as ThanhToan;
-
-            // Tạo đăng ký mới
-            var dangKy = new DangKy
-            {
-                MaDangKy = mamoi,
-                MaLop = lopHoc.MaLop,
-                MaThanhToan = thanhToan.MaThanhToan,
-                MaGiamGia = giamGia == null ? "" : giamGia.MaGiamGia,
-                SoTien = soTien,
-                ThucTra = thucTra,
-                LopHoc = lopHoc,
-                GiamGia = giamGia
-            };
-
-            thanhToan.TongTien += thucTra;
-            // Thêm vào session
-            thanhToan.DangKies.Add(dangKy);
-            Session["ThanhToan"] = thanhToan;
-
-
-            // Trả về danh sách đăng ký cập nhật
-            return Json(new
-            {
-                success = true,
-                danhSachDangKy = thanhToan.DangKies.Select((dk, index) => new
-                {
-                    STT = index + 1,
-                    KhoaHoc = dk.LopHoc.KhoaHoc.TenKhoaHoc,
-                    LopHoc = dk.LopHoc == null ? "" : dk.LopHoc.TenLop,
-                    GiamGia = dk.GiamGia == null ? 0 : dk.GiamGia.TiLeGiam,
-                    SoTien = dk.SoTien,
-                    Giam = tienGiam,
-                    ThucTra = dk.ThucTra
-                }).ToList()
-            });
-        }
-
-        public ActionResult XacNhanThanhToan()
-        {
-            ThanhToan tt = Session["ThanhToan"] as ThanhToan;
-            return View(tt);
-        }
-
-        public ActionResult TienHanhThanhToan(FormCollection c, HttpPostedFileBase AnhHoaDon)
-        {
-            ThanhToan tt = Session["ThanhToan"] as ThanhToan;
-
-            if (tt != null)
-            {
-                tt.MaHocVien = c["MaHocVien"];
-                tt.HinhThuc = c["HinhThuc"];
-
-                if (AnhHoaDon != null)
-                {
-                    string fileName = Path.GetFileName(AnhHoaDon.FileName);
-                    string duongdan = Path.Combine(Server.MapPath("~/Content/HinhAnh/ThanhToan"), fileName);
-                    AnhHoaDon.SaveAs(duongdan);
-                    tt.AnhHoaDon = fileName;
-                }
-
-                ThanhToan n = new ThanhToan()
-                {
-                    MaThanhToan = tt.MaThanhToan,
-                    MaHocVien = tt.MaHocVien,
-                    TongTien = tt.TongTien,
-                    HinhThuc = tt.HinhThuc,
-                    NgayThucHien = DateTime.Now,
-                    TrangThai = "Hoàn tất",
-                    AnhHoaDon = tt.AnhHoaDon
-                };
-                
-
-                db.ThanhToans.InsertOnSubmit(n);
-                
-                foreach (var i in tt.DangKies.ToList())
-                {
-                    DangKy d = new DangKy()
-                    {
-                        MaDangKy = i.MaDangKy,
-                        MaLop = i.MaLop,
-                        MaThanhToan = i.MaThanhToan,
-                        MaGiamGia = i.MaGiamGia,
-                        SoTien = i.SoTien,
-                        ThucTra = i.ThucTra
-                    };
-
-                    db.DangKies.InsertOnSubmit(d);
-                }
-
-                db.SubmitChanges();
-
-                Session["ThanhToan"] = null;
-            }
-            
-            return RedirectToAction("QuanLyThanhToan");
-        }
-
-        public ActionResult HuyThanhToan()
-        {
-            Session["ThanhToan"] = null;
-            return RedirectToAction("QuanLyThanhToan");
-        }
     }
-    
 }
