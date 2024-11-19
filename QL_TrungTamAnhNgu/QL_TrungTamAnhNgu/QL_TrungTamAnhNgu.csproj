@@ -287,13 +287,13 @@
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.min.js.map" />
     <Content Include="Content\HinhAnh\BaiTap\Chuong 4_Bao mat va an toan du lieu_Full.pdf" />
+    <Content Include="Content\HinhAnh\TaiLieu\Chuong 3_Function.pdf" />
+    <Content Include="Content\HinhAnh\TaiLieu\github-git-cheat-sh.pdf" />
     <Content Include="Models\DataClasses1.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\HinhAnh\TaiLieu\Chuong 3_Function.pdf" />
-    <Content Include="Content\HinhAnh\TaiLieu\github-git-cheat-sh.pdf" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

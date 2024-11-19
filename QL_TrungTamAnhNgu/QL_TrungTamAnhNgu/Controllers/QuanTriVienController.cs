@@ -140,7 +140,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             ViewBag.tk = username;
             ViewBag.mk = password;
-            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.MaNguoiDung == db.AuthenticateUser(username, password));
+            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.TenTaiKhoan == username && k.MatKhau == password);
             if (!string.IsNullOrEmpty(username) && username.Contains(" "))
             {
                 ViewBag.text = "Tên đăng nhập không chứa khoảng trắng!";
@@ -1064,6 +1064,10 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("DangNhap");
             }
             ViewBag.MaGiamGia = maGG;
+            List<GiamGia> giamGiaList = db.GiamGias.ToList();
+            List<KhoaHoc> khoaHocList = db.KhoaHocs.ToList();
+            ViewBag.GiamGiaListView = giamGiaList;
+            ViewBag.KhoaHocListView = khoaHocList;
             var khoahoc_giamgia = new KhoaHoc_GiamGia();
             return View(khoahoc_giamgia);
         }
@@ -1267,6 +1271,10 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
 
             ViewBag.MaTaiLieu = maTL;
+            List<TaiLieu> taiLieuList = db.TaiLieus.ToList();
+            List<KhoaHoc> khoaHocList = db.KhoaHocs.ToList();
+            ViewBag.TaiLieuView = taiLieuList;
+            ViewBag.KhoaHocListView = khoaHocList;
             var khoahoc_tailieu = new KhoaHoc_TaiLieu();
             return View(khoahoc_tailieu);
         }
@@ -1449,18 +1457,24 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("DangNhap");
             }
             List<LopHoc> dsLopHoc = db.LopHocs.Where(k => k.MaKhoaHoc == maKH).ToList();
+            ViewBag.MaKhoaHoc = maKH;
+            string CheckTrangThaiKhoaHoc = db.KhoaHocs.FirstOrDefault(t => t.MaKhoaHoc == maKH).TrangThai;
+            if (CheckTrangThaiKhoaHoc == "Tạm ngưng")
+            {
+                ViewBag.TrangThaiTamNgung = "Khóa học đã tạm ngưng, nên không thể tạo lớp học!";
+            }
             return View(dsLopHoc);
         }
-        public ActionResult ThemLopHoc()
+        public ActionResult ThemLopHoc(string makh)
         {
-            var khoahoc = db.KhoaHocs.Where(kh => kh.TrangThai == "Đang hoạt động").ToList();
+            string Makhoahoc = db.KhoaHocs.FirstOrDefault(t => t.MaKhoaHoc == makh).MaKhoaHoc;
             var phonghoc = db.PhongHocs.Where(ph => ph.TrangThai == "Đang hoạt động").ToList();
-            if (khoahoc == null || phonghoc == null || khoahoc.Count == 0 || phonghoc.Count == 0)
+            if (Makhoahoc == null || phonghoc == null || phonghoc.Count == 0)
             {
                 TempData["ErrorMessage"] = "Không có khóa học hoặc phòng học nào đang hoạt động!";
                 return RedirectToAction("DanhSachLopHoc");
             }
-            ViewBag.MaKhoaHoc = khoahoc;
+            ViewBag.Makhoahoc = Makhoahoc;
             ViewBag.MaPhong = phonghoc;
 
             return View();
@@ -1473,17 +1487,21 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
+            string maLop = db.LopHocs.OrderByDescending(t => t.MaLop).FirstOrDefault().MaLop;
+            int k = maLop != null ? (int.Parse(maLop.Substring(2)) + 1) : 1;
+            string maLopMoi = "L" + k.ToString("D3");
+
             var currentUser = Session["user"] as NguoiDung;
             var lopHoc = new LopHoc
             {
-                MaLop = lh.MaLop,
+                MaLop = maLopMoi,
                 TenLop = lh.TenLop,
                 MaKhoaHoc = lh.MaKhoaHoc,
                 MaPhong = lh.MaPhong,
                 MaGiangVien = lh.MaGiangVien,
                 NgayBatDau = lh.NgayBatDau,
                 NgayKetThuc = lh.NgayKetThuc,
-                TrangThai = lh.TrangThai,
+                TrangThai = "Chờ xác nhận",
                 SoLuongToiDa = lh.SoLuongToiDa,
                 SoLuongToiThieu = lh.SoLuongToiThieu,
                 ThoiLuong = lh.ThoiLuong
@@ -1517,7 +1535,31 @@ namespace QL_TrungTamAnhNgu.Controllers
             ViewBag.MaPhong = db.PhongHocs.Where(ph => ph.TrangThai == "Đang hoạt động").ToList();
             return View(lh);
         }
+        public ActionResult XoaLopHoc(string malop, string makh)
+        {
 
+            var lophoc = db.LopHocs.FirstOrDefault(t => t.MaLop == malop);
+
+            if (lophoc != null)
+            {
+                if (lophoc.TrangThai == "Chờ xác nhận")
+                {
+
+                    db.LopHocs.DeleteOnSubmit(lophoc);
+                    db.SubmitChanges();
+                    TempData["SuccessMessage"] = "Lớp học đã được xóa thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không thể xóa lớp học đang hoạt động!";
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy lớp học!";
+            }
+            return RedirectToAction("DanhSachLopHoc", new { makh = makh });
+        }
         public ActionResult ChiTietLopHoc(string malop)
         {
             if (Session["user"] == null)

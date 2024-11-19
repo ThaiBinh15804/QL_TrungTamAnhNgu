@@ -88,6 +88,7 @@ const soLuongToiThieuInput = document.getElementById("SoLuongToiThieu")
 const phongHocInput = document.getElementById("PhongHoc")
 const giangVienInput = document.getElementById("GiangVien")
 const thoiLuongInput = document.getElementById("ThoiLuong")
+const tenLopInput = document.getElementById("TenLop")
 
 const tenPhongInput = document.getElementById("TenPhong")
 const sucChuaInput = document.getElementById("SucChua")
@@ -183,6 +184,9 @@ if (btnSua) {
         }
         if (thoiLuongInput) {
             thoiLuongInput.removeAttribute("readonly")
+        } 
+        if (tenLopInput) {
+            tenLopInput.removeAttribute("readonly")
         }
     })
 }
@@ -204,16 +208,6 @@ if (avatar) {
         }
     })
 }
-
-const myForm = document.querySelector(".myForm")
-//if (myForm) {
-//    myForm.addEventListener("submit", function (event) {
-//        event.preventDefault();
-//        console.log(tenKhoaHocInput.value)
-//        console.log(moTaInput.value)
-//        console.log(hocPhiInput.value)
-//    })
-//}
 
 const btnClearForm = document.getElementById("btnClearForm")
 if (btnClearForm) {

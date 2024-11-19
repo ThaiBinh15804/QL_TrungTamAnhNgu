@@ -47,11 +47,25 @@
                     <div class="d-flex justify-content-between gap-4">
                         <div style="width: 100%">
                             <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaTaiLieu">Tên giảm giá: </label>
-                            <input type="text" name="MaGiamGia" readonly value="@ViewBag.MaGiamGia" class="form-control mt-2" />
+                            <select class="mt-2 form-control" id="MaGiamGia" name="MaGiamGia" required>
+                                @foreach (var kh in ViewBag.GiamGiaListView)
+                                {
+                                    if (kh.MaGiamGia == ViewBag.MaGiamGia)
+                                    {
+                                        <option value="@kh.MaGiamGia">@kh.MaGiamGia - @kh.TenGiamGia</option>
+                                    }
+                                }
+                            </select>
                         </div>
                         <div style="width: 100%">
-                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaKhoaHoc">Mã khóa học: </label>
-                            @Html.TextBoxFor(model => model.MaKhoaHoc, new { @id = "MaKhoaHoc", @class = "form-control mt-2", placeholder = "Nhập mã khóa học" })
+                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaKhoaHoc">Tên khóa học: </label>
+                            <select class="mt-2 form-control" id="MaKhoaHoc" name="MaKhoaHoc" required>
+                                <option value="">-- Chọn Khóa học --</option>
+                                @foreach (var kh in ViewBag.KhoaHocListView)
+                                {
+                                    <option value="@kh.MaKhoaHoc">@kh.MaKhoaHoc - @kh.TenKhoaHoc</option>
+                                }
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -70,6 +84,5 @@
                 }
             </div>
         </div>
-
     </div>
 </div>

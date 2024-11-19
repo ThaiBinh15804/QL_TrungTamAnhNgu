@@ -47,11 +47,25 @@
                     <div class="d-flex justify-content-between gap-4">
                         <div style="width: 100%">
                             <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaTaiLieu">Tên tài liệu: </label>
-                            <input type="text" name="MaTaiLieu" readonly value="@ViewBag.MaTaiLieu" class="form-control mt-2" />
+                            <select class="mt-2 form-control" id="MaTaiLieu" name="MaTaiLieu" required>
+                                @foreach (var kh in ViewBag.TaiLieuView)
+                                {
+                                    if (kh.MaTaiLieu == ViewBag.MaTaiLieu)
+                                    {
+                                        <option value="@kh.MaTaiLieu">@kh.MaTaiLieu - @kh.TenTaiLieu</option>
+                                    }
+                                }
+                            </select>
                         </div>
                         <div style="width: 100%">
                             <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaKhoaHoc">Tên khóa học: </label>
-                            @Html.TextBoxFor(model => model.MaKhoaHoc, new { @id = "MaKhoaHoc", @class = "form-control mt-2", placeholder = "Nhập mã khóa học" })
+                            <select class="mt-2 form-control" id="MaKhoaHoc" name="MaKhoaHoc" required>
+                                <option value="">-- Chọn Khóa học --</option>
+                                @foreach (var kh in ViewBag.KhoaHocListView)
+                                {
+                                    <option value="@kh.MaKhoaHoc">@kh.MaKhoaHoc - @kh.TenKhoaHoc</option>
+                                }
+                            </select>
                         </div>
                     </div>                   
                 </div>
