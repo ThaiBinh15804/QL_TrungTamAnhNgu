@@ -368,6 +368,7 @@
     <Content Include="Views\QuanTriVien\ChiTietGiamGia.cshtml" />
     <Content Include="Views\QuanTriVien\DanhSachGiamGiaThuocKhoaHoc.cshtml" />
     <Content Include="Views\QuanTriVien\ThemKhoaHoc_GiamGia.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemLopHoc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

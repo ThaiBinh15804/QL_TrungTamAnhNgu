@@ -1439,6 +1439,72 @@ namespace QL_TrungTamAnhNgu.Controllers
             List<LopHoc> dsLopHoc = db.LopHocs.Where(k => k.MaKhoaHoc == maKH).ToList();
             return View(dsLopHoc);
         }
+        public ActionResult ThemLopHoc()
+        {
+            var khoahoc = db.KhoaHocs.Where(kh => kh.TrangThai == "Đang hoạt động").ToList();
+            var phonghoc = db.PhongHocs.Where(ph => ph.TrangThai == "Đang hoạt động").ToList();
+            if (khoahoc == null || phonghoc == null || khoahoc.Count == 0 || phonghoc.Count == 0)
+            {
+                TempData["ErrorMessage"] = "Không có khóa học hoặc phòng học nào đang hoạt động!";
+                return RedirectToAction("DanhSachLopHoc");
+            }
+            ViewBag.MaKhoaHoc = khoahoc;
+            ViewBag.MaPhong = phonghoc;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ThemLopHoc(LopHoc lh)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var currentUser = Session["user"] as NguoiDung;
+            var lopHoc = new LopHoc
+            {
+                MaLop = lh.MaLop,
+                TenLop = lh.TenLop,
+                MaKhoaHoc = lh.MaKhoaHoc,
+                MaPhong = lh.MaPhong,
+                MaGiangVien = lh.MaGiangVien,
+                NgayBatDau = lh.NgayBatDau,
+                NgayKetThuc = lh.NgayKetThuc,
+                TrangThai = lh.TrangThai,
+                SoLuongToiDa = lh.SoLuongToiDa,
+                SoLuongToiThieu = lh.SoLuongToiThieu,
+                ThoiLuong = lh.ThoiLuong
+            };
+            try
+            {
+                db.LopHocs.InsertOnSubmit(lopHoc);
+                db.SubmitChanges();
+                TempData["SuccessMessage"] = "Thêm lớp học thành công!";
+            }
+            catch (SqlException sqlEx)
+            {
+                if (sqlEx.Number == 547)
+                {
+                    TempData["ErrorMessage"] = "Lỗi: Mã khóa học, phòng học hoặc giảng viên không tồn tại.";
+                }
+                else if (sqlEx.Number == 2627)
+                {
+                    TempData["ErrorMessage"] = "Lỗi: Mã lớp đã tồn tại.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Lỗi SQL: " + sqlEx.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+            }
+            ViewBag.MaKhoaHoc = db.KhoaHocs.Where(kh => kh.TrangThai == "Đang hoạt động").ToList();
+            ViewBag.MaPhong = db.PhongHocs.Where(ph => ph.TrangThai == "Đang hoạt động").ToList();
+            return View(lh);
+        }
 
         public ActionResult ChiTietLopHoc(string malop)
         {
@@ -1447,6 +1513,37 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("DangNhap");
             }
             LopHoc lopHocDetail = db.LopHocs.FirstOrDefault(k => k.MaLop == malop);
+            return View(lopHocDetail);
+        }
+        [HttpPost]
+        public ActionResult ChiTietLopHoc(LopHoc model)
+        {
+            LopHoc lopHocDetail = db.LopHocs.FirstOrDefault(k => k.MaLop == model.MaLop);
+
+            if (lopHocDetail != null)
+            {
+                lopHocDetail.TenLop = model.TenLop;
+                lopHocDetail.MaKhoaHoc = model.MaKhoaHoc;
+                lopHocDetail.MaPhong = model.MaPhong;
+                lopHocDetail.MaGiangVien = model.MaGiangVien;
+                lopHocDetail.NgayBatDau = model.NgayBatDau;
+                lopHocDetail.NgayKetThuc = model.NgayKetThuc;
+                lopHocDetail.TrangThai = model.TrangThai;
+                lopHocDetail.SoLuongToiDa = model.SoLuongToiDa;
+                lopHocDetail.SoLuongToiThieu = model.SoLuongToiThieu;
+                lopHocDetail.ThoiLuong = model.ThoiLuong;
+                db.SubmitChanges();
+                TempData["SuccessMessage"] = "Thông tin lớp học đã được cập nhật thành công!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy lớp học!";
+            }
+
+            if (model.NgayBatDau == DateTime.MinValue)
+            {
+                model.NgayBatDau = DateTime.Now;
+            }
             return View(lopHocDetail);
         }
 

@@ -37,7 +37,12 @@
             <i class="fa-solid fa-angle-right"></i>
             <span style="color: #343a40">Danh sách lớp học</span>
         </div>
-        <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px;">Danh sách lớp học của khóa học</h1>
+        <div class="d-flex justify-content-between" style="margin-top: 20px;">
+            <h1 style="font-size: 22px; font-weight: 600; color: #000; ">Danh sách lớp học của khóa học</h1>
+            <a href="/QuanTriVien/ThemLopHoc" class="btn btn-primary" style="font-size: 16px;">
+                Thêm lớp học
+            </a>
+        </div>
         <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
             <div class="row g-4">
                 @foreach (var item in Model)
