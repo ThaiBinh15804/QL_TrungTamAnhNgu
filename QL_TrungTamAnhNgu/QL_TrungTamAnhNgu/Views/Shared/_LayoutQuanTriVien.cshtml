@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/3115b3f4f1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/Content/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/bootstrap-5.0.2-dist/css/bootstrap.css" rel="stylesheet" />
@@ -219,39 +221,15 @@
                         </div>
                     </div>
                     <div style="margin-bottom: 25px;">
-                        <a href="javascript:void(0)" onclick="toggleSubMenu('subMenu7')" style="color: black; display: flex; align-items: center; justify-content: space-between" class="nav__link">
+                        <a href="/QuanTriVien/QuanLyNhomND"  style="color: black; display: flex; align-items: center; justify-content: space-between" class="nav__link">
                             <div style="display: flex; align-items: center; column-gap: 8px;">
                                 <img src="~/Content/HinhAnh/GiaoDien/iconSidebar/iconSideBar11.png" alt="icon dashboard" style="width: 20px; height: 20px;" />
                                 <span style="font-size: 16px;">Quản lý Nhóm người dùng</span>
                             </div>
-                            <div class="icon_1 icon__visible">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
-                            </div>
-                            <div class="icon_2 icon__hidden">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
-                            </div>
                         </a>
-                        <div id="subMenu7" class="subMenu" style="margin-left: 35px;">
-                            <a href="/QuanTriVien/QuanTriVien" style="display: block; margin-top: 15px" class="nav__link">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" />
-                                </svg>
-                                <span style="color: black; font-size: 15px;">Danh sách nhóm người dùng</span>
-                            </a>
-                            <a href="/QuanTriVien/GiangVien" style="display: block; margin-top: 15px;" class="nav__link">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" />
-                                </svg>
-                                <span style="color: black; font-size: 15px;">Phân quyền</span>
-                            </a>
-                        </div>
                     </div>
                     <div style="margin-bottom: 25px;">
-                        <a href="/Admin/DashBoard" style="color: black; display: flex; align-items: center; column-gap: 8px;" class="nav__link">
+                        <a href="/QuanTriVien/QuanLyThanhToan" style="color: black; display: flex; align-items: center; column-gap: 8px;" class="nav__link">
                             <img src="~/Content/HinhAnh/GiaoDien/iconSidebar/iconSideBar5.png" alt="icon dashboard" style="width: 20px; height: 20px;" />
                             <span style="font-size: 16px;">Quản lý Thanh toán</span>
                         </a>

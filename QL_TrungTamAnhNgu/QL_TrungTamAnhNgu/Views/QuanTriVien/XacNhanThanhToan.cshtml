@@ -1,0 +1,64 @@
+﻿@model QL_TrungTamAnhNgu.Models.ThanhToan
+
+@{
+    ViewBag.Title = "XacNhanThanhToan";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<h2 class="text-center">Xác Nhận Thanh Toán</h2>
+
+
+<form action="/QuanTriVien/TienHanhThanhToan" method="post" enctype="multipart/form-data">
+    <div class="container mt-5">
+        <fieldset class="border p-4">
+            <legend class="w-auto px-2">Thông Tin Thanh Toán</legend>
+
+            <!-- Mã Học Viên -->
+            <div class="mb-3">
+                <label for="MaHocVien" class="form-label">Mã Học Viên</label>
+                <input type="text" class="form-control" id="MaHocVien" name="MaHocVien" value="@Model.MaHocVien" />
+            </div>
+
+            <!-- Tổng Tiền -->
+            <div class="mb-3">
+                <label for="TongTien" class="form-label">Tổng Tiền</label>
+                <input type="text" class="form-control" readonly id="TongTien" name="TongTien" value="@Model.TongTien" />
+            </div>
+
+            <!-- Hình Thức Thanh Toán -->
+            <div class="mb-3">
+                <label for="HinhThuc" class="form-label">Hình Thức Thanh Toán</label>
+                <input type="text" class="form-control" id="HinhThuc" name="HinhThuc" value="@Model.HinhThuc" />
+            </div>
+
+            <!-- Ảnh Hóa Đơn -->
+            <div class="mb-3">
+                <label for="AnhHoaDon" class="form-label">Ảnh Hóa Đơn</label>
+                <input type="file" class="form-control" id="AnhHoaDon" name="AnhHoaDon" />
+
+                <div id="imagePreview" class="mt-3">
+                    <img id="preview" src="#" alt="Image Preview" style="max-width: 100%; display: none;" />
+                </div>
+            </div>
+
+            <!-- Nút Submit -->
+            <div class="text-center">
+                <a href="/QuanTriVien/HuyThanhToan" class="btn btn-danger">Huỷ</a>
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
+            </div>
+        </fieldset>
+    </div>
+</form>    
+
+<script>
+    // Hàm để preview ảnh
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';  // Hiển thị ảnh preview
+        };
+        reader.readAsDataURL(event.target.files[0]);  // Đọc ảnh đã chọn
+    }
+</script>
