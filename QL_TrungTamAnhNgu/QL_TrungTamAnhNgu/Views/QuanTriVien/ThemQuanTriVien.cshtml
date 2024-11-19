@@ -36,17 +36,24 @@
         <div class="d-flex gap-2 mt-2">
             <i style="color: #343a40" class="fa-solid fa-house"></i>
             <i class="fa-solid fa-angle-right"></i>
-            <span style="color: #343a40">Danh sách quản trị viên</span>
+            <span style="color: #343a40">Danh sách học viên</span>
             <i class="fa-solid fa-angle-right"></i>
-            <span style="color: #000; ">Thêm quản trị viên</span>
+            <span style="color: #000; ">Chi tiết</span>
         </div>
         <div class="d-flex justify-content-between">
-            <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thêm quản trị viên</h1>
+            <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thêm học viên</h1>
         </div>
         <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
             <form class="myForm" action="/QuanTriVien/ThemQuanTriVien" method="post">
                 <div style="width: 100%;" class="d-flex">
                     <div style="width: 60%;">
+                        <div class="d-flex justify-content-between gap-4">
+                            <div style="width: 100%">
+                                <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaQTV">Mã quản trị viên: </label>
+                                @Html.TextBoxFor(model => model.NguoiDung.MaNguoiDung, new { @id = "MaQTV", @class = "form-control mt-2", placeholder = "Nhập mã quản trị viên" })
+                                <span style="min-height: 20px; display: inline-block; color: red; font-size: 14px; margin-top: 5px;" class="errTenLoai"></span>
+                            </div>
+                        </div>
                         <div class="d-flex justify-content-between gap-4">
                             <div style="width: 100%">
                                 <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TaiKhoan">Tài khoản: </label>
@@ -115,6 +122,7 @@
                     }
                 </div>
                 <div style="margin-top: 10px; width: 100%" class="d-flex justify-content-end gap-2">
+                    <button id="btnClearForm" type="button" class="btn btn-danger">Xóa</button>
                     <button id="btnLuu" type="submit" class="btn btn-success">Tạo</button>
                 </div>
             </form>
