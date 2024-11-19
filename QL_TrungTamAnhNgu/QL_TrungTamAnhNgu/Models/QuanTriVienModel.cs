@@ -81,22 +81,4 @@ namespace QL_TrungTamAnhNgu.Models
         public int PageSize { get; set; }     // Số lượng bản ghi mỗi trang
         public string SearchQuery { get; set; }
     }
-
-    public class TaiLieuPagedList
-    {
-        public List<TaiLieu> taiLieuList { get; set; } // Danh sách quản trị viên
-        public int CurrentPage { get; set; }  // Trang hiện tại
-        public int TotalPages { get; set; }   // Tổng số trang
-        public int PageSize { get; set; }     // Số lượng bản ghi mỗi trang
-        public string SearchQuery { get; set; }
-    }
-
-    public class GiamGiaPagedList
-    {
-        public List<GiamGia> giamGiaList { get; set; } // Danh sách loai khoa hoc
-        public int CurrentPage { get; set; }  // Trang hiện tại
-        public int TotalPages { get; set; }   // Tổng số trang
-        public int PageSize { get; set; }     // Số lượng bản ghi mỗi trang
-        public string SearchQuery { get; set; }
-    }
 }
