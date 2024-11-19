@@ -208,6 +208,7 @@
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_4.png" />
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_5.png" />
     <Content Include="Content\HinhAnh\KhoaHoc\khoahoc_default.jpg" />
+    <Content Include="Content\HinhAnh\ThanhToan\bill.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -376,13 +377,14 @@
     <Content Include="Views\QuanTriVien\TaoDangKy.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyThanhToan.cshtml" />
     <Content Include="Views\QuanTriVien\XacNhanThanhToan.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachLichHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\ChiTietThanhToan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\HinhAnh\DangKy_BaiTap\" />
     <Folder Include="Content\HinhAnh\GiamGia\" />
     <Folder Include="Content\HinhAnh\LopHoc\" />
-    <Folder Include="Content\HinhAnh\ThanhToan\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

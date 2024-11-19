@@ -1,0 +1,106 @@
+﻿@model QL_TrungTamAnhNgu.Models.ThongTinThanhToan
+@{
+    ViewBag.Title = "Chi tiết thanh toán";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<div>
+    <header style="position: sticky; left: 0; top: 0; background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid #edede9; height: 80px;">
+        <div style="display: flex; align-items: center; column-gap: 8px;">
+            <i class="fa-solid fa-bars" style="color: black; font-size: 20px;"></i>
+            <h2 style="font-size: 18px; color: #000; font-weight: 500;">Quản lý Trung tâm Anh ngữ Yola</h2>
+        </div>
+    </header>
+
+    <div style="padding: 8px 20px;">
+        <div class="d-flex gap-2 mt-2">
+            <i style="color: #343a40" class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #343a40">Danh sách thanh toán</span>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #000;">Chi tiết</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px;">Thông tin chi tiết thanh toán</h1>
+        </div>
+
+        <div style="margin-top: 15px; background-color: #fff; border-radius: 5px; padding: 16px; border: 1px solid #dadada;">
+            <form class="myForm" action="/QuanTriVien/CapNhatThanhToan" method="post" enctype="multipart/form-data">
+                <div style="width: 100%;" class="d-flex">
+                    <!-- Left Section -->
+                    <div style="width: 60%;">
+                        <div class="d-flex justify-content-between gap-4">
+                            <div style="width: 100%;">
+                                <label class="form-label">Mã thanh toán:</label>
+                                @Html.TextBoxFor(model => model.MaThanhToan, new { @readonly = "readonly", @class = "form-control mt-2" })
+                            </div>
+                            <div style="width: 100%;">
+                                <label class="form-label">Tên học viên:</label>
+                                @Html.TextBoxFor(model => model.HoTen, new {@id="hoten1", @readonly = "readonly", @class = "form-control mt-2" })
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between gap-4 mt-4">
+                            <div style="width: 100%;">
+                                <label class="form-label">Khóa học:</label>
+                                @Html.TextBoxFor(model => model.TenKhoaHoc, new {@id="TenKhoaHoc1", @readonly = "readonly", @class = "form-control mt-2" })
+                            </div>
+                            <div style="width: 100%;">
+                                <label class="form-label">Hình thức:</label>
+                                @Html.TextBoxFor(model => model.HinhThuc, new { @id = "HinhThuc", @readonly = "readonly", @class = "form-control mt-2" })
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between gap-4 mt-4">
+                            <div style="width: 100%;">
+                                <label class="form-label">Tổng tiền:</label>
+                                @Html.TextBoxFor(model => model.TongTien, new { @id = "TongTien", @readonly = "readonly", @class = "form-control mt-2" })
+                            </div>
+                            <div style="width: 100%;">
+                                <label class="form-label">Tỷ lệ giảm:</label>
+                                @Html.TextBoxFor(model => model.TiLeGiam, new {@id="TiLeGiam1", @readonly = "readonly", @class = "form-control mt-2" })
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between gap-4 mt-4">
+                            <div style="width: 100%;">
+                                <label>Tổng tiền sau giảm:</label>
+                                @Html.TextBoxFor(model => model.TongTienSauGiam, new { @readonly = "readonly", @class = "form-control mt-2" })
+                            </div>
+                            <div style="width: 100%">
+                                <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TrangThai">Trạng thái: </label>
+                                <select id="TrangThai" name="TrangThai" class="form-control mt-2" disabled>
+                                    <option value="Hoàn tất" @(Model.TrangThai == "Hoàn tất" ? "selected" : "")>Hoàn tất</option>
+                                    <option value="Đang chờ" @(Model.TrangThai == "Đang chờ" ? "selected" : "")>Đang chờ</option>
+                                </select>
+                                <span style="min-height: 20px; display: inline-block; color: red; font-size: 14px; margin-top: 5px;" class="errMoTa"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <label class="form-label">Ngày thực hiện:</label>
+                            @Html.TextBoxFor(model => model.NgayThucHien, new
+                            {
+                                @id="NgayThucHien",
+                                @readonly = "readonly",
+                                @type = "date",
+                                @class = "form-control mt-2",
+                                Value = Model.NgayThucHien.HasValue ? Model.NgayThucHien.Value.ToString("yyyy-MM-dd") : null
+                            })
+                        </div>
+                    </div>
+
+                    <!-- Separator -->
+                    <div style="margin: 0 20px; width: 2px; background-color: #dadada;"></div>
+
+                    <!-- Right Section -->
+                    <div style="margin: 0 auto;" class="d-flex justify-content-center align-items-center flex-column">
+                        <span class="form-label">Ảnh hóa đơn:</span>
+                        <img id="HoaDonPreview" src="~/Content/HinhAnh/ThanhToan/@Model.AnhHoaDon" alt="Hóa đơn preview" style="width: 350px; height: 500px; object-fit: cover;" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

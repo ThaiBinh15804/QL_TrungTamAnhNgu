@@ -1640,6 +1640,11 @@ namespace QL_TrungTamAnhNgu.Controllers
             return PartialView(ds);
         }
 
+        public ActionResult DanhSachLichHoc(string malop)
+        {
+            return PartialView(db.LichHocs.Where(t => t.MaLop == malop).OrderBy(t => t.NgayHoc).ToList());
+        }
+
         public ActionResult QuanLyNhomND()
         {
             return View(db.NhomNguoiDungs.ToList());
@@ -1708,13 +1713,20 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult QuanLyThanhToan()
         {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
             return View(db.ThanhToans.OrderByDescending(t => t.NgayThucHien).ToList());
         }
 
 
         public ActionResult TaoThanhToan()
         {
-
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
             string ma = db.ThanhToans.OrderByDescending(t => t.MaThanhToan).FirstOrDefault().MaThanhToan;
 
             int k;
@@ -1742,8 +1754,29 @@ namespace QL_TrungTamAnhNgu.Controllers
             return RedirectToAction("TaoDangKy");
         }
 
+        public ActionResult ChiTietThanhToan(string maThanhToan)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var chiTiet = db.ThongTinThanhToans.FirstOrDefault(x => x.MaThanhToan == maThanhToan);
+
+            if (chiTiet == null)
+            {
+                ViewBag.ThongBao = "Không tìm thấy thông tin thanh toán.";
+                return RedirectToAction("ChiTietThanhToan");
+            }
+
+            return View(chiTiet);
+        }
+
         public ActionResult TaoDangKy()
         {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
             // Lấy danh sách khóa học
             var khoaHocs = db.KhoaHocs.ToList();
             return View(khoaHocs);
@@ -1884,6 +1917,10 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult XacNhanThanhToan()
         {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
             ThanhToan tt = Session["ThanhToan"] as ThanhToan;
             return View(tt);
         }

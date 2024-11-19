@@ -90,6 +90,9 @@ const giangVienInput = document.getElementById("GiangVien")
 const thoiLuongInput = document.getElementById("ThoiLuong")
 const tenLopInput = document.getElementById("TenLop")
 
+const hinhThucInput = document.getElementById("HinhThuc")
+const tongTienInput = document.getElementById("TongTien")
+
 const tenPhongInput = document.getElementById("TenPhong")
 const sucChuaInput = document.getElementById("SucChua")
 const thietBiInput = document.getElementById("ThietBi")
@@ -187,6 +190,13 @@ if (btnSua) {
         } 
         if (tenLopInput) {
             tenLopInput.removeAttribute("readonly")
+        }
+        if (hinhThucInput) {
+            hinhThucInput.removeAttribute("readonly")
+        }
+
+        if (tongTienInput) {
+            tongTienInput.removeAttribute("readonly")
         }
     })
 }

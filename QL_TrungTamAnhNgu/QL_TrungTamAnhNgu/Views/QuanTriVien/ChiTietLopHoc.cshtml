@@ -44,7 +44,7 @@
             <a style="color: black;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=ThongTinLopHoc">Thông tin lớp học</a>
             <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=HocVienLopHoc">Học viên</a>
             <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=DiemDanh">Điểm danh</a>
-            <span style="margin-left: 25px;">Lịch học</span>
+            <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=DanhSachLichHoc">Lịch học</a>
             <span style="margin-left: 25px;">Bài tập</span>
         </div>
         <div>
@@ -63,7 +63,10 @@
                         case "DiemDanh":
                         @Html.Action("DiemDanh", "QuanTriVien", new { malop = Model.MaLop })
                             break;
-                        default:
+                        case "DanhSachLichHoc":
+                        @Html.Action("DanhSachLichHoc", "QuanTriVien", new { malop = Model.MaLop })
+                            break;
+                            default:
                         @Html.Action("ThongTinLopHoc", "QuanTriVien", new { malop = Model.MaLop })
                             break;
                     }

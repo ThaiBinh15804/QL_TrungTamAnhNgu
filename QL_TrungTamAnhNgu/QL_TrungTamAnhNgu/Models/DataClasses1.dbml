@@ -278,6 +278,21 @@
       <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.ThongTinThanhToan" Member="ThongTinThanhToans">
+    <Type Name="ThongTinThanhToan">
+      <Column Name="MaThanhToan" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TongTien" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TiLeGiam" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
+      <Column Name="TongTienSauGiam" Type="System.Decimal" DbType="Decimal(29,8)" CanBeNull="true" />
+      <Column Name="NgayThucHien" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="MaHocVien" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HinhThuc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="AnhHoaDon" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="HoTen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Table Name="dbo.view_danhSachGiangVienVaLopDangDay" Member="view_danhSachGiangVienVaLopDangDays">
     <Type Name="view_danhSachGiangVienVaLopDangDay">
       <Column Name="MaGiangVien" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
