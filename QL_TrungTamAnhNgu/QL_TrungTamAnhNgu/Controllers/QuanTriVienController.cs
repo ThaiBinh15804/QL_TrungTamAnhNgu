@@ -1254,6 +1254,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
+
             ViewBag.MaTaiLieu = maTL;
             var khoahoc_tailieu = new KhoaHoc_TaiLieu();
             return View(khoahoc_tailieu);
