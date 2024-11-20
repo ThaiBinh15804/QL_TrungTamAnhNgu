@@ -1,0 +1,80 @@
+﻿@using QL_TrungTamAnhNgu.Models;
+
+@model List<QL_TrungTamAnhNgu.Models.NhomNguoiDung>
+
+@{
+    ViewBag.Title = "QuanLyNhomND";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<div>
+    <header style="background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0px 16px; border-bottom: 1px solid #edede9; height: 80px;">
+        <div style="display: flex; align-items: center; column-gap: 8px;">
+            <i class="fa-solid fa-bars" style="color: black; font-size: 20px;"></i>
+            <h2 style="font-size: 18px; color: #000; font-weight: 500;">Quản lý Trung tâm Anh ngữ Yola</h2>
+        </div>
+        <div style="position: relative">
+            <button onclick="handleClickUser(event)" style="display: flex; align-items: center; column-gap: 4px; color: #000">
+                <span style="font-size: 16px; font-weight: 500; color: #000">
+                    Xin chào,
+                    @if (Session["user"] != null)
+                    {
+                        NguoiDung user = Session["user"] as NguoiDung;
+                        <span>@user.TenTaiKhoan</span>
+                    }
+                </span>
+                <img src="~/Content/HinhAnh/GiaoDien/avatar.jpg" alt="Alternate Text" style="width: 30px; height: 30px; border-radius: 999px;" />
+            </button>
+            <div style="position: absolute; right: 0; top: 25px;" class="user">
+                <div class="d-flex flex-column mt-3 user__body">
+                    <a class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; display: block; text-align: center; font-size: 15px;">Thông tin tài khoản</a>
+                    <a href="/QuanTriVien/DangXuat" class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; border-top: 0px; display: block; text-align: center; font-size: 15px;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="padding:8px 20px;">
+        <div class="d-flex gap-2 mt-2">
+            <i class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-angle-right"></i>
+            <span>Danh sách nhóm người dùng</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+            <h1 style="font-size: 22px; font-weight: 600; color: #000;">Danh sách nhóm người dùng</h1>
+            <a href="/QuanTriVien/ThemNhomNguoiDung" class="btn btn-primary" style="margin-bottom: 10px; display: inline-block;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="height: 15px; width: 15px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Thêm nhóm người dùng
+            </a>
+        </div>
+        
+        <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 20px; padding: 16px; border: 1px solid #dadada; border-radius: 5px;">
+            <div style="display:flex; border-bottom: 1px solid #dadada">
+                <span class="col-md-3" style="text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500;">Mã nhóm</span>
+                <span class="col-md-3" style="text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500;">Tên nhóm</span>
+                <span class="col-md-3" style="text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500;">Mô tả</span>
+                <span class="col-md-3" style="text-align: center; padding: 10px 8px; color: #7f7f7f; font-weight: 500;">Thao tác</span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                @foreach (NhomNguoiDung group in Model)
+                {
+                    <div style="display: flex; width: 100%">
+                        <span class="col-md-3 item">@group.MaNhomND</span>
+                        <span class="col-md-3 item">@group.TenNhomND</span>
+                        <span class="col-md-3 item">@group.MoTaNhomND</span>
+                        <span class="col-md-3 item">
+                            <a href="/QuanTriVien/SuaQuyen/?MaNhomND=@group.MaNhomND" style="width: 30px; height: 30px; background-color: #00bbf9; border-radius: 5px; display: flex; justify-content: center; align-items: center; ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" style="height: 20px; width: 20px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                </svg>
+                            </a>
+                        </span>
+                    </div>
+                }
+            </div>
+            
+        </div>
+    </div>
+</div>

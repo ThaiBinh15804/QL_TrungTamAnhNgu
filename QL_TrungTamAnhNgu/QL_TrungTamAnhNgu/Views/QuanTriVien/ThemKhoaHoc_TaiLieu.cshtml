@@ -1,0 +1,75 @@
+﻿@model QL_TrungTamAnhNgu.Models.KhoaHoc_TaiLieu
+@using QL_TrungTamAnhNgu.Models
+@{
+    ViewBag.Title = "ThemKhoaHoc_TaiLieu";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<div>
+    <header style="position: sticky; left:0 ; top: 0; background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0px 16px; border-bottom: 1px solid #edede9; height: 80px;">
+        <div style="display: flex; align-items: center; column-gap: 8px;">
+            <i class="fa-solid fa-bars" style="color: black; font-size: 20px;"></i>
+            <h2 style="font-size: 18px; color: #000; font-weight: 500;">Quản lý người dùng</h2>
+        </div>
+        <div style="position: relative">
+            <button onclick="handleClickUser(event)" style="display: flex; align-items: center; column-gap: 4px; color: #000">
+                <span style="font-size: 16px; font-weight: 500; color: #000">
+                    Xin chào,
+                    @if (Session["user"] != null)
+                    {
+                        NguoiDung user = Session["user"] as NguoiDung;
+                        <span>@user.TenTaiKhoan</span>
+                    }
+                </span>
+                <img src="~/Content/HinhAnh/GiaoDien/avatar.jpg" alt="Alternate Text" style="width: 30px; height: 30px; border-radius: 999px;" />
+            </button>
+            <div style="position: absolute; right: 0; top: 25px;" class="user">
+                <div class="d-flex flex-column mt-3 user__body">
+                    <a class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; display: block; text-align: center; font-size: 15px;">Thông tin tài khoản</a>
+                    <a href="/QuanTriVien/DangXuat" class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; border-top: 0px; display: block; text-align: center; font-size: 15px;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="padding:8px 20px;">
+        <div class="d-flex gap-2 mt-2">
+            <i style="color: #343a40" class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #343a40">Danh sách khóa học</span>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #000; ">Thêm tài liệu cho khóa học</span>
+        </div>
+        <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thêm tài liệu cho khóa học</h1>
+        <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
+            <form class="myForm" action="/QuanTriVien/ThemKhoaHoc_TaiLieu" method="post">
+                <div style="width: 100%;">
+                    <div class="d-flex justify-content-between gap-4">
+                        <div style="width: 100%">
+                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaTaiLieu">Tên tài liệu: </label>
+                            <input type="text" name="MaTaiLieu" readonly value="@ViewBag.MaTaiLieu" class="form-control mt-2" />
+                        </div>
+                        <div style="width: 100%">
+                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaKhoaHoc">Tên khóa học: </label>
+                            @Html.TextBoxFor(model => model.MaKhoaHoc, new { @id = "MaKhoaHoc", @class = "form-control mt-2", placeholder = "Nhập mã khóa học" })
+                        </div>
+                    </div>                   
+                </div>
+                <div style="margin-top: 10px; width: 100%" class="d-flex justify-content-end gap-2">
+                    <button id="btnLuu" type="submit" class="btn btn-success">Tạo</button>
+                </div>
+            </form>
+        </div>
+        <div style="color: red;" class="mt-2">
+            <div>
+                @if (TempData["ErrorMessageKhoaHocTaiLieu"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["ErrorMessageKhoaHocTaiLieu"]
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
