@@ -98,6 +98,10 @@ const sucChuaInput = document.getElementById("SucChua")
 const thietBiInput = document.getElementById("ThietBi")
 const viTriInput = document.getElementById("ViTri")
 
+const thoiGianBatDauInput = document.getElementById("ThoiGianBatDau")
+const thoiGianKetThucInput = document.getElementById("ThoiGianKetThuc")
+const ngayHocInput = document.getElementById("NgayHoc")
+
 const btnSua = document.getElementById("btnSua")
 const btnLuu = document.getElementById("btnLuu")
     
@@ -197,6 +201,17 @@ if (btnSua) {
 
         if (tongTienInput) {
             tongTienInput.removeAttribute("readonly")
+        }
+
+        if (thoiGianBatDauInput) {
+            thoiGianBatDauInput.removeAttribute("readonly")
+        }
+        if (thoiGianKetThucInput) {
+            thoiGianKetThucInput.removeAttribute("readonly")
+        }
+
+        if (ngayHocInput) {
+            ngayHocInput.removeAttribute("readonly")
         }
     })
 }

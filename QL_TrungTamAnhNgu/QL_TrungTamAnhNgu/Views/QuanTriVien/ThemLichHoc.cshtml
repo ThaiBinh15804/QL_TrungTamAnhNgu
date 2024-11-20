@@ -1,0 +1,53 @@
+﻿@model QL_TrungTamAnhNgu.Models.LichHoc
+
+<form method="post" action="/QuanTriVien/ThemLichHoc?malop=@ViewBag.MaLop" class="mt-4">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="MaLop">Mã lớp:</label>
+                <input type="text" class="mt-2 form-control" id="MaLop" name="MaLop" readonly value="@ViewBag.MaLop">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="MaGiangVien">Ngày học:</label>
+                @Html.TextBoxFor(model => model.NgayHoc, new
+                {
+                      @type = "date",
+                      @id = "NgayHoc",
+                      @class = "form-control mt-2",
+                      Value = Model.NgayHoc.ToString("yyyy-MM-dd")
+                })
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="ThoiGianBatDau">Thời gian bắt Đầu:</label>
+                <input type="time" class="mt-2 form-control" id="ThoiGianBatDau" name="ThoiGianBatDau" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="ThoiGianKetThuc">Thời gian kết Thúc:</label>
+                <input type="time" class="mt-2 form-control" id="ThoiGianKetThuc" name="ThoiGianKetThuc" required>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 d-flex justify-content-between">
+        <div style="width: 900px">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+        </div>
+        <button type="submit" class="btn btn-success" style="height:40px;">Tạo</button>
+    </div>
+</form>
+
+
+

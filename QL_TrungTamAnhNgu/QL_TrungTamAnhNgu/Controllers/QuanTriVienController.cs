@@ -1623,6 +1623,354 @@ namespace QL_TrungTamAnhNgu.Controllers
             return PartialView(db.fn_DSHocVienCuaLop(malop).ToList());
         }
 
+        public ActionResult DanhSachBaiTapKhoaHoc(string makh)
+        {
+            return PartialView(db.KhoaHoc_BaiTaps.Where(t => t.MaKhoaHoc == makh).ToList());
+        }
+
+        public ActionResult DanhSachBaiTap(int page = 1, int pageSize = 5)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            List<BaiTap> baiTapList = db.BaiTaps.ToList();
+            var totalRecords = baiTapList.Count();
+
+            var dsBaiTapList = baiTapList.OrderBy(q => q.MaBaiTap).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            var model = new BaiTapPagedList
+            {
+                baiTapList = dsBaiTapList,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                PageSize = pageSize
+            };
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult TimKiemBaiTap(string search, int page = 1, int pageSize = 5)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var sql = "select * from fn_timKiemBaiTap(N'" + search + "')";
+            List<BaiTap> baiTapList = db.ExecuteQuery<BaiTap>(sql).ToList();
+            var totalRecords = baiTapList.Count();
+
+            var dsBaiTapList = baiTapList.OrderBy(q => q.MaBaiTap).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            var model = new BaiTapPagedList
+            {
+                baiTapList = dsBaiTapList,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                PageSize = pageSize,
+                SearchQuery = search
+            };
+            return View(model);
+        }
+
+        public ActionResult ThemBaiTap()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var baitap = new BaiTap();
+            return View(baitap);
+        }
+        [HttpPost]
+        public ActionResult ThemBaiTap(BaiTap bt)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            try
+            {
+                string maBaiTap = db.BaiTaps.OrderByDescending(t => t.MaBaiTap).FirstOrDefault().MaBaiTap;
+                int k = maBaiTap != null ? (int.Parse(maBaiTap.Substring(2)) + 1) : 1;
+                string maBaiTapMoi = "BT" + k.ToString("D3");
+                var baitap = new BaiTap
+                {
+                    MaBaiTap = maBaiTapMoi,
+                    TenBaiTap = bt.TenBaiTap,
+                    MoTa = bt.MoTa,
+                    FileUpload = bt.FileUpload,
+                    NgayTao = DateTime.Now,
+                    TrangThai = "Đang hoạt động",
+                };
+
+                db.BaiTaps.InsertOnSubmit(baitap);
+                db.SubmitChanges();
+
+                return RedirectToAction("DanhSachBaiTap");
+            }
+            catch (SqlException sqlEx)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
+                return View(bt);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+                return View(bt);
+            }
+        }
+
+        public ActionResult ChiTietBaiTap(string maBT)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            BaiTap baitap = db.BaiTaps.FirstOrDefault(t => t.MaBaiTap == maBT);
+            return View(baitap);
+        }
+        [HttpPost]
+        public ActionResult ChiTietBaiTap(BaiTap baitap)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var baiTapExists = db.BaiTaps.FirstOrDefault(k => k.MaBaiTap == baitap.MaBaiTap);
+            if (baiTapExists != null)
+            {
+                if (string.IsNullOrEmpty(baitap.FileUpload))
+                {
+                    baitap.FileUpload = baiTapExists.FileUpload;
+                }
+                baiTapExists.TenBaiTap = baitap.TenBaiTap;
+                baiTapExists.MoTa = baitap.MoTa;
+                baiTapExists.TrangThai = baitap.TrangThai;
+                baiTapExists.FileUpload = baitap.FileUpload;
+                db.SubmitChanges();
+                return RedirectToAction("DanhSachBaiTap");
+            }
+            return View(baitap);
+        }
+
+        public ActionResult XoaBaiTap(string maBT)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            BaiTap baitap = db.BaiTaps.FirstOrDefault(k => k.MaBaiTap == maBT);
+            if (baitap.KhoaHoc_BaiTaps.Any())
+            {
+                TempData["ErrorMessageBaiTap"] = "Bài tập này đang được sử dụng, nên không thể xóa!";
+                return RedirectToAction("ChiTietBaiTap", new { maBT = maBT });
+            }
+            db.BaiTaps.DeleteOnSubmit(baitap);
+            db.SubmitChanges();
+            return RedirectToAction("DanhSachBaiTap");
+        }
+
+        public ActionResult DanhSachBaiTapThuocKhoaHoc(string maBT)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            ViewBag.MaBaiTap = maBT;
+            BaiTap checkTrangThaiBaiTap = db.BaiTaps.FirstOrDefault(t => t.MaBaiTap == maBT);
+            if (checkTrangThaiBaiTap.TrangThai == "Hết hạn")
+            {
+                ViewBag.TrangThaiKhoaHoc = "Bài tập hết hạn, nên không thể thêm khóa học";
+            }
+            List<KhoaHoc_BaiTap> dsBaiTapThuocKhoaHoc = db.KhoaHoc_BaiTaps.Where(k => k.MaBaiTap == maBT).ToList();
+            return View(dsBaiTapThuocKhoaHoc);
+        }
+
+        public ActionResult XoaKhoaHoc_BaiTap(string maKH, string maBT)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            KhoaHoc_BaiTap khoaHoc_baiTap = db.KhoaHoc_BaiTaps.FirstOrDefault(t => t.MaBaiTap == maBT && t.MaKhoaHoc == maKH);
+            db.KhoaHoc_BaiTaps.DeleteOnSubmit(khoaHoc_baiTap);
+            db.SubmitChanges();
+            return RedirectToAction("DanhSachBaiTapThuocKhoaHoc", new { maBT = maBT });
+        }
+
+        public ActionResult ThemKhoaHoc_BaiTap(string maBT)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+
+            ViewBag.MaBaiTap = maBT;
+            List<BaiTap> baiTapList = db.BaiTaps.ToList();
+            List<KhoaHoc> khoaHocList = db.KhoaHocs.ToList();
+            ViewBag.BaiTapListView = baiTapList;
+            ViewBag.KhoaHocListView = khoaHocList;
+            var khoahoc_baitap = new KhoaHoc_BaiTap();
+            return View(khoahoc_baitap);
+        }
+        [HttpPost]
+        public ActionResult ThemKhoaHoc_BaiTap(KhoaHoc_BaiTap khbt)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var khoahoc_baitap = new KhoaHoc_BaiTap
+            {
+                MaKhoaHoc = khbt.MaKhoaHoc,
+                MaBaiTap = khbt.MaBaiTap
+            };
+            KhoaHoc_BaiTap findKhoaHocBaiTap = db.KhoaHoc_BaiTaps.FirstOrDefault(t => t.MaBaiTap == khoahoc_baitap.MaBaiTap && t.MaKhoaHoc == khoahoc_baitap.MaKhoaHoc);
+            if (findKhoaHocBaiTap != null)
+            {
+                TempData["ErrorMessageKhoaHocBaiTap"] = "Khóa học đã tồn tại bài tập này!";
+                return RedirectToAction("ThemKhoaHoc_BaiTap", new { maBT = khoahoc_baitap.MaBaiTap });
+            }
+            db.KhoaHoc_BaiTaps.InsertOnSubmit(khoahoc_baitap);
+            db.SubmitChanges();
+            return RedirectToAction("DanhSachBaiTapThuocKhoaHoc", new { maBT = khoahoc_baitap.MaBaiTap });
+        }
+
+        public ActionResult ChuaChamDiem(string malop)
+        {
+            return PartialView(db.DangKy_BaiTaps.Where(t => t.DangKy.MaLop == malop && t.Diem == null).OrderBy(u => u.NgayNop));
+        }
+
+        public ActionResult ChamDiem(string malop)
+        {
+            return PartialView(db.DangKy_BaiTaps.Where(t => t.DangKy.MaLop == malop && t.Diem != null).OrderBy(u => u.NgayNop));
+        }
+
+
+        public ActionResult DanhSachLichHoc(string malop)
+        {
+            ViewBag.MaLop = malop;
+            return PartialView(db.LichHocs.Where(t => t.MaLop == malop).OrderBy(t => t.NgayHoc).ToList());
+        }
+
+        public ActionResult ThemLichHoc(string maLop)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            ViewBag.MaLop = maLop;
+            LichHoc lichHoc = new LichHoc();
+            return PartialView(lichHoc);
+        }
+        [HttpPost]
+        public ActionResult ThemLichHoc(LichHoc lich, string malop)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            try
+            {
+                string maLichHoc = db.LichHocs.OrderByDescending(t => t.MaLichHoc).FirstOrDefault().MaLichHoc;
+                int k = maLichHoc != null ? (int.Parse(maLichHoc.Substring(2)) + 1) : 1;
+                string maMoi = "LH" + k.ToString("D3");
+    
+                var lichHoc = new LichHoc
+                {
+                    MaLichHoc = maMoi,
+                    MaLop = lich.MaLop,
+                    NgayHoc = lich.NgayHoc,
+                    ThoiGianBatDau = lich.ThoiGianBatDau,
+                    ThoiGianKetThuc = lich.ThoiGianKetThuc,
+                    NgayTao = DateTime.Now,
+                    TrangThai = "Đang hoạt động",
+                };
+
+                db.LichHocs.InsertOnSubmit(lichHoc);
+                db.SubmitChanges();
+
+                TempData["DieuHuong"] = "DanhSachLichHoc";
+                return RedirectToAction("ChiTietLopHoc", new { malop = lichHoc.MaLop });
+            }
+            catch (SqlException sqlEx)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
+                TempData["DieuHuong"] = "ThemLichHoc";
+                return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+                TempData["DieuHuong"] = "ThemLichHoc";
+                return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+            }
+        }
+
+        public ActionResult ChiTietLichHoc(string maLH)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            LichHoc lichHoc = db.LichHocs.FirstOrDefault(t => t.MaLichHoc == maLH);
+            return View(lichHoc);
+        }
+        [HttpPost]
+        public ActionResult ChiTietLichHoc(LichHoc lh)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            var lichHocExists = db.LichHocs.FirstOrDefault(k => k.MaLichHoc == lh.MaLichHoc);
+            if (lichHocExists != null)
+            {
+                lichHocExists.NgayHoc = lh.NgayHoc;
+                lichHocExists.ThoiGianBatDau = lh.ThoiGianBatDau;
+                lichHocExists.ThoiGianKetThuc = lh.ThoiGianKetThuc;
+                lichHocExists.TrangThai = lh.TrangThai;
+                db.SubmitChanges();
+                return RedirectToAction("DanhSachLichHoc");
+            }
+            return View(lh);
+        }
+
+        public ActionResult XoaLichHoc(string maLH, string malop)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
+            try
+            {
+                LichHoc lich = db.LichHocs.FirstOrDefault(k => k.MaLichHoc == maLH);
+                DateTime dateHienTai = new DateTime();
+                if (lich.NgayHoc > dateHienTai)
+                {
+                    db.LichHocs.DeleteOnSubmit(lich);
+                    db.SubmitChanges();
+                    TempData["DieuHuong"] = "DanhSachLichHoc";
+                    return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+                }
+                TempData["ErrorMessageLichHoc"] = "Chỉ có thể xóa lịch học chưa xảy ra!";
+                TempData["DieuHuong"] = "DanhSachLichHoc";
+                return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+            }
+            catch (SqlException sqlEx)
+            {
+                TempData["ErrorMessageLichHoc"] = "Đã xảy ra lỗi từ trigger: " + sqlEx.Message;
+                TempData["DieuHuong"] = "DanhSachLichHoc";
+                return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessageLichHoc"] = "Đã xảy ra lỗi: " + ex.Message;
+                TempData["DieuHuong"] = "DanhSachLichHoc";
+                return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+            }
+        }
+        
         public ActionResult DiemDanh(string malop)
         {
             var lst = db.HocViens.Where(t => t.ThanhToans.Where(u => u.DangKies.Where(i => i.MaLop == malop).Any()).Any());
@@ -1639,10 +1987,78 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             return PartialView(ds);
         }
-
-        public ActionResult DanhSachLichHoc(string malop)
+        [HttpPost]
+        public ActionResult LuuDiemDanh()
         {
-            return PartialView(db.LichHocs.Where(t => t.MaLop == malop).OrderBy(t => t.NgayHoc).ToList());
+            var dsDiemDanh = Session["dsDiemDanh"] as List<HocVien_DiemDanh>;
+            string malop = "";
+
+            foreach (var hocVien in dsDiemDanh)
+            {
+                foreach (var diemDanh in hocVien.ds)
+                {
+                    malop = diemDanh.LichH.MaLop;
+
+                    // Lấy thông tin điểm danh hiện tại từ bảng ChuyenCans
+                    var chuyenCan = db.ChuyenCans.FirstOrDefault(cc =>
+                        cc.MaLichHoc == diemDanh.LichH.MaLichHoc &&
+                        cc.DangKy.ThanhToan.MaHocVien == hocVien.hv.MaHocVien);
+
+                    // Chuyển đổi trạng thái mới từ input
+                    string trangThaiMoi = diemDanh.TrangThai;
+
+                    if (chuyenCan != null)
+                    {
+                        // Chỉ cập nhật khi trạng thái mới khác với trạng thái cũ
+                        if (chuyenCan.TrangThai != trangThaiMoi)
+                        {
+                            chuyenCan.TrangThai = trangThaiMoi;
+                        }
+                    }
+
+                    if (chuyenCan == null && trangThaiMoi != "Chưa điểm danh")
+                    {
+                        // Trường hợp không tìm thấy bản ghi trong bảng ChuyenCans
+                        var dk = db.DangKies.FirstOrDefault(d => d.ThanhToan.MaHocVien == hocVien.hv.MaHocVien);
+                        if (dk != null)
+                        {
+                            var newChuyenCan = new ChuyenCan
+                            {
+                                MaLichHoc = diemDanh.LichH.MaLichHoc,
+                                MaDangKy = dk.MaDangKy,
+                                TrangThai = trangThaiMoi,
+                                NgayDiemDanh = DateTime.Now
+                            };
+                            db.ChuyenCans.InsertOnSubmit(newChuyenCan);
+                        }
+                    }
+                }
+            }
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            db.SubmitChanges();
+
+            // Chuyển hướng lại trang chi tiết lớp học
+            return RedirectToAction("ChiTietLopHoc", new { malop = malop });
+        }
+
+        [HttpPost]
+        public ActionResult CapNhatDiemDanh(int hocVienIndex, int diemDanhIndex, string trangThai)
+        {
+            // Lấy dữ liệu dsDiemDanh từ session
+            var dsDiemDanh = Session["dsDiemDanh"] as List<HocVien_DiemDanh>;
+            if (dsDiemDanh != null)
+            {
+                // Tìm và cập nhật trạng thái cho học viên và điểm danh tương ứng
+                var hocVien = dsDiemDanh[hocVienIndex];
+                var diemDanh = hocVien.ds[diemDanhIndex];
+                diemDanh.TrangThai = trangThai; // Cập nhật trạng thái điểm danh
+
+                // Lưu lại dsDiemDanh vào session
+                Session["dsDiemDanh"] = dsDiemDanh;
+            }
+
+            return Json(new { success = true });
         }
 
         public ActionResult QuanLyNhomND()

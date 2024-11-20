@@ -1,7 +1,7 @@
-﻿@model QL_TrungTamAnhNgu.Models.LopHoc
+﻿@model QL_TrungTamAnhNgu.Models.LichHoc
 @using QL_TrungTamAnhNgu.Models
 @{
-    ViewBag.Title = "ChiTietLopHoc";
+    ViewBag.Title = "ChiTietLichHoc";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
 
@@ -45,40 +45,51 @@
             <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=HocVienLopHoc">Học viên</a>
             <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=DiemDanh">Điểm danh</a>
             <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=DanhSachLichHoc">Lịch học</a>
-            <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=DanhSachBaiTapKhoaHoc">Bài tập</a>
+            <span style="margin-left: 25px;">Bài tập</span>
         </div>
         <div>
-            <div id="contentArea" style="height: auto; transition: margin-left 0.3s;">
-                @{
-                    string dieuHuong = TempData["DieuHuong"] as string;
+            <form method="post" action="/QuanTriVien/ChiTietLichHoc" class="mt-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="MaLop">Mã lớp:</label>
+                            <input type="text" class="mt-2 form-control" id="MaLop" name="MaLop" readonly value="@Model.MaLop">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="MaGiangVien">Ngày học:</label>
+                            @Html.TextBoxFor(model => model.NgayHoc, new
+                            {
+                                @readonly = "readonly",
+                                @type = "date",
+                                @id = "NgayHoc",
+                                @class = "form-control mt-2",
+                                Value = Model.NgayHoc.ToString("yyyy-MM-dd")
+                            })
+                        </div>
+                    </div>
+                </div>
 
-                    switch (dieuHuong)
-                    {
-                        case "ThongTinLopHoc":
-                        @Html.Action("ThongTinLopHoc", "QuanTriVien", new { malop = Model.MaLop })
-                            break;
-                        case "HocVienLopHoc":
-                        @Html.Action("HocVienLopHoc", "QuanTriVien", new { malop = Model.MaLop })
-                            break;
-                        case "DiemDanh":
-                        @Html.Action("DiemDanh", "QuanTriVien", new { malop = Model.MaLop })
-                            break;
-                        case "DanhSachLichHoc":
-                        @Html.Action("DanhSachLichHoc", "QuanTriVien", new { malop = Model.MaLop })
-                            break;
-                        case "ThemLichHoc":
-                        @Html.Action("ThemLichHoc", "QuanTriVien", new { malop = Model.MaLop })
-                            break;
-                        case "DanhSachBaiTapKhoaHoc":
-                        @Html.Action("DanhSachBaiTapKhoaHoc", "QuanTriVien", new { makh = Model.KhoaHoc.MaKhoaHoc })
-                            break;
-                            default:
-                        @Html.Action("ThongTinLopHoc", "QuanTriVien", new { malop = Model.MaLop })
-                            break;
-                    }
-                }
-            </div>
+                <div class="row g-3 mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ThoiGianBatDau">Thời gian bắt Đầu:</label>
+                            <input readonly value="@Model.ThoiGianBatDau" type="time" class="mt-2 form-control" id="ThoiGianBatDau" name="ThoiGianBatDau" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ThoiGianKetThuc">Thời gian kết Thúc:</label>
+                            <input readonly value="@Model.ThoiGianKetThuc" type="time" class="mt-2 form-control" id="ThoiGianKetThuc" name="ThoiGianKetThuc" required>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%" class="mt-3 d-flex justify-content-end gap-2">
+                    <button id="btnSua" type="button" class="btn btn-primary">Sửa</button>
+                    <button id="btnLuu" type="submit" disabled class="btn btn-success">Lưu</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-

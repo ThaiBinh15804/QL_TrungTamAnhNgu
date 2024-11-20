@@ -379,6 +379,17 @@
     <Content Include="Views\QuanTriVien\XacNhanThanhToan.cshtml" />
     <Content Include="Views\QuanTriVien\DanhSachLichHoc.cshtml" />
     <Content Include="Views\QuanTriVien\ChiTietThanhToan.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemLichHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\ChiTietLichHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachBaiTapKhoaHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachBaiTap.cshtml" />
+    <Content Include="Views\QuanTriVien\TimKiemBaiTap.cshtml" />
+    <Content Include="Views\QuanTriVien\ChiTietBaiTap.cshtml" />
+    <Content Include="Views\QuanTriVien\DanhSachBaiTapThuocKhoaHoc.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemKhoaHoc_BaiTap.cshtml" />
+    <Content Include="Views\QuanTriVien\ThemBaiTap.cshtml" />
+    <Content Include="Views\QuanTriVien\ChuaChamDiem.cshtml" />
+    <Content Include="Views\QuanTriVien\ChamDiem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

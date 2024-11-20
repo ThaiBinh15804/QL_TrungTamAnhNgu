@@ -8,7 +8,7 @@
 <div class="mt-4">
     <h2 class="text-center mb-2">Danh Sách Điểm Danh Học Viên</h2>
 
-    @using (Html.BeginForm("LuuDiemDanh", "GiangVien", FormMethod.Post))
+    @using (Html.BeginForm("LuuDiemDanh", "QuanTriVien", FormMethod.Post))
     {
         <div class="mb-3 text-end">
             <button id="btn-diem-danh" type="button" class="btn btn-primary mb-3">Điểm danh</button>
@@ -100,7 +100,7 @@
 
                 // Gửi dữ liệu qua AJAX tới controller
                 $.ajax({
-                    url: '@Url.Action("CapNhatDiemDanh", "GiangVien")',
+                    url: '@Url.Action("CapNhatDiemDanh", "QuanTriVien")',
                     type: 'POST',
                     data: {
                         hocVienIndex: hocVienIndex,
