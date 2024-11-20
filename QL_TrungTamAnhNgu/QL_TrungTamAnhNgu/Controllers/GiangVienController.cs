@@ -208,7 +208,11 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult ChamDiem(string malop)
         {
-            return PartialView(data.DangKy_BaiTaps.Where(t => t.DangKy.MaLop == malop && t.Diem == null).OrderBy(u => u.NgayNop));
+            List<DangKy_BaiTap> cc = data.DangKy_BaiTaps.Where(t => t.DangKy.MaLop == malop && t.Diem == null).OrderBy(u => u.NgayNop).ToList();
+            List<DangKy_BaiTap> dc = data.DangKy_BaiTaps.Where(t => t.DangKy.MaLop == malop && t.Diem != null).OrderBy(u => u.NgayNop).ToList();
+            TempData["ChuaCham"] = cc as List<DangKy_BaiTap>;
+            TempData["DaCham"] = dc as List<DangKy_BaiTap>;
+            return PartialView();
         }
 
         public ActionResult ChamDiemBaiTap(string madk, string mabt)

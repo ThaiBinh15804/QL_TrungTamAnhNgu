@@ -1,44 +1,104 @@
-﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.DangKy_BaiTap>
+﻿@using QL_TrungTamAnhNgu.Models;
 
 @{
     ViewBag.Title = "Chấm bài";
+    var chuaCham = TempData["ChuaCham"] as List<DangKy_BaiTap>;
+    var daCham = TempData["DaCham"] as List<DangKy_BaiTap>;
 }
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Danh Sách Bài Tập Chưa Chấm</h2>
+    <h2 class="text-center mb-4">Chấm Bài Tập</h2>
 
-    <table class="table table-striped table-hover table-bordered text-center">
-        <thead class="table-primary">
-            <tr>
-                <th>Tên học viên</th>
-                <th>Bài tập</th>
-                <th>Ngày nộp</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
-                {
-                    <tr class="clickable-row" data-url="@Url.Action("ChamDiemBaiTap", "GiangVien", new { madk = item.MaDangKy, mabt = item.MaBaiTap })">
-                        <td>@Html.DisplayFor(modelItem => item.DangKy.ThanhToan.HocVien.HoTen)</td>
-                        <td>@Html.DisplayFor(modelItem => item.BaiTap.TenBaiTap)</td>
-                        <td>@Html.DisplayFor(modelItem => item.NgayNop)</td>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="tabControl" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="chuaCham-tab" data-bs-toggle="tab" data-bs-target="#chuaCham" type="button" role="tab" aria-controls="chuaCham" aria-selected="true">
+                Chưa Chấm
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="daCham-tab" data-bs-toggle="tab" data-bs-target="#daCham" type="button" role="tab" aria-controls="daCham" aria-selected="false">
+                Đã Chấm
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content mt-3">
+        <!-- Danh sách chưa chấm -->
+        <div class="tab-pane fade show active" id="chuaCham" role="tabpanel" aria-labelledby="chuaCham-tab">
+            <h4 class="text-center mb-3">Danh Sách Bài Tập Chưa Chấm</h4>
+            <table class="table table-striped table-hover table-bordered text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Tên học viên</th>
+                        <th>Bài tập</th>
+                        <th>Ngày nộp</th>
                     </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="3" class="text-muted">Không có bài tập nào chưa chấm hoặc được nộp</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (chuaCham != null && chuaCham.Any())
+                    {
+                        foreach (var item in chuaCham)
+                        {
+                            <tr class="clickable-row" data-url="@Url.Action("ChamDiemBaiTap", "GiangVien", new { madk = item.MaDangKy, mabt = item.MaBaiTap })">
+                                <td>@Html.DisplayFor(modelItem => item.DangKy.ThanhToan.HocVien.HoTen)</td>
+                                <td>@Html.DisplayFor(modelItem => item.BaiTap.TenBaiTap)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NgayNop)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-muted">Không có bài tập nào chưa chấm.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Danh sách đã chấm -->
+        <div class="tab-pane fade" id="daCham" role="tabpanel" aria-labelledby="daCham-tab">
+            <h4 class="text-center mb-3">Danh Sách Bài Tập Đã Chấm</h4>
+            <table class="table table-striped table-hover table-bordered text-center">
+                <thead class="table-success">
+                    <tr>
+                        <th>Tên học viên</th>
+                        <th>Bài tập</th>
+                        <th>Ngày nộp</th>
+                        <th>Ngày chấm</th>
+                        <th>Điểm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (daCham != null && daCham.Any())
+                    {
+                        foreach (var item in daCham)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.DangKy.ThanhToan.HocVien.HoTen)</td>
+                                <td>@Html.DisplayFor(modelItem => item.BaiTap.TenBaiTap)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NgayNop)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NgayCham)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Diem)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-muted">Không có bài tập nào đã chấm.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script>
-    // Thêm sự kiện click vào từng hàng
+    // Thêm sự kiện click vào hàng của danh sách chưa chấm
     document.addEventListener("DOMContentLoaded", function () {
         var rows = document.querySelectorAll(".clickable-row");
         for (var i = 0; i < rows.length; i++) {
@@ -50,28 +110,24 @@
             });
         }
     });
-
 </script>
 
 <style>
-    /* Tăng khoảng cách giữa các phần tử */
     .container {
         padding: 20px;
     }
 
-    /* Tăng khoảng cách giữa các cột */
     table th, table td {
         vertical-align: middle;
     }
 
-    /* Hiệu ứng hover cho hàng */
     .clickable-row:hover {
         cursor: pointer;
         background-color: #f1f1f1;
     }
 
-    /* Tạo giao diện mượt hơn khi hover */
     .clickable-row {
         transition: background-color 0.2s;
     }
 </style>
+

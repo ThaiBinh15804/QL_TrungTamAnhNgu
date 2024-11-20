@@ -42,10 +42,10 @@
                         {
                             <td>
                                 <span class="diem-danh-text">
-                                    @(hocVien.ds[j].TrangThai == "Có mặt" ? "x" : hocVien.ds[j].TrangThai == "Vắng" ? "-" : "")
+                                    @(hocVien.ds[j].TrangThai == "Có mặt" ? "+" : hocVien.ds[j].TrangThai == "Vắng" ? "-" : "")
                                 </span>
                                 <input type="text" id="TrangThai_@i@j" name="dsDiemDanh[@i].ds[@j].TrangThai"
-                                       value="@hocVien.ds[j].TrangThai"
+                                       value="@(hocVien.ds[j].TrangThai == "Có mặt" ? "+" : hocVien.ds[j].TrangThai == "Vắng" ? "-" : "")"
                                        class="diem-danh-input d-none text-center w-100"
                                        data-hocvien-index="@i" data-diemdanh-index="@j" />
                             </td>
@@ -55,6 +55,23 @@
             </tbody>
         </table>
     }
+
+    <div class="mt-4">
+        <div class="alert alert-secondary" role="alert">
+            <h5 class="mb-3"><i class="bi bi-info-circle"></i> <b>Chú thích:</b></h5>
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <span class="badge bg-success text-white me-2">+</span>
+                    <span class="text-dark">Có mặt</span>
+                </li>
+                <li>
+                    <span class="badge bg-danger text-white me-2">-</span>
+                    <span class="text-dark">Vắng mặt</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -96,6 +113,12 @@
             if (hocVienIndex !== undefined && diemDanhIndex !== undefined) {
                 // Cập nhật trạng thái trong dsDiemDanh
                 var newTrangThai = $(this).val();
+                if (newTrangThai == '+') {
+                    newTrangThai = "Có mặt";
+                }
+                else if (newTrangThai == '-') {
+                    newTrangThai = "Vắng";
+                }
                 console.log(newTrangThai);
 
                 // Gửi dữ liệu qua AJAX tới controller
