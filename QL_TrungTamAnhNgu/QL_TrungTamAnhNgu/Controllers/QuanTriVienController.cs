@@ -19,89 +19,89 @@ namespace QL_TrungTamAnhNgu.Controllers
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
 
-        public int GetSoLuongNguoiDung_KhoaHoc_PhongHoc(string loaiNguoiDung)
-        {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Xây dựng câu lệnh SQL động
-                var sql = "EXEC soluong_hocvien_giangvien_khoahoc_phonghoc @LoaiNguoiDung = '" + loaiNguoiDung + "'";
+        //public int GetSoLuongNguoiDung_KhoaHoc_PhongHoc(string loaiNguoiDung)
+        //{
+        //    using (var db = new DataClasses1DataContext())
+        //    {
+        //        // Xây dựng câu lệnh SQL động
+        //        var sql = "EXEC soluong_hocvien_giangvien_khoahoc_phonghoc @LoaiNguoiDung = '" + loaiNguoiDung + "'";
 
-                // Thực thi câu lệnh SQL với tham số và trả về kết quả
-                var result = db.ExecuteQuery<int>(sql).FirstOrDefault();
-                return result;
-            }
-        }
+        //        // Thực thi câu lệnh SQL với tham số và trả về kết quả
+        //        var result = db.ExecuteQuery<int>(sql).FirstOrDefault();
+        //        return result;
+        //    }
+        //}
 
-        public ActionResult GetDangKyTheoThang()
-        {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "EXEC soluong_dangky_theo_thang";
-                List<SoluongDangKyTheoThangResult> result = db.ExecuteQuery<SoluongDangKyTheoThangResult>(sql).ToList();
-                return PartialView(result);
-            }
-        }
+        //public ActionResult GetDangKyTheoThang()
+        //{
+        //    using (var db = new DataClasses1DataContext())
+        //    {
+        //        // Gọi stored procedure thông qua DataContext
+        //        var sql = "EXEC soluong_dangky_theo_thang";
+        //        List<SoluongDangKyTheoThangResult> result = db.ExecuteQuery<SoluongDangKyTheoThangResult>(sql).ToList();
+        //        return PartialView(result);
+        //    }
+        //}
 
-        public ActionResult GetLopHocTrungTam()
-        {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from thongke_caclop_trungtam";
-                var result = db.ExecuteQuery<LopHocTrungTam>(sql).ToList();
-                return PartialView(result);
-            }
-        }
+        //public ActionResult GetLopHocTrungTam()
+        //{
+        //    using (var db = new DataClasses1DataContext())
+        //    {
+        //        // Gọi stored procedure thông qua DataContext
+        //        var sql = "select * from thongke_caclop_trungtam";
+        //        var result = db.ExecuteQuery<LopHocTrungTam>(sql).ToList();
+        //        return PartialView(result);
+        //    }
+        //}
 
-        public ActionResult GetDoanhThuTheoThang()
-        {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "EXEC doanhthu_theo_thang";
-                List<DoanhThuTheoThang> result = db.ExecuteQuery<DoanhThuTheoThang>(sql).ToList();
+        //public ActionResult GetDoanhThuTheoThang()
+        //{
+        //    using (var db = new DataClasses1DataContext())
+        //    {
+        //        // Gọi stored procedure thông qua DataContext
+        //        var sql = "EXEC doanhthu_theo_thang";
+        //        List<DoanhThuTheoThang> result = db.ExecuteQuery<DoanhThuTheoThang>(sql).ToList();
 
-                // Chuyển dữ liệu sang chuỗi JSON
-                var jsonResult = JsonConvert.SerializeObject(result);
-                ViewBag.DoanhThuData = jsonResult;
+        //        // Chuyển dữ liệu sang chuỗi JSON
+        //        var jsonResult = JsonConvert.SerializeObject(result);
+        //        ViewBag.DoanhThuData = jsonResult;
                 
 
-                return PartialView(result);
-            }
-        }
+        //        return PartialView(result);
+        //    }
+        //}
 
-        public ActionResult GetThongKeSoTuoi()
-        {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from thongke_tuoi_hocvien";
-                var result = db.ExecuteQuery<ThongKeSoTuoi>(sql).ToList();
+        //public ActionResult GetThongKeSoTuoi()
+        //{
+        //    using (var db = new DataClasses1DataContext())
+        //    {
+        //        // Gọi stored procedure thông qua DataContext
+        //        var sql = "select * from thongke_tuoi_hocvien";
+        //        var result = db.ExecuteQuery<ThongKeSoTuoi>(sql).ToList();
 
-                // Chuyển dữ liệu sang chuỗi JSON
-                var jsonResult = JsonConvert.SerializeObject(result);
-                ViewBag.SoTuoi = jsonResult;
+        //        // Chuyển dữ liệu sang chuỗi JSON
+        //        var jsonResult = JsonConvert.SerializeObject(result);
+        //        ViewBag.SoTuoi = jsonResult;
 
-                return PartialView(result);
-            }
-        }
+        //        return PartialView(result);
+        //    }
+        //}
 
-        public ActionResult GetThongKeGioiTinh()
-        {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from thongke_gioitinh_hocvien";
-                var result = db.ExecuteQuery<ThongKeGioiTinh>(sql).ToList();
+        //public ActionResult GetThongKeGioiTinh()
+        //{
+        //    using (var db = new DataClasses1DataContext())
+        //    {
+        //        // Gọi stored procedure thông qua DataContext
+        //        var sql = "select * from thongke_gioitinh_hocvien";
+        //        var result = db.ExecuteQuery<ThongKeGioiTinh>(sql).ToList();
 
-                // Chuyển dữ liệu sang chuỗi JSON
-                var jsonResult = JsonConvert.SerializeObject(result);
-                ViewBag.GioiTinh = jsonResult;
+        //        // Chuyển dữ liệu sang chuỗi JSON
+        //        var jsonResult = JsonConvert.SerializeObject(result);
+        //        ViewBag.GioiTinh = jsonResult;
 
-                return PartialView(result);
-            }
-        }
+        //        return PartialView(result);
+        //    }
+        //}
 
         public ActionResult Index()
         {
@@ -111,10 +111,14 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
 
             // Gọi stored procedure để lấy số lượng học viên và giảng viên
-            var soLuongHocVien = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("HocVien");
-            var soLuongGiangVien = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("GiangVien");
-            var soLuongKhoaHoc = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("KhoaHoc");
-            var soLuongPhongHoc = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("PhongHoc");
+            //var soLuongHocVien = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("HocVien");
+            //var soLuongGiangVien = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("GiangVien");
+            //var soLuongKhoaHoc = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("KhoaHoc");
+            //var soLuongPhongHoc = GetSoLuongNguoiDung_KhoaHoc_PhongHoc("PhongHoc");
+            var soLuongHocVien = 0;
+            var soLuongGiangVien = 0;
+            var soLuongKhoaHoc = 0;
+            var soLuongPhongHoc = 0;
 
             // Trả về kết quả vào view
             ViewBag.SoLuongHocVien = soLuongHocVien;
@@ -158,7 +162,8 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
-                string newConnectionString="Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
+                //string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
+                string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password;
                 db = new DataClasses1DataContext(newConnectionString);
 
 
