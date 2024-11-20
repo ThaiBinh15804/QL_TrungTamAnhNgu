@@ -151,17 +151,11 @@ namespace QL_TrungTamAnhNgu.Controllers
                     return View();
                 }
 
-                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND006"))
+                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
                     Session["user"] = user;
                     FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
                     return RedirectToAction("Index", "QuanTriVien");
-                }
-                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND005"))
-                {
-                    Session["user"] = user;
-                    FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
-                    return RedirectToAction("DanhSachKhoaHoc", "QuanTriVien");
                 }
                 else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND002")
                 {
