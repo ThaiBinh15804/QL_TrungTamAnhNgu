@@ -99,7 +99,7 @@ namespace QL_TrungTamAnhNgu.Models
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["QL_TrungTamAnhNguConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["QL_TrungTamAnhNguConnectionString1"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -344,14 +344,6 @@ namespace QL_TrungTamAnhNgu.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<view_baitap_theodangky> view_baitap_theodangkies
-		{
-			get
-			{
-				return this.GetTable<view_baitap_theodangky>();
-			}
-		}
-		
 		public System.Data.Linq.Table<view_baitap_theokhoahoc> view_baitap_theokhoahocs
 		{
 			get
@@ -429,6 +421,14 @@ namespace QL_TrungTamAnhNgu.Models
 			get
 			{
 				return this.GetTable<view_thongtin_cosovatchat_phonghoc>();
+			}
+		}
+		
+		public System.Data.Linq.Table<view_baitap_theodangky> view_baitap_theodangkies
+		{
+			get
+			{
+				return this.GetTable<view_baitap_theodangky>();
 			}
 		}
 		
@@ -6864,213 +6864,6 @@ namespace QL_TrungTamAnhNgu.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.view_baitap_theodangky")]
-	public partial class view_baitap_theodangky
-	{
-		
-		private string _MaDangKy;
-		
-		private string _MaBaiTap;
-		
-		private string _TenBaiTap;
-		
-		private string _MoTa;
-		
-		private System.Nullable<decimal> _Diem;
-		
-		private string _TrangThai;
-		
-		private string _FileUpload;
-		
-		private System.Nullable<System.DateTime> _NgayCham;
-		
-		private System.Nullable<System.DateTime> _NgayNop;
-		
-		private string _MaKhoaHoc;
-		
-		private string _TenKhoaHoc;
-		
-		public view_baitap_theodangky()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaDangKy", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string MaDangKy
-		{
-			get
-			{
-				return this._MaDangKy;
-			}
-			set
-			{
-				if ((this._MaDangKy != value))
-				{
-					this._MaDangKy = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaBaiTap", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string MaBaiTap
-		{
-			get
-			{
-				return this._MaBaiTap;
-			}
-			set
-			{
-				if ((this._MaBaiTap != value))
-				{
-					this._MaBaiTap = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenBaiTap", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string TenBaiTap
-		{
-			get
-			{
-				return this._TenBaiTap;
-			}
-			set
-			{
-				if ((this._TenBaiTap != value))
-				{
-					this._TenBaiTap = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(255)")]
-		public string MoTa
-		{
-			get
-			{
-				return this._MoTa;
-			}
-			set
-			{
-				if ((this._MoTa != value))
-				{
-					this._MoTa = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Diem", DbType="Decimal(4,2)")]
-		public System.Nullable<decimal> Diem
-		{
-			get
-			{
-				return this._Diem;
-			}
-			set
-			{
-				if ((this._Diem != value))
-				{
-					this._Diem = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrangThai", DbType="NVarChar(20)")]
-		public string TrangThai
-		{
-			get
-			{
-				return this._TrangThai;
-			}
-			set
-			{
-				if ((this._TrangThai != value))
-				{
-					this._TrangThai = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileUpload", DbType="VarChar(MAX)")]
-		public string FileUpload
-		{
-			get
-			{
-				return this._FileUpload;
-			}
-			set
-			{
-				if ((this._FileUpload != value))
-				{
-					this._FileUpload = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayCham", DbType="Date")]
-		public System.Nullable<System.DateTime> NgayCham
-		{
-			get
-			{
-				return this._NgayCham;
-			}
-			set
-			{
-				if ((this._NgayCham != value))
-				{
-					this._NgayCham = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayNop", DbType="Date")]
-		public System.Nullable<System.DateTime> NgayNop
-		{
-			get
-			{
-				return this._NgayNop;
-			}
-			set
-			{
-				if ((this._NgayNop != value))
-				{
-					this._NgayNop = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaKhoaHoc", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string MaKhoaHoc
-		{
-			get
-			{
-				return this._MaKhoaHoc;
-			}
-			set
-			{
-				if ((this._MaKhoaHoc != value))
-				{
-					this._MaKhoaHoc = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenKhoaHoc", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string TenKhoaHoc
-		{
-			get
-			{
-				return this._TenKhoaHoc;
-			}
-			set
-			{
-				if ((this._TenKhoaHoc != value))
-				{
-					this._TenKhoaHoc = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.view_baitap_theokhoahoc")]
 	public partial class view_baitap_theokhoahoc
 	{
@@ -8308,6 +8101,231 @@ namespace QL_TrungTamAnhNgu.Models
 				if ((this._TrangThai != value))
 				{
 					this._TrangThai = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.view_baitap_theodangky")]
+	public partial class view_baitap_theodangky
+	{
+		
+		private string _MaDangKy;
+		
+		private string _MaBaiTap;
+		
+		private string _TenBaiTap;
+		
+		private string _MoTa;
+		
+		private System.Nullable<decimal> _Diem;
+		
+		private string _TrangThai;
+		
+		private string _FileUpload;
+		
+		private System.Nullable<System.DateTime> _NgayCham;
+		
+		private System.Nullable<System.DateTime> _NgayNop;
+		
+		private string _MaKhoaHoc;
+		
+		private string _FileHocVien;
+		
+		private string _TenKhoaHoc;
+		
+		public view_baitap_theodangky()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaDangKy", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string MaDangKy
+		{
+			get
+			{
+				return this._MaDangKy;
+			}
+			set
+			{
+				if ((this._MaDangKy != value))
+				{
+					this._MaDangKy = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaBaiTap", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string MaBaiTap
+		{
+			get
+			{
+				return this._MaBaiTap;
+			}
+			set
+			{
+				if ((this._MaBaiTap != value))
+				{
+					this._MaBaiTap = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenBaiTap", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string TenBaiTap
+		{
+			get
+			{
+				return this._TenBaiTap;
+			}
+			set
+			{
+				if ((this._TenBaiTap != value))
+				{
+					this._TenBaiTap = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(255)")]
+		public string MoTa
+		{
+			get
+			{
+				return this._MoTa;
+			}
+			set
+			{
+				if ((this._MoTa != value))
+				{
+					this._MoTa = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Diem", DbType="Decimal(4,2)")]
+		public System.Nullable<decimal> Diem
+		{
+			get
+			{
+				return this._Diem;
+			}
+			set
+			{
+				if ((this._Diem != value))
+				{
+					this._Diem = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrangThai", DbType="NVarChar(20)")]
+		public string TrangThai
+		{
+			get
+			{
+				return this._TrangThai;
+			}
+			set
+			{
+				if ((this._TrangThai != value))
+				{
+					this._TrangThai = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileUpload", DbType="VarChar(MAX)")]
+		public string FileUpload
+		{
+			get
+			{
+				return this._FileUpload;
+			}
+			set
+			{
+				if ((this._FileUpload != value))
+				{
+					this._FileUpload = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayCham", DbType="Date")]
+		public System.Nullable<System.DateTime> NgayCham
+		{
+			get
+			{
+				return this._NgayCham;
+			}
+			set
+			{
+				if ((this._NgayCham != value))
+				{
+					this._NgayCham = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayNop", DbType="Date")]
+		public System.Nullable<System.DateTime> NgayNop
+		{
+			get
+			{
+				return this._NgayNop;
+			}
+			set
+			{
+				if ((this._NgayNop != value))
+				{
+					this._NgayNop = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaKhoaHoc", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string MaKhoaHoc
+		{
+			get
+			{
+				return this._MaKhoaHoc;
+			}
+			set
+			{
+				if ((this._MaKhoaHoc != value))
+				{
+					this._MaKhoaHoc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileHocVien", DbType="VarChar(MAX)")]
+		public string FileHocVien
+		{
+			get
+			{
+				return this._FileHocVien;
+			}
+			set
+			{
+				if ((this._FileHocVien != value))
+				{
+					this._FileHocVien = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenKhoaHoc", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string TenKhoaHoc
+		{
+			get
+			{
+				return this._TenKhoaHoc;
+			}
+			set
+			{
+				if ((this._TenKhoaHoc != value))
+				{
+					this._TenKhoaHoc = value;
 				}
 			}
 		}
