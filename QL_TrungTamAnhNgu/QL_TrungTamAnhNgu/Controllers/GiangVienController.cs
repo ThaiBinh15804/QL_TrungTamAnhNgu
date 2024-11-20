@@ -18,7 +18,8 @@ namespace QL_TrungTamAnhNgu.Controllers
         //
         // GET: /GiangVien/
 
-        DataClasses1DataContext data = new DataClasses1DataContext();
+        public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+        DataClasses1DataContext data = new DataClasses1DataContext(conn);
 
         public ActionResult Index()
         {
@@ -38,11 +39,13 @@ namespace QL_TrungTamAnhNgu.Controllers
             string username = c["username"];
             string password = c["password"];
 
+            NguoiDung user = data.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == data.AuthenticateUser(username, password));
+            
             string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password + ";";
+            conn = newConnectionString;
             data = new DataClasses1DataContext(newConnectionString);
 
 
-            var user = data.NguoiDungs.FirstOrDefault(u => u.TenTaiKhoan == username && u.MatKhau == password);
             if (user != null)
             {
                 GiangVien gv = data.GiangViens.FirstOrDefault(t => t.MaGiangVien == user.MaNguoiDung);
