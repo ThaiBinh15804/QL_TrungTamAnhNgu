@@ -4,39 +4,35 @@
     ViewBag.Title = "Chấm bài";
 }
 
-<div class="container mt-4">
+<div class="mt-4">
     <h2 class="text-center mb-4" style="font-size: 18px; font-weight: 500">Danh Sách Bài Tập Đã Chấm</h2>
 
-    <table class="table table-striped table-hover table-bordered text-center">
-        <thead class="table-primary">
-            <tr>
-                <th>Tên học viên</th>
-                <th>Bài tập</th>
-                <th>Ngày nộp</th>
-                <th>Số điểm</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div>
+        <div class="d-flex" style="background-color: #dadada; padding: 8px 0;">
+            <div class="col-3 text-center">Tên học viên</div>
+            <div class="col-3 text-center">Bài tập</div>
+            <div class="col-3 text-center">Ngày nộp</div>
+            <div class="col-3 text-center">Số điểm</div>
+        </div>
+        <div>
             @if (Model != null && Model.Any())
             {
                 foreach (var item in Model)
                 {
-                    <tr class="clickable-row">
-                        <td>@Html.DisplayFor(modelItem => item.DangKy.ThanhToan.HocVien.HoTen)</td>
-                        <td>@Html.DisplayFor(modelItem => item.BaiTap.TenBaiTap)</td>
-                        <td>@Html.DisplayFor(modelItem => item.NgayNop)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Diem)</td>
-                    </tr>
+                   <div style="display: flex; width: 100%; padding: 8px 0;">    
+                        <div class="col-3 text-center">@Html.DisplayFor(modelItem => item.DangKy.ThanhToan.HocVien.HoTen)</div>
+                        <div class="col-3 text-center">@Html.DisplayFor(modelItem => item.BaiTap.TenBaiTap)</div>
+                        <div class="col-3 text-center">@Html.DisplayFor(modelItem => item.NgayNop)</div>
+                        <div class="col-3 text-center">@Html.DisplayFor(modelItem => item.Diem)</div>
+                   </div>
                 }
             }
             else
             {
-                <tr>
-                    <td colspan="3" class="text-muted">Không có bài tập nào chưa chấm hoặc được nộp</td>
-                </tr>
+                    <div style="width: 100%; margin-top: 10px; background-color: #f2f2f2; color:white; text-align: center; padding: 4px 0;" class="text-muted">Không có bài tập nào chưa chấm hoặc được nộp</div>
             }
-        </tbody>
-    </table>
+        </div>
+    </div>
 </div>
 
 <script>

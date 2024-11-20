@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QL_TrungTamAnhNgu" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=PHAMTHUAN\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QL_TrungTamAnhNguConnectionString3" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=PHAMTHUAN\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QL_TrungTamAnhNguConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BaiTap" Member="BaiTaps">
     <Type Name="BaiTap">
       <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -10,6 +10,16 @@
       <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Association Name="BaiTap_DangKy_BaiTap" Member="DangKy_BaiTaps" ThisKey="MaBaiTap" OtherKey="MaBaiTap" Type="DangKy_BaiTap" />
       <Association Name="BaiTap_KhoaHoc_BaiTap" Member="KhoaHoc_BaiTaps" ThisKey="MaBaiTap" OtherKey="MaBaiTap" Type="KhoaHoc_BaiTap" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BaoCaoThang" Member="BaoCaoThangs">
+    <Type Name="BaoCaoThang">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NgayBaoCao" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="TongSoHocVien" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TongDoanhThu" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="LopHoatDong" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TongKhoaHoc" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.ChuyenCan" Member="ChuyenCans">
@@ -278,19 +288,31 @@
       <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.ThongTinThanhToan" Member="ThongTinThanhToans">
-    <Type Name="ThongTinThanhToan">
-      <Column Name="MaThanhToan" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="TongTien" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
-      <Column Name="TiLeGiam" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
-      <Column Name="TongTienSauGiam" Type="System.Decimal" DbType="Decimal(29,8)" CanBeNull="true" />
-      <Column Name="NgayThucHien" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="MaHocVien" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="HinhThuc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+  <Table Name="dbo.view_baitap_theodangky" Member="view_baitap_theodangkies">
+    <Type Name="view_baitap_theodangky">
+      <Column Name="MaDangKy" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBaiTap" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Diem" Type="System.Decimal" DbType="Decimal(4,2)" CanBeNull="true" />
       <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="AnhHoaDon" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="HoTen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FileUpload" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="NgayCham" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="NgayNop" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="MaKhoaHoc" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.view_baitap_theokhoahoc" Member="view_baitap_theokhoahocs">
+    <Type Name="view_baitap_theokhoahoc">
+      <Column Name="MaKhoaHoc" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBaiTap" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="FileBaiTap" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="NgayTao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.view_danhSachGiangVienVaLopDangDay" Member="view_danhSachGiangVienVaLopDangDays">
@@ -349,17 +371,30 @@
       <Column Name="ThoiGianBatDau" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
       <Column Name="ThoiGianKetThuc" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
       <Column Name="TenPhong" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLop" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="SucChua" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.view_tailieubaitap_theokhoahoc" Member="view_tailieubaitap_theokhoahocs">
-    <Type Name="view_tailieubaitap_theokhoahoc">
+  <Table Name="dbo.view_lophoc_dangky" Member="view_lophoc_dangkies">
+    <Type Name="view_lophoc_dangky">
+      <Column Name="MaLop" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLop" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NgayBatDau" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="NgayKetThuc" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="MaHocVien" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.view_tailieu_theokhoahoc" Member="view_tailieu_theokhoahocs">
+    <Type Name="view_tailieu_theokhoahoc">
       <Column Name="MaKhoaHoc" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MaTaiLieu" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="TenTaiLieu" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="FileTaiLieu" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="TenBaiTap" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="FileBaiTap" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="NgayTao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.view_thongtin_cosovatchat_phonghoc" Member="view_thongtin_cosovatchat_phonghocs">
@@ -379,7 +414,25 @@
       <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.ThongTinThanhToan" Member="ThongTinThanhToans">
+    <Type Name="ThongTinThanhToan">
+      <Column Name="MaThanhToan" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TongTien" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TiLeGiam" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
+      <Column Name="TongTienSauGiam" Type="System.Decimal" DbType="Decimal(29,8)" CanBeNull="true" />
+      <Column Name="NgayThucHien" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="MaHocVien" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HinhThuc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="AnhHoaDon" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="HoTen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Function Name="dbo.AssignPermissionsToUserGroups" Method="AssignPermissionsToUserGroups">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.BaoCaoDinhKy" Method="BaoCaoDinhKy">
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.capnhat_trangthai_thanhtoan" Method="capnhat_trangthai_thanhtoan">
@@ -484,6 +537,20 @@
       <Column Name="NgayThamGia" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="MucTieuHocTap" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.usp_CapNhatTrangThaiBaiTap" Method="usp_CapNhatTrangThaiBaiTap">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_CapNhatTrangThaiGiamGia" Method="usp_CapNhatTrangThaiGiamGia">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_CapNhatTrangThaiLopHoc" Method="usp_CapNhatTrangThaiLopHoc">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AuthenticateUser" Method="AuthenticateUser" IsComposable="true">
+    <Parameter Name="TenTaiKhoan" Parameter="tenTaiKhoan" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="MatKhau" Parameter="matKhau" Type="System.String" DbType="NVarChar(255)" />
+    <Return Type="System.String" />
   </Function>
   <Function Name="dbo.fn_BaiTapCuaLop" Method="fn_BaiTapCuaLop" IsComposable="true">
     <Parameter Name="MALOP" Parameter="mALOP" Type="System.String" DbType="VarChar(10)" />
@@ -609,6 +676,17 @@
     <Parameter Name="MaHocVien" Parameter="maHocVien" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="MaLop" Parameter="maLop" Type="System.String" DbType="VarChar(10)" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fn_timKiemBaiTap" Method="fn_timKiemBaiTap" IsComposable="true">
+    <Parameter Name="TenBaiTap" Parameter="tenBaiTap" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="fn_timKiemBaiTapResult">
+      <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBaiTap" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="FileUpload" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="NgayTao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+    </ElementType>
   </Function>
   <Function Name="dbo.fn_timKiemGiangVien" Method="fn_timKiemGiangVien" IsComposable="true">
     <Parameter Name="HoTen" Parameter="hoTen" Type="System.String" DbType="NVarChar(50)" />

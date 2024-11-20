@@ -17,90 +17,72 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class QuanTriVienController : Controller
     {
-        DataClasses1DataContext db = new DataClasses1DataContext();
+        public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa; Password=123";
+        DataClasses1DataContext db = new DataClasses1DataContext(connn);
 
         public int GetSoLuongNguoiDung_KhoaHoc_PhongHoc(string loaiNguoiDung)
         {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Xây dựng câu lệnh SQL động
-                var sql = "EXEC soluong_hocvien_giangvien_khoahoc_phonghoc @LoaiNguoiDung = '" + loaiNguoiDung + "'";
+            // Xây dựng câu lệnh SQL động
+            var sql = "EXEC soluong_hocvien_giangvien_khoahoc_phonghoc @LoaiNguoiDung = '" + loaiNguoiDung + "'";
 
-                // Thực thi câu lệnh SQL với tham số và trả về kết quả
-                var result = db.ExecuteQuery<int>(sql).FirstOrDefault();
-                return result;
-            }
+            // Thực thi câu lệnh SQL với tham số và trả về kết quả
+            var result = db.ExecuteQuery<int>(sql).FirstOrDefault();
+            return result;
         }
 
         public ActionResult GetDangKyTheoThang()
         {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "EXEC soluong_dangky_theo_thang";
-                List<SoluongDangKyTheoThangResult> result = db.ExecuteQuery<SoluongDangKyTheoThangResult>(sql).ToList();
-                return PartialView(result);
-            }
+            // Gọi stored procedure thông qua DataContext
+            var sql = "EXEC soluong_dangky_theo_thang";
+            List<SoluongDangKyTheoThangResult> result = db.ExecuteQuery<SoluongDangKyTheoThangResult>(sql).ToList();
+            return PartialView(result);
         }
 
         public ActionResult GetLopHocTrungTam()
         {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from thongke_caclop_trungtam";
-                var result = db.ExecuteQuery<LopHocTrungTam>(sql).ToList();
-                return PartialView(result);
-            }
+            // Gọi stored procedure thông qua DataContext
+            var sql = "select * from thongke_caclop_trungtam";
+            var result = db.ExecuteQuery<LopHocTrungTam>(sql).ToList();
+            return PartialView(result);
         }
 
         public ActionResult GetDoanhThuTheoThang()
         {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "EXEC doanhthu_theo_thang";
-                List<DoanhThuTheoThang> result = db.ExecuteQuery<DoanhThuTheoThang>(sql).ToList();
+            // Gọi stored procedure thông qua DataContext
+            var sql = "EXEC doanhthu_theo_thang";
+            List<DoanhThuTheoThang> result = db.ExecuteQuery<DoanhThuTheoThang>(sql).ToList();
 
-                // Chuyển dữ liệu sang chuỗi JSON
-                var jsonResult = JsonConvert.SerializeObject(result);
-                ViewBag.DoanhThuData = jsonResult;
-                
+            // Chuyển dữ liệu sang chuỗi JSON
+            var jsonResult = JsonConvert.SerializeObject(result);
+            ViewBag.DoanhThuData = jsonResult;
 
-                return PartialView(result);
-            }
+            return PartialView(result);
         }
 
         public ActionResult GetThongKeSoTuoi()
         {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from thongke_tuoi_hocvien";
-                var result = db.ExecuteQuery<ThongKeSoTuoi>(sql).ToList();
+            // Gọi stored procedure thông qua DataContext
+            var sql = "select * from thongke_tuoi_hocvien";
+            var result = db.ExecuteQuery<ThongKeSoTuoi>(sql).ToList();
 
-                // Chuyển dữ liệu sang chuỗi JSON
-                var jsonResult = JsonConvert.SerializeObject(result);
-                ViewBag.SoTuoi = jsonResult;
+            // Chuyển dữ liệu sang chuỗi JSON
+            var jsonResult = JsonConvert.SerializeObject(result);
+            ViewBag.SoTuoi = jsonResult;
 
-                return PartialView(result);
-            }
+            return PartialView(result);                
         }
 
         public ActionResult GetThongKeGioiTinh()
         {
-            using (var db = new DataClasses1DataContext())
-            {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from thongke_gioitinh_hocvien";
-                var result = db.ExecuteQuery<ThongKeGioiTinh>(sql).ToList();
+            // Gọi stored procedure thông qua DataContext
+            var sql = "select * from thongke_gioitinh_hocvien";
+            var result = db.ExecuteQuery<ThongKeGioiTinh>(sql).ToList();
 
-                // Chuyển dữ liệu sang chuỗi JSON
-                var jsonResult = JsonConvert.SerializeObject(result);
-                ViewBag.GioiTinh = jsonResult;
+            // Chuyển dữ liệu sang chuỗi JSON
+            var jsonResult = JsonConvert.SerializeObject(result);
+            ViewBag.GioiTinh = jsonResult;
 
-                return PartialView(result);
-            }
+            return PartialView(result);
         }
 
         public ActionResult Index()
@@ -140,7 +122,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             ViewBag.tk = username;
             ViewBag.mk = password;
-            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.TenTaiKhoan == username && k.MatKhau == password);
+            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.MaNguoiDung == db.AuthenticateUser(username, password));
             if (!string.IsNullOrEmpty(username) && username.Contains(" "))
             {
                 ViewBag.text = "Tên đăng nhập không chứa khoảng trắng!";
@@ -159,7 +141,8 @@ namespace QL_TrungTamAnhNgu.Controllers
             try
             {
                 string newConnectionString="Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
-                db = new DataClasses1DataContext(newConnectionString);
+                connn = newConnectionString;
+                db = new DataClasses1DataContext(connn);
 
 
                 if (user.TrangThai == "Đã khóa" && (user.MaNhomND == "NND002" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
@@ -168,11 +151,17 @@ namespace QL_TrungTamAnhNgu.Controllers
                     return View();
                 }
 
-                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
+                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND006"))
                 {
                     Session["user"] = user;
                     FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
                     return RedirectToAction("Index", "QuanTriVien");
+                }
+                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND005"))
+                {
+                    Session["user"] = user;
+                    FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
+                    return RedirectToAction("DanhSachKhoaHoc", "QuanTriVien");
                 }
                 else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND002")
                 {
