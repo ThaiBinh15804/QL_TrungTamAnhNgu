@@ -57,14 +57,7 @@
                     }
                 </td>
                 <td>
-                    @if (!string.IsNullOrEmpty(Model.FileBaiTap))
-                    {
-                        <a href="~/Uploads/@Model.FileBaiTap" target="_blank" class="btn btn-primary">Tải bài tập</a>
-                    }
-                    else
-                    {
-                        <p class="text-danger">Bài tập chưa có file đính kèm.</p>
-                    }
+                    @Model.FileBaiTap
                 </td>
                 <td class="text-center">
                     <a href="@Url.Action("ChiTietBaiTap", "HocVien", new { maBaiTap = @Model.MaBaiTap })" class="btn btn-outline-primary btn-sm">

@@ -5,14 +5,16 @@ using System.Web;
 using System.Web.Mvc;
 using QL_TrungTamAnhNgu.Models;
 using System.Text.RegularExpressions;
-using System.IO;  
+using System.IO;
+using System.Web.Security;
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
+    [Authorize]
     public class HocVienController : Controller
     {
+        public static string conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=123";
         // GET: /HocVien/
-        public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
         DataClasses1DataContext db = new DataClasses1DataContext(conn);
         public ActionResult TrangChu()
         {
@@ -44,7 +46,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             Session["MaLop"] = lopHoc.MaLop;
             Session["MaKhoaHoc"] = lopHoc.MaKhoaHoc;
 
-            return View(lopHoc);  
+            return View(lopHoc);
         }
 
 
@@ -101,7 +103,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (string.IsNullOrEmpty(maKhoaHoc))
             {
                 ViewBag.ThongBao = "Không tìm thấy mã bài tập.";
-                return RedirectToAction("BaiTap", "HocVien");  
+                return RedirectToAction("BaiTap", "HocVien");
             }
 
             var chiTietBaiTap = db.view_baitap_theokhoahocs
@@ -128,7 +130,6 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             // Lấy chi tiết bài tập từ view_baitap_theodangky
             var chiTietBaiTap = db.view_baitap_theodangkies.FirstOrDefault(v => v.MaBaiTap == maBaiTap);
-
             if (chiTietBaiTap == null)
             {
                 ViewBag.ThongBao = "Không tìm thấy thông tin bài tập.";
@@ -138,6 +139,76 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(chiTietBaiTap);
         }
 
+        public ActionResult NopBaiTap(string maBaiTap)
+        {
+            if (string.IsNullOrEmpty(maBaiTap))
+            {
+                return RedirectToAction("BaiTap", "HocVien");
+            }
+
+            ViewBag.MaBaiTap = maBaiTap;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult XuLyNopBaiTap(string maBaiTap, HttpPostedFileBase fileUpload)
+        {
+            if (fileUpload != null && fileUpload.ContentLength > 0)
+            {
+                try
+                {
+                    // Tạo thư mục nếu chưa tồn tại
+                    string uploadFolder = Server.MapPath("~/Uploads");
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    // Kiểm tra kích thước file
+                    if (fileUpload.ContentLength > 5 * 1024 * 1024) // Giới hạn 5MB
+                    {
+                        TempData["Error"] = "Dung lượng file vượt quá giới hạn (5MB).";
+                        TempData["Success"] = null; // Xóa thông báo thành công nếu có
+                        return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+                    }
+
+                    // Lưu file
+                    string fileName = Path.GetFileName(fileUpload.FileName);
+                    string path = Path.Combine(uploadFolder, fileName);
+                    fileUpload.SaveAs(path);
+
+                    // Cập nhật cơ sở dữ liệu
+                    var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap);
+                    if (baiTap != null)
+                    {
+                        baiTap.FileUpload = fileName;
+                        baiTap.TrangThai = "Đã nộp";
+                        baiTap.NgayNop = DateTime.Now;
+                        db.SubmitChanges();
+                    }
+
+                    // Xóa thông báo lỗi nếu có và hiển thị thông báo thành công
+                    TempData["Error"] = null;
+                    TempData["Success"] = "Bài tập đã được nộp thành công!";
+                }
+                catch (Exception ex)
+                {
+                    // Xóa thông báo thành công nếu có và hiển thị thông báo lỗi
+                    TempData["Success"] = null;
+                    TempData["Error"] = "Có lỗi xảy ra: " + ex.Message;
+                    return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+                }
+            }
+            else
+            {
+                // Hiển thị lỗi khi chưa chọn file
+                TempData["Success"] = null; // Xóa thông báo thành công nếu có
+                TempData["Error"] = "Bạn chưa chọn file!";
+            }
+
+            return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+        }
+
         public ActionResult ChiTietLichHoc()
         {
             var maHocVien = Session["MaHocVien"].ToString();
@@ -145,16 +216,16 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (string.IsNullOrEmpty(maThanhToan))
             {
                 ViewBag.ThongBao = "Không tìm thấy thông tin thanh toán cho học viên này.";
-                return View(); 
+                return View();
             }
-            var danhSachLopHoc = db.DangKies.Where(dk => dk.MaThanhToan == maThanhToan).Select(dk => dk.MaLop) .ToList();
+            var danhSachLopHoc = db.DangKies.Where(dk => dk.MaThanhToan == maThanhToan).Select(dk => dk.MaLop).ToList();
             var danhSachLichHoc = db.view_lichhoc_chitiet_cua_lophocs.Where(lh => danhSachLopHoc.Contains(lh.MaLop)).ToList();
             if (!danhSachLichHoc.Any())
             {
                 ViewBag.ThongBao = "Không tìm thấy lịch học cho các lớp đã đăng ký.";
-                return View(); 
+                return View();
             }
-            return View(danhSachLichHoc); 
+            return View(danhSachLichHoc);
         }
 
         // THONG TIN NGUOI DUNG
@@ -306,42 +377,42 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult DoiMatKhau(string currentPassword, string newPassword)
-        //{
-        //    var userId = Session["UserId"];
-        //    if (userId == null)
-        //    {
-        //        return Json(new { success = false, message = "Bạn cần đăng nhập để đổi mật khẩu." });
-        //    }
-        //    var nguoiDung = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
-        //    if (nguoiDung == null || nguoiDung.MatKhau != currentPassword)
-        //    {
-        //        return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
-        //    }
-        //    if (!Regex.IsMatch(newPassword, @"[A-Z]")) 
-        //    {
-        //        return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự in hoa." });
-        //    }
+        [HttpPost]
+        public ActionResult DoiMatKhau(string currentPassword, string newPassword)
+        {
+            var userId = Session["UserId"];
+            if (userId == null)
+            {
+                return Json(new { success = false, message = "Bạn cần đăng nhập để đổi mật khẩu." });
+            }
+            var nguoiDung = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
+            if (nguoiDung == null || nguoiDung.MatKhau != currentPassword)
+            {
+                return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
+            }
+            if (!Regex.IsMatch(newPassword, @"[A-Z]"))
+            {
+                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự in hoa." });
+            }
 
-        //    if (!Regex.IsMatch(newPassword, @"[0-9]")) 
-        //    {
-        //        return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một chữ số." });
-        //    }
-        //    if (!Regex.IsMatch(newPassword,"[!@#$%^&*(),.?\":{}|<>]"))
-        //    {
-        //        return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt." });
-        //    }
-        //    nguoiDung.MatKhau = newPassword;
-        //    db.SubmitChanges();  
-        //    return Json(new { success = true, message = "Mật khẩu đã được cập nhật thành công!" });
-        //}
+            if (!Regex.IsMatch(newPassword, @"[0-9]"))
+            {
+                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một chữ số." });
+            }
+            if (!Regex.IsMatch(newPassword, "[!@#$%^&*(),.?\":{}|<>]"))
+            {
+                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt." });
+            }
+            nguoiDung.MatKhau = newPassword;
+            db.SubmitChanges();
+            return Json(new { success = true, message = "Mật khẩu đã được cập nhật thành công!" });
+        }
 
 
-       public ActionResult ThanhToan()
+        public ActionResult ThanhToan()
         {
             var maHocVien = Session["MaHocVien"].ToString();
-            var thanhToanList = db.ThongTinThanhToans.Where(tt => tt.MaHocVien == maHocVien) .ToList(); 
+            var thanhToanList = db.ThongTinThanhToans.Where(tt => tt.MaHocVien == maHocVien).ToList();
 
             if (thanhToanList == null || !thanhToanList.Any())
             {
@@ -351,98 +422,29 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(thanhToanList);
         }
 
-       public ActionResult NopBaiTap(string maBaiTap)
-       {
-           if (string.IsNullOrEmpty(maBaiTap))
-           {
-               return RedirectToAction("BaiTap", "HocVien");
-           }
-
-           ViewBag.MaBaiTap = maBaiTap;
-           return View();
-       }
-
-       [HttpPost]
-       public ActionResult XuLyNopBaiTap(string maBaiTap, HttpPostedFileBase fileUpload)
-       {
-           if (fileUpload != null && fileUpload.ContentLength > 0)
-           {
-               try
-               {
-                   // Tạo thư mục nếu chưa tồn tại
-                   string uploadFolder = Server.MapPath("~/Uploads");
-                   if (!Directory.Exists(uploadFolder))
-                   {
-                       Directory.CreateDirectory(uploadFolder);
-                   }
-
-                   // Kiểm tra kích thước file
-                   if (fileUpload.ContentLength > 5 * 1024 * 1024) // Giới hạn 5MB
-                   {
-                       TempData["Error"] = "Dung lượng file vượt quá giới hạn (5MB).";
-                       TempData["Success"] = null; // Xóa thông báo thành công nếu có
-                       return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
-                   }
-
-                   // Lưu file
-                   string fileName = Path.GetFileName(fileUpload.FileName);
-                   string path = Path.Combine(uploadFolder, fileName);
-                   fileUpload.SaveAs(path);
-
-                   // Cập nhật cơ sở dữ liệu
-                   var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap);
-                   if (baiTap != null)
-                   {
-                       baiTap.FileUpload = fileName;
-                       baiTap.TrangThai = "Đã nộp";
-                       baiTap.NgayNop = DateTime.Now;
-                       db.SubmitChanges();
-                   }
-
-                   // Xóa thông báo lỗi nếu có và hiển thị thông báo thành công
-                   TempData["Error"] = null;
-                   TempData["Success"] = "Bài tập đã được nộp thành công!";
-               }
-               catch (Exception ex)
-               {
-                   // Xóa thông báo thành công nếu có và hiển thị thông báo lỗi
-                   TempData["Success"] = null;
-                   TempData["Error"] = "Có lỗi xảy ra: " + ex.Message;
-                   return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
-               }
-           }
-           else
-           {
-               // Hiển thị lỗi khi chưa chọn file
-               TempData["Success"] = null; // Xóa thông báo thành công nếu có
-               TempData["Error"] = "Bạn chưa chọn file!";
-           }
-
-           return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
-       }
-
-
 
         // DANG NHAP
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult DangNhap()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult DangNhap(string username, string password)
         {
             var user = db.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == db.AuthenticateUser(username, password));
-            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password + "";
+            conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password + "";
             db = new DataClasses1DataContext(conn);
             if (user != null)
             {
                 Session["UserId"] = user.MaNguoiDung;
-                Session["MaHocVien"] = user.HocVien.MaHocVien; 
+                Session["MaHocVien"] = user.HocVien.MaHocVien;
                 Session["User"] = user;
                 Session["UserName"] = user.TenTaiKhoan;
-                
+                FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
                 return RedirectToAction("TrangChu", "HocVien");
             }
             else
@@ -452,10 +454,12 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
         }
 
+
         public ActionResult DangXuat()
         {
             Session.Clear();
-            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+            conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+            FormsAuthentication.SignOut();
             return RedirectToAction("DangNhap");
         }
 
@@ -487,6 +491,5 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
             }
         }
-
     }
 }
