@@ -138,6 +138,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\BangDiem.cs" />
+    <Compile Include="ViewModel\HocVien_DiemDanh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\BangDiem.cs" />
     <Compile Include="ViewModel\HocVien_DiemDanh.cs" />
@@ -272,13 +274,12 @@
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap-5.0.2-dist\js\bootstrap.min.js.map" />
     <Content Include="Content\HinhAnh\BaiTap\Chuong 4_Bao mat va an toan du lieu_Full.pdf" />
+    <Content Include="Content\HinhAnh\DangKy_BaiTap\File_BT002_DK001.pdf" />
     <Content Include="Models\DataClasses1.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\HinhAnh\TaiLieu\Chuong 3_Function.pdf" />
-    <Content Include="Content\HinhAnh\TaiLieu\github-git-cheat-sh.pdf" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -375,10 +376,26 @@
     <Content Include="Views\HocVien\ThongTinNguoiDung.cshtml" />
     <Content Include="Views\HocVien\ThanhToan.cshtml" />
     <Content Include="Views\HocVien\NopBaiTap.cshtml" />
+    <Content Include="Views\GiangVien\Index.cshtml" />
+    <Content Include="Views\GiangVien\ChiTietLopHoc.cshtml" />
+    <Content Include="Views\GiangVien\LopHocCuaToi.cshtml" />
+    <Content Include="Views\GiangVien\Test.cshtml" />
+    <Content Include="Views\GiangVien\ThongTin.cshtml" />
+    <Content Include="Views\GiangVien\DangNhap.cshtml" />
+    <Content Include="Views\Shared\_LayoutGiangVien.cshtml" />
+    <Content Include="Views\GiangVien\HocVien.cshtml" />
+    <Content Include="Views\GiangVien\DiemDanh.cshtml" />
+    <Content Include="Views\GiangVien\CapNhatDiemDanh.cshtml" />
+    <Content Include="Views\GiangVien\ChamDiem.cshtml" />
+    <Content Include="Views\GiangVien\ChamDiemBaiTap.cshtml" />
+    <Content Include="Views\GiangVien\BangDiem.cshtml" />
+    <Content Include="Views\GiangVien\ThongTinNguoiDung.cshtml" />
+    <Content Include="Views\GiangVien\LichGiangDay.cshtml" />
+    <Content Include="Views\GiangVien\LichHoc.cshtml" />
+    <Content Include="Views\GiangVien\TimKiem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\HinhAnh\DangKy_BaiTap\" />
     <Folder Include="Content\HinhAnh\GiamGia\" />
     <Folder Include="Content\HinhAnh\LopHoc\" />
     <Folder Include="Content\HinhAnh\ThanhToan\" />

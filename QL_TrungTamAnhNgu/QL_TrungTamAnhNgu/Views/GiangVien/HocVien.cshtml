@@ -1,0 +1,31 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.fn_DSHocVienCuaLopResult>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Danh Sách Học Viên</h2>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Trình độ</th>
+                <th>Mục tiêu</th>
+                <th>Số buổi tham gia</th>
+                <th>Số buổi vắng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TrinhDo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MucTieuHocTap)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SoBuoiDaHoc)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SoBuoiVang)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

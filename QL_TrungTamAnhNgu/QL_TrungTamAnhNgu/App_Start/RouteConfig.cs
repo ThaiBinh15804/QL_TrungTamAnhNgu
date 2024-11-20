@@ -17,6 +17,7 @@ namespace QL_TrungTamAnhNgu
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "HocVien", action = "DangNhap", id = UrlParameter.Optional }
+                defaults: new { controller = "GiangVien", action = "DangNhap", id = UrlParameter.Optional }
             );
         }
     }
