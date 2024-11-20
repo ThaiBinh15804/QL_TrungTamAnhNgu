@@ -1,0 +1,77 @@
+﻿@model QL_TrungTamAnhNgu.Models.view_baitap_theokhoahoc
+
+@{
+    ViewBag.Title = "Bài tập";
+    Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
+}
+<hr class="my-0">
+<div class="bg-light py-1 shadow-sm border-bottom mt-0">
+    <div class="container">
+        <ul class="nav justify-content-center mb-0">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="@Url.Action("LopHoc", "HocVien", new { id = Session["MaLop"] })">Thông tin lớp học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/BaiTap">Bài tập</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/TaiLieu">Tài liệu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/ChuyenCan">Chuyên cần</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <h3 class="text-primary text-center mb-4">Danh sách bài tập</h3>
+
+    <table class="table table-bordered shadow-sm">
+        <!-- Tiêu đề bảng -->
+        <thead>
+            <tr>
+                <th>Tên bài tập</th>
+                <th>Mô tả</th>
+                <th>Ngày tạo</th>
+                <th>Trạng thái</th>
+                <th>File bài tập</th>
+                <th></th> <!-- Cột Xem chi tiết -->
+            </tr>
+        </thead>
+
+        <!-- Dữ liệu bảng -->
+        <tbody>
+            <tr>
+                <td>@Model.TenBaiTap</td>
+                <td>@Model.MoTa</td>
+                <td>@(Model.NgayTao.HasValue ? Model.NgayTao.Value.ToString("dd/MM/yyyy") : "Không rõ")</td>
+                <td>
+                    @if (Model.TrangThai == "Đang hoạt động")
+                    {
+                        <span class="badge bg-success">Đang hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Đã kết thúc</span>
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.FileBaiTap))
+                    {
+                        <a href="~/Uploads/@Model.FileBaiTap" target="_blank" class="btn btn-primary">Tải bài tập</a>
+                    }
+                    else
+                    {
+                        <p class="text-danger">Bài tập chưa có file đính kèm.</p>
+                    }
+                </td>
+                <td class="text-center">
+                    <a href="@Url.Action("ChiTietBaiTap", "HocVien", new { maBaiTap = @Model.MaBaiTap })" class="btn btn-outline-primary btn-sm">
+                        Xem chi tiết
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.ThongTinThanhToan>
+
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">
+        <i class="fas fa-money-bill-wave me-2"></i>Danh sách Thanh Toán
+    </h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive mx-auto" style="max-width: 900px;">
+            <table class="table table-bordered text-center">
+                <thead class="table-success">
+                    <tr>
+                        <th><i class="fas fa-book me-2"></i>Khóa Học</th>
+                        <th><i class="fas fa-dollar-sign me-2"></i>Số Tiền</th>
+                        <th><i class="fas fa-percent me-2"></i>Tỉ lệ Giảm</th>
+                        <th><i class="fas fa-money-check-alt me-2"></i>Tổng Tiền</th>
+                        <th><i class="fas fa-calendar-alt me-2"></i>Ngày Thực Hiện</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TenKhoaHoc</td>
+                            <td>@String.Format("{0:C}", item.TongTien)</td>
+                            <td>@(item.TiLeGiam.HasValue ? item.TiLeGiam.Value.ToString("0") : "0")%</td>
+                            <td>@String.Format("{0:C}", item.TongTienSauGiam)</td>
+                            <td>@(item.NgayThucHien.HasValue ? item.NgayThucHien.Value.ToString("dd/MM/yyyy") : "Chưa có thông tin")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center">
+            <i class="fas fa-exclamation-circle me-2"></i>Không có dữ liệu thanh toán.
+        </div>
+    }
+</div>

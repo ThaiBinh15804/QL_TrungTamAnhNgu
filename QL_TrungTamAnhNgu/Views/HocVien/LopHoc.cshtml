@@ -1,0 +1,124 @@
+﻿@model QL_TrungTamAnhNgu.Models.LopHoc
+
+@{
+    ViewBag.Title = "Chi tiết lớp học";
+    Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
+}
+
+<hr class="my-0">
+<div class="bg-light py-1 shadow-sm border-bottom mt-0">
+    <div class="container">
+        <ul class="nav justify-content-center mb-0">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="@Url.Action("LopHoc", "HocVien", new { id = Session["MaLop"] })">Thông tin lớp học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/BaiTap">Bài tập</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/TaiLieu">Tài liệu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/ChuyenCan">Chuyên cần</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>Thông Tin Lớp Học</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-chalkboard me-2 text-primary"></i>
+                    <strong>Tên Lớp:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.TenLop</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-book me-2 text-warning"></i>
+                    <strong>Khóa Học:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.KhoaHoc.TenKhoaHoc</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-school me-2 text-success"></i>
+                    <strong>Phòng Học:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.MaPhong</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-calendar-alt me-2 text-info"></i>
+                    <strong>Ngày Bắt Đầu:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.NgayBatDau.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-calendar-alt me-2 text-info"></i>
+                    <strong>Ngày Kết Thúc:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.NgayKetThuc.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2 text-secondary"></i>
+                    <strong>Trạng Thái:</strong>
+                </div>
+                <div class="col-sm-8">
+                    @if (Model.TrangThai == "Đang hoạt động")
+                    {
+                        <span class="badge bg-success">@Model.TrangThai</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@Model.TrangThai</span>
+                    }
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-users me-2 text-dark"></i>
+                    <strong>Số Lượng Tối Đa:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.SoLuongToiDa</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-user-minus me-2 text-muted"></i>
+                    <strong>Số Lượng Tối Thiểu:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.SoLuongToiThieu</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-clock me-2 text-primary"></i>
+                    <strong>Thời Lượng:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.ThoiLuong giờ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
