@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QL_TrungTamAnhNgu" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=MSI;Initial Catalog=QL_TrungTamAnhNgu;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QL_TrungTamAnhNguConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=MSI\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QL_TrungTamAnhNguConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BaiTap" Member="BaiTaps">
     <Type Name="BaiTap">
       <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -310,21 +310,6 @@
       <Column Name="HoTen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.view_baitap_theodangky" Member="view_baitap_theodangkies">
-    <Type Name="view_baitap_theodangky">
-      <Column Name="MaDangKy" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="TenBaiTap" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Diem" Type="System.Decimal" DbType="Decimal(4,2)" CanBeNull="true" />
-      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="FileUpload" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="NgayCham" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="NgayNop" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="MaKhoaHoc" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.view_baitap_theokhoahoc" Member="view_baitap_theokhoahocs">
     <Type Name="view_baitap_theokhoahoc">
       <Column Name="MaKhoaHoc" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
@@ -427,6 +412,22 @@
       <Column Name="ThietBi" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="ViTri" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.view_baitap_theodangky" Member="view_baitap_theodangkies">
+    <Type Name="view_baitap_theodangky">
+      <Column Name="MaDangKy" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBaiTap" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Diem" Type="System.Decimal" DbType="Decimal(4,2)" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FileUpload" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="NgayCham" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="NgayNop" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="MaKhoaHoc" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="FileHocVien" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="TenKhoaHoc" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Function Name="dbo.AssignPermissionsToUserGroups" Method="AssignPermissionsToUserGroups">

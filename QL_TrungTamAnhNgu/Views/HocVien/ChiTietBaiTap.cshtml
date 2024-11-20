@@ -111,11 +111,8 @@
                         <strong>Bài Tập:</strong>
                     </div>
                     <div class="col-sm-8">
-                        @if (!string.IsNullOrEmpty(Model.FileUpload))
+                        @if (!string.IsNullOrEmpty(Model.FileHocVien))
                         {
-                            <a href="@Url.Content("~/Uploads/" + Model.FileUpload)" class="btn btn-success btn-sm" target="_blank">
-                                <i class="fas fa-download me-1"></i>Tải bài tập đã nộp
-                            </a>
                             <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-warning btn-sm">
                                 <i class="fas fa-upload me-1"></i>Nộp lại bài tập
                             </a>
@@ -138,6 +135,16 @@
                     <div class="col-sm-8">
                         <span>@Model.TenKhoaHoc</span>
                     </div>
+                </div>
+                <div class="row mb-3">
+                    @if (!string.IsNullOrEmpty(Model.FileUpload))
+                    {
+                        <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/BaiTap/" + Model.FileUpload)" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Không có tệp bài tập nào được tải lên.</p>
+                    }
                 </div>
             }
         </div>
