@@ -168,6 +168,7 @@
             </div>
             <div class="modal-body">
                 <form id="changePasswordForm">
+                    <input type="hidden" id="username" class="form-control" value="@Session["UserName"]">
                     <div class="form-group">
                         <label for="currentPassword">Mật khẩu hiện tại</label>
                         <input type="password" id="currentPassword" class="form-control" required>
@@ -307,8 +308,8 @@
             $('#changePasswordModal').modal('show');
         });
 
-        // Xử lý khi nhấn nút "Đổi mật khẩu" trong modal
         $('#savePasswordButton').on('click', function () {
+            const username = $('#username').val();
             const currentPassword = $('#currentPassword').val();
             const newPassword = $('#newPassword').val();
             const confirmNewPassword = $('#confirmNewPassword').val();
@@ -321,22 +322,30 @@
             $.ajax({
                 url: '/HocVien/DoiMatKhau',
                 type: 'POST',
-                data: JSON.stringify({ currentPassword, newPassword }),
-                contentType: 'application/json; charset=utf-8',
+                data: {
+                    username: username,
+                    currentPassword: currentPassword,
+                    newPassword: newPassword
+                },
                 success: function (response) {
-                    alert(response.message);
                     if (response.success) {
+                        alert(response.message);
                         $('#changePasswordModal').modal('hide');
                         $('#currentPassword').val('');
                         $('#newPassword').val('');
                         $('#confirmNewPassword').val('');
+                    } else {
+                        alert(response.message);
                     }
                 },
-                error: function () {
-                    alert('Đã xảy ra lỗi khi đổi mật khẩu.');
+                error: function (xhr, status, error) {
+                    console.log('Error:', status, error);
+                    console.log(xhr.responseText); // Lỗi trả về từ server
+                    alert('Có lỗi xảy ra! Vui lòng thử lại.');
                 }
             });
         });
+
         // Đóng modal khi nhấn nút Đóng hoặc nút X
         $('.close, [data-dismiss="modal"]').on('click', function () {
             $('#editEmailModal, #editPhoneModal,#changePasswordModal').modal('hide');
