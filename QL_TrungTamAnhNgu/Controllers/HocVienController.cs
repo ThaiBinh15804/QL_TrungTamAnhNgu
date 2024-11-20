@@ -5,17 +5,14 @@ using System.Web;
 using System.Web.Mvc;
 using QL_TrungTamAnhNgu.Models;
 using System.Text.RegularExpressions;
-using System.IO;
-using System.Web.Security;  
+using System.IO;  
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
-    [Authorize]
     public class HocVienController : Controller
     {
-        public static string conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=123";
         // GET: /HocVien/
-        DataClasses1DataContext db = new DataClasses1DataContext(conn);
+        DataClasses1DataContext db = new DataClasses1DataContext();
         public ActionResult TrangChu()
         {
             var kh = db.KhoaHocs.ToList();
@@ -130,6 +127,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             // Lấy chi tiết bài tập từ view_baitap_theodangky
             var chiTietBaiTap = db.view_baitap_theodangkies.FirstOrDefault(v => v.MaBaiTap == maBaiTap);
+
             if (chiTietBaiTap == null)
             {
                 ViewBag.ThongBao = "Không tìm thấy thông tin bài tập.";
@@ -424,32 +422,37 @@ namespace QL_TrungTamAnhNgu.Controllers
 
        
         // DANG NHAP
-        [AllowAnonymous]
         [HttpGet]
         public ActionResult DangNhap()
         {
             return View();
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public ActionResult DangNhap(string username, string password)
         {
-            var user = db.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == db.AuthenticateUser(username, password));
-            conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password + "";
-            db = new DataClasses1DataContext(conn);
+            var user = db.NguoiDungs.FirstOrDefault(u => u.TenTaiKhoan == username);
+
             if (user != null)
             {
-                Session["UserId"] = user.MaNguoiDung;
-                Session["MaHocVien"] = user.HocVien.MaHocVien;
-                Session["User"] = user;
-                Session["UserName"] = user.TenTaiKhoan;
-                FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
-                return RedirectToAction("TrangChu", "HocVien");
+                if (user.MatKhau == password)
+                {
+                    var hocVien = db.HocViens.FirstOrDefault(hv => hv.MaHocVien == user.MaNguoiDung);
+                    Session["UserId"] = user.MaNguoiDung;
+                    Session["MaHocVien"] = hocVien.MaHocVien;
+                    Session["User"] = user;
+                    Session["UserName"] = user.TenTaiKhoan;
+                    return RedirectToAction("TrangChu", "HocVien");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Mật khẩu không đúng";
+                    return View();
+                }
             }
             else
             {
-                ViewBag.ErrorMessage = "Tên đăng nhập hoặc mật khẩu không đúng";
+                ViewBag.ErrorMessage = "Tên đăng nhập không đúng";
                 return View();
             }
         }
@@ -458,8 +461,6 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult DangXuat()
         {
             Session.Clear();
-            conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
-            FormsAuthentication.SignOut();
             return RedirectToAction("DangNhap");
         } 
     }
