@@ -63,7 +63,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             FormsAuthentication.SignOut();
 
             // Chuyển hướng về trang đăng nhập
-            return RedirectToAction("DangNhap", "GiangVien");
+            return RedirectToAction("DieuHuong", "Home");
         }
 
 

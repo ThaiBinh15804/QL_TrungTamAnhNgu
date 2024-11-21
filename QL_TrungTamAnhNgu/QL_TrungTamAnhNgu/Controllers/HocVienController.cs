@@ -461,7 +461,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             Session.Clear();
             conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
             FormsAuthentication.SignOut();
-            return RedirectToAction("DangNhap");
+            return RedirectToAction("DieuHuong", "Home");
         }
 
         [HttpPost]
