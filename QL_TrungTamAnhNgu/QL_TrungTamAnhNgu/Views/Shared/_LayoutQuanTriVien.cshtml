@@ -183,6 +183,38 @@
                         </div>
                     </div>
                     <div style="margin-bottom: 25px;">
+                        <a href="javascript:void(0)" onclick="toggleSubMenu('subMenu10')" style="color: black; display: flex; align-items: center; justify-content: space-between" class="nav__link">
+                            <div style="display: flex; align-items: center; column-gap: 8px;">
+                                <img src="~/Content/HinhAnh/GiaoDien/iconSidebar/iconSideBar6.png" alt="icon dashboard" style="width: 20px; height: 20px;" />
+                                <span style="font-size: 16px;">Quản lý Bài tập</span>
+                            </div>
+                            <div class="icon_1 icon__visible">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                </svg>
+                            </div>
+                            <div class="icon_2 icon__hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
+                        </a>
+                        <div id="subMenu10" class="subMenu" style="margin-left: 35px;">
+                            <a href="/QuanTriVien/DanhSachBaiTap" style="display: block; margin-top: 15px" class="nav__link">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" />
+                                </svg>
+                                <span style="color: black; font-size: 15px;">Danh sách bài tập</span>
+                            </a>
+                            <a href="/QuanTriVien/ThemBaiTap" style="display: block; margin-top: 15px;" class="nav__link">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" style="width: 15px; height: 15px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" />
+                                </svg>
+                                <span style="color: black; font-size: 15px;">Thêm bài tập</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 25px;">
                         <a href="javascript:void(0)" onclick="toggleSubMenu('subMenu6')" style="color: black; display: flex; align-items: center; justify-content: space-between" class="nav__link">
                             <div style="display: flex; align-items: center; column-gap: 8px;">
                                 <img src="~/Content/HinhAnh/GiaoDien/iconSidebar/iconSideBar4.png" alt="icon dashboard" style="width: 20px; height: 20px;" />
@@ -221,7 +253,7 @@
                         </div>
                     </div>
                     <div style="margin-bottom: 25px;">
-                        <a href="/QuanTriVien/QuanLyNhomND"  style="color: black; display: flex; align-items: center; justify-content: space-between" class="nav__link">
+                        <a href="/QuanTriVien/QuanLyNhomND" style="color: black; display: flex; align-items: center; justify-content: space-between" class="nav__link">
                             <div style="display: flex; align-items: center; column-gap: 8px;">
                                 <img src="~/Content/HinhAnh/GiaoDien/iconSidebar/iconSideBar11.png" alt="icon dashboard" style="width: 20px; height: 20px;" />
                                 <span style="font-size: 16px;">Quản lý Nhóm người dùng</span>
@@ -247,13 +279,13 @@
                             <span class="mt-1" style="display: block; font-size: 15px; font-weight: 400;">@user.NhomNguoiDung.TenNhomND</span>
                         }
                     </span>
+                </div>
             </div>
         </div>
+        <div style="width: 80%; background-color: #f3f4f6;">
+            @RenderBody()
+        </div>
     </div>
-    <div style="width: 80%; background-color: #f3f4f6;">
-        @RenderBody()
-    </div>
-</div>
-<script src="~/Content/HinhAnh/GiaoDien/QuanTriVienJS.js"></script>
+    <script src="~/Content/HinhAnh/GiaoDien/QuanTriVienJS.js"></script>
 </body>
 </html>

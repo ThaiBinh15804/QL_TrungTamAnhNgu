@@ -49,16 +49,54 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult GetDoanhThuTheoThang()
         {
-            // Gọi stored procedure thông qua DataContext
-            var sql = "EXEC doanhthu_theo_thang";
-            List<DoanhThuTheoThang> result = db.ExecuteQuery<DoanhThuTheoThang>(sql).ToList();
+            string newcon = connn;  // Kết nối của bạn
 
-            // Chuyển dữ liệu sang chuỗi JSON
-            var jsonResult = JsonConvert.SerializeObject(result);
-            ViewBag.DoanhThuData = jsonResult;
+            using (var connection = new SqlConnection(newcon))
+            {
+                connection.Open();
 
-            return PartialView(result);
+                // Bắt đầu giao dịch với mức độ cô lập ReadCommitted (hoặc RepeatableRead tùy theo yêu cầu)
+                SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.RepeatableRead);
+
+                try
+                {
+                    // Thực thi stored procedure trong phạm vi giao dịch
+                    var sql = "EXEC dbo.doanhthu_theo_thang";
+                    SqlCommand command = new SqlCommand(sql, connection, transaction);
+
+                    // Lấy kết quả từ stored procedure
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    List<DoanhThuTheoThang> result = new List<DoanhThuTheoThang>();
+                    while (reader.Read())
+                    {
+                        // Ánh xạ dữ liệu từ reader vào đối tượng DoanhThuTheoThang
+                        result.Add(new DoanhThuTheoThang
+                        {
+                            ThangNam = reader["ThangNam"].ToString(),  // Giả sử bạn có cột 'ThangNam' trong kết quả trả về
+                            DoanhThu = reader["DoanhThu"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["DoanhThu"])  // Nếu DoanhThu có giá trị Null thì gán mặc định là 0
+                        });
+                    }
+                    reader.Close();
+                    // Xác nhận giao dịch
+                    transaction.Commit();
+
+                    // Chuyển dữ liệu sang chuỗi JSON
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    ViewBag.DoanhThuData = jsonResult;
+
+                    return PartialView(result);
+                }
+                catch (Exception ex)
+                {
+                    // Rollback giao dịch nếu có lỗi
+                    transaction.Rollback();
+                    return Content(string.Format("Giao dịch thất bại: {0}", ex.Message));
+                }
+            }
         }
+
+
 
         public ActionResult GetThongKeSoTuoi()
         {
@@ -316,67 +354,80 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult ChiTietKhoaHoc(string makh)
         {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap");
+            }
 
             var sql = "select * from fn_chiTietKhoaHoc('" + makh + "')";
             KhoaHoc KhoaHocDetail = db.ExecuteQuery<KhoaHoc>(sql).FirstOrDefault();
 
             return View(KhoaHocDetail);
-            //if (Session["user"] == null)
-            //{
-            //    return RedirectToAction("DangNhap");
-            //}
-
-            //// Thiết lập giao dịch với IsolationLevel
-            //var transactionOptions = new TransactionOptions
-            //{
-            //    IsolationLevel = IsolationLevel.Serializable // Hoặc mức khác như ReadCommitted
-            //};
-
-            //try
-            //{
-            //    using (var scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
-            //    {
-            //        using (var db = new YourDbContext())
-            //        {
-                    
-            //        }
-
-            //        // Xác nhận giao dịch
-            //        scope.Complete();
-            //        return Content("Giao dịch thành công!");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Rollback tự động nếu không gọi scope.Complete()
-            //    return Content($"Giao dịch thất bại: {ex.Message}");
-            //}
-
-            
         }
 
         [HttpPost]
         public ActionResult ChiTietKhoaHoc(KhoaHoc kh)
         {
-            var khoaHocExists = db.KhoaHocs.FirstOrDefault(k => k.MaKhoaHoc == kh.MaKhoaHoc);
-            if (khoaHocExists != null)
-            {
-                if (string.IsNullOrEmpty(kh.AnhBia))
-                {
-                    kh.AnhBia = khoaHocExists.AnhBia;
-                }
-                khoaHocExists.TenKhoaHoc = kh.TenKhoaHoc;
-                khoaHocExists.MoTa = kh.MoTa;
-                khoaHocExists.HocPhi = kh.HocPhi;
-                khoaHocExists.CapDo = kh.CapDo;
-                khoaHocExists.AnhBia = kh.AnhBia;
-                khoaHocExists.TrangThai = kh.TrangThai;
+            string newcon = connn;
 
-                db.SubmitChanges();
-                return RedirectToAction("DanhSachKhoaHoc");
+            using (var connection = new SqlConnection(newcon))
+            {
+                connection.Open();
+
+                // Bắt đầu giao dịch với mức độ cô lập RepeatableRead
+                SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.RepeatableRead);
+
+                try
+                {
+                    // Kiểm tra xem khóa học đã tồn tại trong cơ sở dữ liệu chưa
+                    var sqlCheck = "SELECT COUNT(1) FROM KhoaHoc WHERE MaKhoaHoc = @MaKhoaHoc";
+                    SqlCommand checkCommand = new SqlCommand(sqlCheck, connection, transaction);
+                    checkCommand.Parameters.AddWithValue("@MaKhoaHoc", kh.MaKhoaHoc);
+                    int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                    if (count > 0)
+                    {
+                        // Cập nhật thông tin khóa học nếu tồn tại
+                        var sqlUpdate = @"
+                    UPDATE KhoaHoc
+                    SET TenKhoaHoc = @TenKhoaHoc,
+                        MoTa = @MoTa,
+                        HocPhi = @HocPhi,
+                        CapDo = @CapDo,
+                        AnhBia = @AnhBia,
+                        TrangThai = @TrangThai
+                    WHERE MaKhoaHoc = @MaKhoaHoc";
+
+                        SqlCommand updateCommand = new SqlCommand(sqlUpdate, connection, transaction);
+                        updateCommand.Parameters.AddWithValue("@TenKhoaHoc", kh.TenKhoaHoc);
+                        updateCommand.Parameters.AddWithValue("@MoTa", kh.MoTa);
+                        updateCommand.Parameters.AddWithValue("@HocPhi", kh.HocPhi);
+                        updateCommand.Parameters.AddWithValue("@CapDo", kh.CapDo);
+                        updateCommand.Parameters.AddWithValue("@AnhBia", string.IsNullOrEmpty(kh.AnhBia) ? (object)DBNull.Value : kh.AnhBia);
+                        updateCommand.Parameters.AddWithValue("@TrangThai", kh.TrangThai);
+                        updateCommand.Parameters.AddWithValue("@MaKhoaHoc", kh.MaKhoaHoc);
+
+                        updateCommand.ExecuteNonQuery();
+
+                        // Xác nhận giao dịch
+                        transaction.Commit();
+
+                        return RedirectToAction("DanhSachKhoaHoc");
+                    }
+                    else
+                    {
+                        return View(kh); // Nếu khóa học không tồn tại
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Rollback giao dịch nếu có lỗi
+                    transaction.Rollback();
+                    return Content(string.Format("Giao dịch thất bại: {0}", ex.Message));
+                }
             }
-            return View(kh);
         }
+
 
         public ActionResult XoaKhoaHoc(string makh)
         {
@@ -2150,8 +2201,35 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
-            return View(db.ThanhToans.OrderByDescending(t => t.NgayThucHien).ToList());
+
+            string newcon = connn;  // Kết nối của bạn
+
+            using (var connection = new SqlConnection(newcon))
+            {
+                connection.Open();
+
+                // Bắt đầu giao dịch với mức độ cô lập RepeatableRead (hoặc mức khác như Serializable)
+                SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable);
+
+                try
+                {
+                    // Truy vấn dữ liệu trong phạm vi giao dịch
+                    var thanhToans = db.ThanhToans.OrderByDescending(t => t.NgayThucHien).ToList();
+
+                    // Xác nhận giao dịch
+                    transaction.Commit();
+
+                    return View(thanhToans);
+                }
+                catch (Exception ex)
+                {
+                    // Rollback nếu có lỗi xảy ra
+                    transaction.Rollback();
+                    return Content(string.Format("Giao dịch thất bại: {0}", ex.Message));
+                }
+            }
         }
+
 
 
         public ActionResult TaoThanhToan()
@@ -2364,53 +2442,80 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             if (tt != null)
             {
-                tt.MaHocVien = c["MaHocVien"];
-                tt.HinhThuc = c["HinhThuc"];
+                string newcon = connn;  // Kết nối của bạn
 
-                if (AnhHoaDon != null)
+                using (var connection = new SqlConnection(newcon))
                 {
-                    string fileName = Path.GetFileName(AnhHoaDon.FileName);
-                    string duongdan = Path.Combine(Server.MapPath("~/Content/HinhAnh/ThanhToan"), fileName);
-                    AnhHoaDon.SaveAs(duongdan);
-                    tt.AnhHoaDon = fileName;
-                }
+                    connection.Open();
 
-                ThanhToan n = new ThanhToan()
-                {
-                    MaThanhToan = tt.MaThanhToan,
-                    MaHocVien = tt.MaHocVien,
-                    TongTien = tt.TongTien,
-                    HinhThuc = tt.HinhThuc,
-                    NgayThucHien = DateTime.Now,
-                    TrangThai = "Hoàn tất",
-                    AnhHoaDon = tt.AnhHoaDon
-                };
+                    // Bắt đầu giao dịch với mức độ cô lập ReadCommitted (hoặc Serializable, tùy theo yêu cầu)
+                    SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.RepeatableRead);
 
-
-                db.ThanhToans.InsertOnSubmit(n);
-
-                foreach (var i in tt.DangKies.ToList())
-                {
-                    DangKy d = new DangKy()
+                    try
                     {
-                        MaDangKy = i.MaDangKy,
-                        MaLop = i.MaLop,
-                        MaThanhToan = i.MaThanhToan,
-                        MaGiamGia = i.MaGiamGia,
-                        SoTien = i.SoTien,
-                        ThucTra = i.ThucTra
-                    };
+                        // Thực hiện các thao tác với cơ sở dữ liệu trong giao dịch
 
-                    db.DangKies.InsertOnSubmit(d);
+                        tt.MaHocVien = c["MaHocVien"];
+                        tt.HinhThuc = c["HinhThuc"];
+
+                        if (AnhHoaDon != null)
+                        {
+                            string fileName = Path.GetFileName(AnhHoaDon.FileName);
+                            string duongdan = Path.Combine(Server.MapPath("~/Content/HinhAnh/ThanhToan"), fileName);
+                            AnhHoaDon.SaveAs(duongdan);
+                            tt.AnhHoaDon = fileName;
+                        }
+
+                        // Thêm mới đối tượng ThanhToan
+                        ThanhToan n = new ThanhToan()
+                        {
+                            MaThanhToan = tt.MaThanhToan,
+                            MaHocVien = tt.MaHocVien,
+                            TongTien = tt.TongTien,
+                            HinhThuc = tt.HinhThuc,
+                            NgayThucHien = DateTime.Now,
+                            TrangThai = "Hoàn tất",
+                            AnhHoaDon = tt.AnhHoaDon
+                        };
+
+                        db.ThanhToans.InsertOnSubmit(n);
+
+                        foreach (var i in tt.DangKies.ToList())
+                        {
+                            DangKy d = new DangKy()
+                            {
+                                MaDangKy = i.MaDangKy,
+                                MaLop = i.MaLop,
+                                MaThanhToan = i.MaThanhToan,
+                                MaGiamGia = i.MaGiamGia,
+                                SoTien = i.SoTien,
+                                ThucTra = i.ThucTra
+                            };
+
+                            db.DangKies.InsertOnSubmit(d);
+                        }
+
+                        // Submit các thay đổi trong phạm vi giao dịch
+                        db.SubmitChanges();
+
+                        // Xác nhận giao dịch
+                        transaction.Commit();
+
+                        // Xóa session khi thành công
+                        Session["ThanhToan"] = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback nếu có lỗi xảy ra
+                        transaction.Rollback();
+                        return Content(string.Format("Giao dịch thất bại: {0}", ex.Message));
+                    }
                 }
-
-                db.SubmitChanges();
-
-                Session["ThanhToan"] = null;
             }
 
             return RedirectToAction("QuanLyThanhToan");
         }
+
 
         public ActionResult HuyThanhToan()
         {
