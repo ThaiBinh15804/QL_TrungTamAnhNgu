@@ -58,14 +58,14 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="MaLop">Mã Lớp:</label>
-                            <input type="text" class="mt-2 form-control" id="MaLop" name="MaLop" required placeholder="Nhập mã lớp học">
+                            <label for="TenLop">Tên Lớp:</label>
+                            <input type="text" class="mt-2 form-control" id="TenLop" name="TenLop" required placeholder="Nhập tên lớp học">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="TenLop">Tên Lớp:</label>
-                            <input type="text" class="mt-2 form-control" id="TenLop" name="TenLop" required placeholder="Nhập tên lớp học">
+                            <label for="MaGiangVien">Mã Giảng Viên:</label>
+                            <input type="text" class="mt-2 form-control" id="MaGiangVien" name="MaGiangVien" required placeholder="Nhập mã giảng viên">
                         </div>
                     </div>
                 </div>
@@ -73,13 +73,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="MaKhoaHoc">Khóa Học:</label>
-                            <select class="mt-2 form-control" id="MaKhoaHoc" name="MaKhoaHoc" required>
-                                <option value="">-- Chọn Khóa Học --</option>
-                                @foreach (var kh in ViewBag.MaKhoaHoc)
-                                {
-                                    <option value="@kh.MaKhoaHoc">@kh.MaKhoaHoc - @kh.TenKhoaHoc</option>
-                                }
-                            </select>
+                            <input type="text" class="mt-2 form-control" id="MaKhoaHoc" name="MaKhoaHoc" readonly value="@ViewBag.Makhoahoc">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -91,22 +85,6 @@
                                 {
                                     <option value="@ph.MaPhong">@ph.MaPhong - @ph.TenPhong</option>
                                 }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-3 mt-3">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="MaGiangVien">Mã Giảng Viên:</label>
-                            <input type="text" class="mt-2 form-control" id="MaGiangVien" name="MaGiangVien" required placeholder="Nhập mã giảng viên">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="TrangThai">Trạng Thái:</label>
-                            <select class="mt-2 form-control"  id="TrangThai" name="TrangThai" required>
-                                <option value="Chờ xác nhận">Chờ xác nhận</option>
                             </select>
                         </div>
                     </div>
@@ -128,14 +106,14 @@
                 <div class="row g-3 mt-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="SoLuongToiDa">Số Lượng Tối Đa:</label>
-                            <input type="number" class="mt-2 form-control" id="SoLuongToiDa" name="SoLuongToiDa" required placeholder="Nhập số lượng tối đa">
+                            <label for="SoLuongToiThieu">Số Lượng Tối Thiểu:</label>
+                            <input type="number" class="mt-2 form-control" id="SoLuongToiThieu" name="SoLuongToiThieu" required placeholder="Nhập số lượng tối thiểu">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="SoLuongToiThieu">Số Lượng Tối Thiểu:</label>
-                            <input type="number" class="mt-2 form-control" id="SoLuongToiThieu" name="SoLuongToiThieu" required placeholder="Nhập số lượng tối thiểu">
+                            <label for="SoLuongToiDa">Số Lượng Tối Đa:</label>
+                            <input type="number" class="mt-2 form-control" id="SoLuongToiDa" name="SoLuongToiDa" required placeholder="Nhập số lượng tối đa">
                         </div>
                     </div>
                 </div>

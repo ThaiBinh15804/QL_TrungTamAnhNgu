@@ -17,7 +17,7 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class QuanTriVienController : Controller
     {
-        public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa; Password=123";
+        public static string connn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
         DataClasses1DataContext db = new DataClasses1DataContext(connn);
 
         public int GetSoLuongNguoiDung_KhoaHoc_PhongHoc(string loaiNguoiDung)
@@ -140,7 +140,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
-                string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
+                string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
                 connn = newConnectionString;
                 db = new DataClasses1DataContext(connn);
 
@@ -182,9 +182,11 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (Session["user"] != null)
             {
                 Session["user"] = null;
+                string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+                connn = newConnectionString;
                 FormsAuthentication.SignOut();
             }
-            return RedirectToAction("DangNhap");
+            return RedirectToAction("DieuHuong", "Home");
         }
 
         public ActionResult DanhSachKhoaHoc(int page = 1, int pageSize = 4)

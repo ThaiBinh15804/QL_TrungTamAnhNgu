@@ -53,7 +53,7 @@
                 @Html.AntiForgeryToken()
                 
                 <div class="mb-3">
-                    <label for="TenNhomND" class="form-label" style="font-weight: 500; color: #374151;">Tên nhóm:</label>
+                    <label for="TenNhomND" class="form-label" style="font-weight: 500; color: #374151;">Mã nhóm:</label>
                     @Html.EditorFor(model => model.MaNhomND, new { @class = "form-control", @id = "MaNhomND", placeholder = "Nhập mã nhóm" })
                     @Html.ValidationMessageFor(model => model.MaNhomND, "", new { @class = "text-danger mt-1 d-block" })
                 </div>

@@ -8,7 +8,7 @@
 <div class="mt-4">
     <h2 class="text-center mb-2">Danh Sách Điểm Danh Học Viên</h2>
 
-    @using (Html.BeginForm("LuuDiemDanh", "GiangVien", FormMethod.Post))
+    @using (Html.BeginForm("LuuDiemDanh", "QuanTriVien", FormMethod.Post))
     {
         <div class="mb-3 text-end">
             <button id="btn-diem-danh" type="button" class="btn btn-primary mb-3">Điểm danh</button>
@@ -44,10 +44,11 @@
                                 <span class="diem-danh-text">
                                     @(hocVien.ds[j].TrangThai == "Có mặt" ? "x" : hocVien.ds[j].TrangThai == "Vắng" ? "-" : "")
                                 </span>
-                                <input type="text" id="TrangThai_@i@j" name="dsDiemDanh[@i].ds[@j].TrangThai"
-                                       value="@hocVien.ds[j].TrangThai"
-                                       class="diem-danh-input d-none text-center w-100"
-                                       data-hocvien-index="@i" data-diemdanh-index="@j" />
+                                <select class="diem-danh-input d-none text-center w-100"
+                                        data-hocvien-index="@i" data-diemdanh-index="@j" name="dsDiemDanh[@i].ds[@j].TrangThai">
+                                    <option value="Có mặt" @(hocVien.ds[j].TrangThai == "Có mặt" ? "selected" : "")>Có mặt</option>
+                                    <option value="Vắng" @(hocVien.ds[j].TrangThai == "Vắng" ? "selected" : "")>Vắng</option>
+                                </select>
                             </td>
                         }
                     </tr>
@@ -100,7 +101,7 @@
 
                 // Gửi dữ liệu qua AJAX tới controller
                 $.ajax({
-                    url: '@Url.Action("CapNhatDiemDanh", "GiangVien")',
+                    url: '@Url.Action("CapNhatDiemDanh", "QuanTriVien")',
                     type: 'POST',
                     data: {
                         hocVienIndex: hocVienIndex,

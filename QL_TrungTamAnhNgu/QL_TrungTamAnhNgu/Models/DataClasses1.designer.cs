@@ -312,11 +312,11 @@ namespace QL_TrungTamAnhNgu.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<view_vaitro_nhomnguoidung> view_vaitro_nhomnguoidungs
+		public System.Data.Linq.Table<view_thongtin_cosovatchat_phonghoc> view_thongtin_cosovatchat_phonghocs
 		{
 			get
 			{
-				return this.GetTable<view_vaitro_nhomnguoidung>();
+				return this.GetTable<view_thongtin_cosovatchat_phonghoc>();
 			}
 		}
 		
@@ -424,11 +424,11 @@ namespace QL_TrungTamAnhNgu.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<view_thongtin_cosovatchat_phonghoc> view_thongtin_cosovatchat_phonghocs
+		public System.Data.Linq.Table<view_vaitro_nhomnguoidung> view_vaitro_nhomnguoidungs
 		{
 			get
 			{
-				return this.GetTable<view_thongtin_cosovatchat_phonghoc>();
+				return this.GetTable<view_vaitro_nhomnguoidung>();
 			}
 		}
 		
@@ -439,8 +439,15 @@ namespace QL_TrungTamAnhNgu.Models
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_CapNhatTrangThaiBaiTap")]
-		public int usp_CapNhatTrangThaiBaiTap()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_CapNhatTrangThaiLopHoc")]
+		public int usp_CapNhatTrangThaiLopHoc()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.BaoCaoDinhKy")]
+		public int BaoCaoDinhKy()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
@@ -565,6 +572,20 @@ namespace QL_TrungTamAnhNgu.Models
 			return ((ISingleResult<timkiem_hocvienResult>)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_CapNhatTrangThaiBaiTap")]
+		public int usp_CapNhatTrangThaiBaiTap()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_CapNhatTrangThaiGiamGia")]
+		public int usp_CapNhatTrangThaiGiamGia()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AuthenticateUser", IsComposable=true)]
 		public string AuthenticateUser([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TenTaiKhoan", DbType="NVarChar(50)")] string tenTaiKhoan, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhau", DbType="NVarChar(255)")] string matKhau)
 		{
@@ -659,6 +680,12 @@ namespace QL_TrungTamAnhNgu.Models
 		public System.Nullable<int> fn_SoBuoiVang([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaHocVien", DbType="VarChar(10)")] string maHocVien, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaLop", DbType="VarChar(10)")] string maLop)
 		{
 			return ((System.Nullable<int>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), maHocVien, maLop).ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.fn_timKiemBaiTap", IsComposable=true)]
+		public IQueryable<fn_timKiemBaiTapResult> fn_timKiemBaiTap([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TenBaiTap", DbType="NVarChar(50)")] string tenBaiTap)
+		{
+			return this.CreateMethodCallQuery<fn_timKiemBaiTapResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), tenBaiTap);
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.fn_timKiemGiangVien", IsComposable=true)]
@@ -6490,64 +6517,118 @@ namespace QL_TrungTamAnhNgu.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.view_vaitro_nhomnguoidung")]
-	public partial class view_vaitro_nhomnguoidung
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.view_thongtin_cosovatchat_phonghoc")]
+	public partial class view_thongtin_cosovatchat_phonghoc
 	{
 		
-		private string _TenVaiTro;
+		private string _MaPhong;
 		
-		private string _MoTaNhomND;
+		private string _TenPhong;
 		
-		private string _MoTa;
+		private int _SucChua;
 		
-		public view_vaitro_nhomnguoidung()
+		private string _ThietBi;
+		
+		private string _ViTri;
+		
+		private string _TrangThai;
+		
+		public view_thongtin_cosovatchat_phonghoc()
 		{
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenVaiTro", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string TenVaiTro
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaPhong", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string MaPhong
 		{
 			get
 			{
-				return this._TenVaiTro;
+				return this._MaPhong;
 			}
 			set
 			{
-				if ((this._TenVaiTro != value))
+				if ((this._MaPhong != value))
 				{
-					this._TenVaiTro = value;
+					this._MaPhong = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTaNhomND", DbType="NVarChar(255)")]
-		public string MoTaNhomND
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenPhong", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string TenPhong
 		{
 			get
 			{
-				return this._MoTaNhomND;
+				return this._TenPhong;
 			}
 			set
 			{
-				if ((this._MoTaNhomND != value))
+				if ((this._TenPhong != value))
 				{
-					this._MoTaNhomND = value;
+					this._TenPhong = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(255)")]
-		public string MoTa
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SucChua", DbType="Int NOT NULL")]
+		public int SucChua
 		{
 			get
 			{
-				return this._MoTa;
+				return this._SucChua;
 			}
 			set
 			{
-				if ((this._MoTa != value))
+				if ((this._SucChua != value))
 				{
-					this._MoTa = value;
+					this._SucChua = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThietBi", DbType="NVarChar(255)")]
+		public string ThietBi
+		{
+			get
+			{
+				return this._ThietBi;
+			}
+			set
+			{
+				if ((this._ThietBi != value))
+				{
+					this._ThietBi = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ViTri", DbType="NVarChar(100)")]
+		public string ViTri
+		{
+			get
+			{
+				return this._ViTri;
+			}
+			set
+			{
+				if ((this._ViTri != value))
+				{
+					this._ViTri = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrangThai", DbType="NVarChar(20)")]
+		public string TrangThai
+		{
+			get
+			{
+				return this._TrangThai;
+			}
+			set
+			{
+				if ((this._TrangThai != value))
+				{
+					this._TrangThai = value;
 				}
 			}
 		}
@@ -6874,6 +6955,8 @@ namespace QL_TrungTamAnhNgu.Models
 		
 		private string _MaKhoaHoc;
 		
+		private string _FileHocVien;
+		
 		private string _TenKhoaHoc;
 		
 		public view_baitap_theodangky()
@@ -7036,6 +7119,22 @@ namespace QL_TrungTamAnhNgu.Models
 				if ((this._MaKhoaHoc != value))
 				{
 					this._MaKhoaHoc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileHocVien", DbType="VarChar(MAX)")]
+		public string FileHocVien
+		{
+			get
+			{
+				return this._FileHocVien;
+			}
+			set
+			{
+				if ((this._FileHocVien != value))
+				{
+					this._FileHocVien = value;
 				}
 			}
 		}
@@ -8182,118 +8281,64 @@ namespace QL_TrungTamAnhNgu.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.view_thongtin_cosovatchat_phonghoc")]
-	public partial class view_thongtin_cosovatchat_phonghoc
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.view_vaitro_nhomnguoidung")]
+	public partial class view_vaitro_nhomnguoidung
 	{
 		
-		private string _MaPhong;
+		private string _TenVaiTro;
 		
-		private string _TenPhong;
+		private string _MoTaNhomND;
 		
-		private int _SucChua;
+		private string _MoTa;
 		
-		private string _ThietBi;
-		
-		private string _ViTri;
-		
-		private string _TrangThai;
-		
-		public view_thongtin_cosovatchat_phonghoc()
+		public view_vaitro_nhomnguoidung()
 		{
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaPhong", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string MaPhong
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenVaiTro", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string TenVaiTro
 		{
 			get
 			{
-				return this._MaPhong;
+				return this._TenVaiTro;
 			}
 			set
 			{
-				if ((this._MaPhong != value))
+				if ((this._TenVaiTro != value))
 				{
-					this._MaPhong = value;
+					this._TenVaiTro = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenPhong", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string TenPhong
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTaNhomND", DbType="NVarChar(255)")]
+		public string MoTaNhomND
 		{
 			get
 			{
-				return this._TenPhong;
+				return this._MoTaNhomND;
 			}
 			set
 			{
-				if ((this._TenPhong != value))
+				if ((this._MoTaNhomND != value))
 				{
-					this._TenPhong = value;
+					this._MoTaNhomND = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SucChua", DbType="Int NOT NULL")]
-		public int SucChua
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(255)")]
+		public string MoTa
 		{
 			get
 			{
-				return this._SucChua;
+				return this._MoTa;
 			}
 			set
 			{
-				if ((this._SucChua != value))
+				if ((this._MoTa != value))
 				{
-					this._SucChua = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThietBi", DbType="NVarChar(255)")]
-		public string ThietBi
-		{
-			get
-			{
-				return this._ThietBi;
-			}
-			set
-			{
-				if ((this._ThietBi != value))
-				{
-					this._ThietBi = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ViTri", DbType="NVarChar(100)")]
-		public string ViTri
-		{
-			get
-			{
-				return this._ViTri;
-			}
-			set
-			{
-				if ((this._ViTri != value))
-				{
-					this._ViTri = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrangThai", DbType="NVarChar(20)")]
-		public string TrangThai
-		{
-			get
-			{
-				return this._TrangThai;
-			}
-			set
-			{
-				if ((this._TrangThai != value))
-				{
-					this._TrangThai = value;
+					this._MoTa = value;
 				}
 			}
 		}
@@ -9956,6 +10001,122 @@ namespace QL_TrungTamAnhNgu.Models
 				if ((this._SoBuoiVang != value))
 				{
 					this._SoBuoiVang = value;
+				}
+			}
+		}
+	}
+	
+	public partial class fn_timKiemBaiTapResult
+	{
+		
+		private string _MaBaiTap;
+		
+		private string _TenBaiTap;
+		
+		private string _MoTa;
+		
+		private string _FileUpload;
+		
+		private System.Nullable<System.DateTime> _NgayTao;
+		
+		private string _TrangThai;
+		
+		public fn_timKiemBaiTapResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaBaiTap", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string MaBaiTap
+		{
+			get
+			{
+				return this._MaBaiTap;
+			}
+			set
+			{
+				if ((this._MaBaiTap != value))
+				{
+					this._MaBaiTap = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenBaiTap", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string TenBaiTap
+		{
+			get
+			{
+				return this._TenBaiTap;
+			}
+			set
+			{
+				if ((this._TenBaiTap != value))
+				{
+					this._TenBaiTap = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(255)")]
+		public string MoTa
+		{
+			get
+			{
+				return this._MoTa;
+			}
+			set
+			{
+				if ((this._MoTa != value))
+				{
+					this._MoTa = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileUpload", DbType="VarChar(MAX)")]
+		public string FileUpload
+		{
+			get
+			{
+				return this._FileUpload;
+			}
+			set
+			{
+				if ((this._FileUpload != value))
+				{
+					this._FileUpload = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayTao", DbType="DateTime")]
+		public System.Nullable<System.DateTime> NgayTao
+		{
+			get
+			{
+				return this._NgayTao;
+			}
+			set
+			{
+				if ((this._NgayTao != value))
+				{
+					this._NgayTao = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrangThai", DbType="NVarChar(20)")]
+		public string TrangThai
+		{
+			get
+			{
+				return this._TrangThai;
+			}
+			set
+			{
+				if ((this._TrangThai != value))
+				{
+					this._TrangThai = value;
 				}
 			}
 		}

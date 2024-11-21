@@ -1,9 +1,10 @@
-﻿@model QL_TrungTamAnhNgu.Models.TaiLieu
+﻿@model QL_TrungTamAnhNgu.Models.BaiTap
 @using QL_TrungTamAnhNgu.Models
 @{
-    ViewBag.Title = "ChiTietTaiLieu";
+    ViewBag.Title = "ChiTietBaiTap";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
+
 
 <div>
     <header style="position: sticky; left:0 ; top: 0; background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0px 16px; border-bottom: 1px solid #edede9; height: 80px;">
@@ -36,36 +37,36 @@
         <div class="d-flex gap-2 mt-2">
             <i style="color: #343a40" class="fa-solid fa-house"></i>
             <i class="fa-solid fa-angle-right"></i>
-            <span style="color: #343a40">Danh sách tài liệu khóa học</span>
+            <span style="color: #343a40">Danh sách bài tập khóa học</span>
             <i class="fa-solid fa-angle-right"></i>
             <span style="color: #000; ">Chi tiết</span>
         </div>
         <div class="d-flex justify-content-between">
-            <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thông tin tài liệu khóa học</h1>
-            @if (TempData["ErrorMessageTaiLieu"] != null)
+            <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thông tin bài tập khóa học</h1>
+            @if (TempData["ErrorMessageBaiTap"] != null)
             {
                 <div class="alert alert-danger">
-                    @TempData["ErrorMessageTaiLieu"]
+                    @TempData["ErrorMessageBaiTap"]
                 </div>
             }
             <div>
-                <a href="/QuanTriVien/DanhSachTaiLieuThuocKhoaHoc?maTL=@Model.MaTaiLieu" class="btn btn-primary">Xem danh sách khóa học sử dụng</a>
-                <a href="/QuanTriVien/XoaTaiLieu?maTL=@Model.MaTaiLieu" class="btn btn-danger" id="btnXoaKhoaHoc" data-makh="@Model.MaTaiLieu">
-                    Xóa tài liệu
+                <a href="/QuanTriVien/DanhSachBaiTapThuocKhoaHoc?maBT=@Model.MaBaiTap" class="btn btn-primary">Xem danh sách khóa học sử dụng</a>
+                <a href="/QuanTriVien/XoaBaiTap?maBT=@Model.MaBaiTap" class="btn btn-danger" id="btnXoaKhoaHoc" data-makh="@Model.MaBaiTap">
+                    Xóa bài tập
                 </a>
             </div>
         </div>
         <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
-            <form class="myForm" action="/QuanTriVien/ChiTietTaiLieu" method="post">
+            <form class="myForm" action="/QuanTriVien/ChiTietBaiTap" method="post">
                 <div style="width: 100%;">
                     <div class="d-flex justify-content-between gap-4">
                         <div style="width: 100%">
-                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaKhoaHoc">Mã tài liệu: </label>
-                            @Html.TextBoxFor(model => model.MaTaiLieu, new { @readonly = "readonly", @id = "MaKhoaHoc", @class = "form-control mt-2", placeholder = "Nhập mã tài liệu" })
+                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaKhoaHoc">Mã bài tập: </label>
+                            @Html.TextBoxFor(model => model.MaBaiTap, new { @readonly = "readonly", @id = "MaBaiTap", @class = "form-control mt-2" })
                         </div>
                         <div style="width: 100%">
-                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TenKhoaHoc">Tên tài liệu: </label>
-                            @Html.TextBoxFor(model => model.TenTaiLieu, new { @readonly = "readonly", @id = "TenKhoaHoc", @class = "form-control mt-2", placeholder = "Nhập tên loại" })  
+                            <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TenKhoaHoc">Tên bài tập: </label>
+                            @Html.TextBoxFor(model => model.TenBaiTap, new { @readonly = "readonly", @id = "TenBaiTap", @class = "form-control mt-2", placeholder = "Nhập tên bài tập" })
                         </div>
                     </div>
                     <div style="margin-top: 15px; width: 100%">
@@ -89,14 +90,14 @@
                         <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TrangThai">Trạng thái:</label>
                         <select disabled id="TrangThai" name="TrangThai" class="form-control mt-2">
                             <option value="Đang hoạt động" @(Model.TrangThai == "Đang hoạt động" ? "selected" : "")>Đang hoạt động</option>
-                            <option value="Không sử dụng" @(Model.TrangThai == "Không sử dụng" ? "selected" : "")>Không sử dụng</option>
+                            <option value="Hết hạn" @(Model.TrangThai == "Hết hạn" ? "selected" : "")>Hết hạn</option>
                         </select>
                     </div>
                     <div style="margin-top: 15px; width: 100%">
                         @Html.TextBoxFor(model => model.FileUpload, new { @style = "display: none;", @value = @Model.FileUpload, @id = "Avatar", @type = "file", @class = "form-control my-2" })
                         @if (!string.IsNullOrEmpty(Model.FileUpload))
                         {
-                            <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/TaiLieu/" + Model.FileUpload)"  width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
+                            <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/BaiTap/" + Model.FileUpload)" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
                         }
                         else
                         {
@@ -105,7 +106,7 @@
                         <label for="Avatar" id="label" class="custom-file-upload mt-2" style="pointer-events: none;cursor: not-allowed; width: 150px; text-align: center; padding: 10px 12px; background-color: #0077b6; color: white; border-radius: 5px;">
                             Chọn tập tin
                         </label>
-                    </div>   
+                    </div>
                 </div>
                 <div style="margin-top: 10px; width: 100%" class="d-flex justify-content-end gap-2">
                     <button id="btnSua" type="button" class="btn btn-primary">Sửa</button>

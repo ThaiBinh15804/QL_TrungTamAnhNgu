@@ -1,36 +1,58 @@
 ﻿@model List<QL_TrungTamAnhNgu.Models.view_lichhoc_chitiet_cua_lophoc>
 
-<h3>Lịch học của bạn</h3>
+@{
+    ViewBag.Title = "ChiTietLichHoc";
+    Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
+}
 
-@if (Model != null && Model.Any())
-{
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Ngày học</th>
-                <th>Ca học</th>
-                <th>Phòng học</th>
-                <th>Giờ bắt đầu</th>
-                <th>Giờ kết thúc</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var lich in Model)
-            {
-                <tr>
-                    <td>@lich.NgayHoc.ToString("dd/MM/yyyy")</td>
-                    <td>@lich.ThoiGianBatDau</td>
-                    <td>@lich.TenPhong</td>
-                    <td>@lich.ThoiGianBatDau</td>
-                    <td>@lich.ThoiGianKetThuc</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-warning">
-        Bạn chưa có lịch học nào.
-    </div>
-}
+
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">
+        <i class="fas fa-calendar-alt me-2"></i>Lịch học của bạn
+    </h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive mx-auto" style="max-width: 800px;">
+            <table class="table table-bordered text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>
+                            <i class="fas fa-calendar-day me-2"></i>Ngày học
+                        </th>
+                        <th>
+                            <i class="fas fa-clock me-2"></i>Ca học
+                        </th>
+                        <th>
+                            <i class="fas fa-school me-2"></i>Phòng học
+                        </th>
+                        <th>
+                            <i class="fas fa-hourglass-start me-2"></i>Giờ bắt đầu
+                        </th>
+                        <th>
+                            <i class="fas fa-hourglass-end me-2"></i>Giờ kết thúc
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var lich in Model)
+                    {
+                        <tr>
+                            <td>@lich.NgayHoc.ToString("dd/MM/yyyy")</td>
+                            <td>@lich.ThoiGianBatDau</td>
+                            <td>@lich.TenPhong</td>
+                            <td>@lich.ThoiGianBatDau</td>
+                            <td>@lich.ThoiGianKetThuc</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center">
+            <i class="fas fa-exclamation-circle me-2"></i>Bạn chưa có lịch học nào.
+        </div>
+    }
+</div>

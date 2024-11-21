@@ -9,6 +9,14 @@
             @using (Html.BeginForm("ChiTietLopHoc", "QuanTriVien", FormMethod.Post)) // Form bắt đầu
             {
                 @Html.HiddenFor(model => model.MaLop)
+                  <div class="row mb-3">
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <i class="fas fa-school me-2 text-warning"></i> <strong>Mã lớp:</strong>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.MaLop, new { @id = "MaLop", @readonly = "readonly", @class = "form-control mt-2" })
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <div class="col-sm-4 d-flex align-items-center">
                         <i class="fas fa-chalkboard-teacher me-2 text-primary"></i>

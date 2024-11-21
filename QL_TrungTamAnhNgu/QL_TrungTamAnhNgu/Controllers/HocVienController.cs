@@ -13,10 +13,9 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class HocVienController : Controller
     {
-        public static string conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=123";
-        // GET: /HocVien/
+        public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+        
         DataClasses1DataContext db = new DataClasses1DataContext(conn);
-
         public ActionResult TrangChu()
         {
             var kh = db.KhoaHocs.ToList();
@@ -378,38 +377,6 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult DoiMatKhau(string currentPassword, string newPassword)
-        {
-            var userId = Session["UserId"];
-            if (userId == null)
-            {
-                return Json(new { success = false, message = "Bạn cần đăng nhập để đổi mật khẩu." });
-            }
-            var nguoiDung = db.NguoiDungs.FirstOrDefault(nd => nd.MaNguoiDung == userId);
-            if (nguoiDung == null || nguoiDung.MatKhau != currentPassword)
-            {
-                return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
-            }
-            if (!Regex.IsMatch(newPassword, @"[A-Z]"))
-            {
-                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự in hoa." });
-            }
-
-            if (!Regex.IsMatch(newPassword, @"[0-9]"))
-            {
-                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một chữ số." });
-            }
-            if (!Regex.IsMatch(newPassword, "[!@#$%^&*(),.?\":{}|<>]"))
-            {
-                return Json(new { success = false, message = "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt." });
-            }
-            nguoiDung.MatKhau = newPassword;
-            db.SubmitChanges();
-            return Json(new { success = true, message = "Mật khẩu đã được cập nhật thành công!" });
-        }
-
-
         public ActionResult ThanhToan()
         {
             var maHocVien = Session["MaHocVien"].ToString();
@@ -437,10 +404,10 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult DangNhap(string username, string password)
         {
             var user = db.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == db.AuthenticateUser(username, password));
-            conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password + "";
-            db = new DataClasses1DataContext(conn);
             if (user != null)
             {
+                conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + password + "";
+                db = new DataClasses1DataContext(conn);
                 Session["UserId"] = user.MaNguoiDung;
                 Session["MaHocVien"] = user.HocVien.MaHocVien;
                 Session["User"] = user;
@@ -459,7 +426,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult DangXuat()
         {
             Session.Clear();
-            conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
             FormsAuthentication.SignOut();
             return RedirectToAction("DieuHuong", "Home");
         }

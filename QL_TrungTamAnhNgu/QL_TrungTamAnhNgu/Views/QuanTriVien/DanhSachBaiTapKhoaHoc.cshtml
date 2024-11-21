@@ -1,0 +1,61 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.KhoaHoc_BaiTap>
+
+
+<div class="mt-4">
+    <table class="table table-bordered table-hover shadow-sm mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>Tên bài tập</th>
+                <th>File bài tập</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BaiTap.TenBaiTap</td>
+                    <td>@item.BaiTap.FileUpload</td>
+                    <td>@item.BaiTap.TrangThai</td>
+                    <td class="d-flex justify-content-center gap-2">
+                        <a href="/QuanTriVien/ChiTietBaiTap?maBT=@item.MaBaiTap" style="width: 30px; height: 30px; background-color: #00bbf9; border-radius: 5px; display: flex; justify-content: center; align-items: center; ">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" style="height: 20px; width: 20px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.Action("ChuaChamDiem")
+    @Html.Action("ChamDiem")
+</div>
+
+<style>
+    .table th, .table td {
+        text-align: center;
+        padding: 12px;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+        color: #495057;
+        font-weight: bold;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+
+    .text-muted {
+        font-size: 14px;
+        color: #6c757d;
+    }
+</style>

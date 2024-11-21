@@ -1,9 +1,10 @@
-﻿@model QL_TrungTamAnhNgu.Models.KhoaHoc_GiamGia
+﻿@model QL_TrungTamAnhNgu.Models.KhoaHoc_BaiTap
 @using QL_TrungTamAnhNgu.Models
 @{
-    ViewBag.Title = "ThemKhoaHoc_GiamGia";
+    ViewBag.Title = "ThemKhoaHoc_BaiTap";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
+
 
 <div>
     <header style="position: sticky; left:0 ; top: 0; background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0px 16px; border-bottom: 1px solid #edede9; height: 80px;">
@@ -38,21 +39,21 @@
             <i class="fa-solid fa-angle-right"></i>
             <span style="color: #343a40">Danh sách khóa học</span>
             <i class="fa-solid fa-angle-right"></i>
-            <span style="color: #000; ">Thêm tài liệu cho khóa học</span>
+            <span style="color: #000; ">Thêm bài tập cho khóa học</span>
         </div>
-        <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thêm tài liệu cho khóa học</h1>
+        <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thêm bài tập cho khóa học</h1>
         <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
-            <form class="myForm" action="/QuanTriVien/ThemKhoaHoc_GiamGia" method="post">
+            <form class="myForm" action="/QuanTriVien/ThemKhoaHoc_BaiTap" method="post">
                 <div style="width: 100%;">
                     <div class="d-flex justify-content-between gap-4">
                         <div style="width: 100%">
                             <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MaTaiLieu">Tên giảm giá: </label>
-                            <select class="mt-2 form-control" id="MaGiamGia" name="MaGiamGia" required>
-                                @foreach (var kh in ViewBag.GiamGiaListView)
+                            <select class="mt-2 form-control" id="MaBaiTap" name="MaBaiTap" required>
+                                @foreach (var kh in ViewBag.BaiTapListView)
                                 {
-                                    if (kh.MaGiamGia == ViewBag.MaGiamGia)
+                                    if (kh.MaBaiTap == ViewBag.MaBaiTap)
                                     {
-                                        <option value="@kh.MaGiamGia">@kh.MaGiamGia - @kh.TenGiamGia</option>
+                                        <option value="@kh.MaBaiTap">@kh.MaBaiTap - @kh.TenBaiTap</option>
                                     }
                                 }
                             </select>
@@ -76,10 +77,10 @@
         </div>
         <div style="color: red;" class="mt-2">
             <div>
-                @if (TempData["ErrorMessageKhoaHocTaiLieu"] != null)
+                @if (TempData["ErrorMessageKhoaHocBaiTap"] != null)
                 {
                     <div class="alert alert-danger">
-                        @TempData["ErrorMessageKhoaHocTaiLieu"]
+                        @TempData["ErrorMessageKhoaHocBaiTap"]
                     </div>
                 }
             </div>

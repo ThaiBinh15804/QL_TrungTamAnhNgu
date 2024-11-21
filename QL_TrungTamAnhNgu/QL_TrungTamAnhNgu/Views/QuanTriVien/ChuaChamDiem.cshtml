@@ -1,0 +1,75 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.DangKy_BaiTap>
+
+@{
+    ViewBag.Title = "Chấm bài";
+}
+
+<div class="mt-4">
+    <h2 class="text-center mb-4" style="font-size: 18px; font-weight: 500">Danh Sách Bài Tập Chưa Chấm</h2>
+
+    <div>
+        <div class="d-flex" style="background-color: #dadada; padding: 8px 0;">
+            <div class="col-3 text-center">Tên học viên</div>
+            <div class="col-3 text-center">Bài tập</div>
+            <div class="col-3 text-center">Ngày nộp</div>
+            <div class="col-3 text-center">Số điểm</div>
+        </div>
+        <div>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                   <div style="display: flex; width: 100%; padding: 8px 0;">
+                       <div class="col-3 text-center">@Html.DisplayFor(modelItem => item.DangKy.ThanhToan.HocVien.HoTen)</div>
+                       <div class="col-3 text-center">@Html.DisplayFor(modelItem => item.BaiTap.TenBaiTap)</div>
+                       <div class="col-3 text-center">@Html.DisplayFor(modelItem => item.NgayNop)</div>
+                       <div class="col-3 text-center">null</div>
+                   </div>
+                }
+            }
+            else
+            {
+                <div style="width: 100%; margin-top: 10px; background-color: #f2f2f2; color:white; text-align: center; padding: 4px 0;" class="text-muted">Không có bài tập nào chưa chấm hoặc được nộp</div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    // Thêm sự kiện click vào từng hàng
+    document.addEventListener("DOMContentLoaded", function () {
+        var rows = document.querySelectorAll(".clickable-row");
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].addEventListener("click", function () {
+                var url = this.getAttribute("data-url");
+                if (url) {
+                    window.location.href = url; // Chuyển hướng tới URL được chỉ định
+                }
+            });
+        }
+    });
+
+</script>
+
+<style>
+    /* Tăng khoảng cách giữa các phần tử */
+    .container {
+        padding: 20px;
+    }
+
+    /* Tăng khoảng cách giữa các cột */
+    table th, table td {
+        vertical-align: middle;
+    }
+
+    /* Hiệu ứng hover cho hàng */
+    .clickable-row:hover {
+        cursor: pointer;
+        background-color: #f1f1f1;
+    }
+
+    /* Tạo giao diện mượt hơn khi hover */
+    .clickable-row {
+        transition: background-color 0.2s;
+    }
+</style>
