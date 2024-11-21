@@ -228,6 +228,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (k.Diem != null)
             {
                 moi.Diem = k.Diem;
+                moi.NgayCham = DateTime.Now;
                 data.SubmitChanges();
             }
 

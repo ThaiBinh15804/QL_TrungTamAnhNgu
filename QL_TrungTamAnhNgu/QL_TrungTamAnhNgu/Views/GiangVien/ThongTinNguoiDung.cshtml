@@ -51,7 +51,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label><strong>Ngày sinh:</strong></label>
-                                <input type="date" name="ngaysinh" readonly class="form-control" value="@Model.NgaySinh" />
+                                @Html.TextBoxFor(model => model.NgaySinh, new
+                                  {
+                                      @type = "date",
+                                      @class = "form-control mt-2",
+                                      Value = Model.NgaySinh.HasValue ? Model.NgaySinh.Value.ToString("yyyy-MM-dd") : null
+                                  })
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label><strong>Chuyên ngành:</strong></label>
@@ -71,7 +76,12 @@
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label><strong>Ngày vào làm: </strong></label>
-                                <input type="date" name="ngayvaolam" readonly class="form-control" value="@Model.NgayVaoLam" />
+                                @Html.TextBoxFor(model => model.NgayVaoLam, new
+                                  {
+                                      @type = "date",
+                                      @class = "form-control mt-2",
+                                      Value = Model.NgayVaoLam.HasValue ? Model.NgayVaoLam.Value.ToString("yyyy-MM-dd") : null
+                                  })
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label><strong>Mức lương: </strong></label>
