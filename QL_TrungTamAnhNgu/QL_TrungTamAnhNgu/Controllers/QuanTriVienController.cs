@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using QL_TrungTamAnhNgu.Models;
 using QL_TrungTamAnhNgu.ViewModel;
 using System.IO;
+using System.Data;
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
@@ -315,15 +316,43 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult ChiTietKhoaHoc(string makh)
         {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap");
-            }
 
             var sql = "select * from fn_chiTietKhoaHoc('" + makh + "')";
             KhoaHoc KhoaHocDetail = db.ExecuteQuery<KhoaHoc>(sql).FirstOrDefault();
 
             return View(KhoaHocDetail);
+            //if (Session["user"] == null)
+            //{
+            //    return RedirectToAction("DangNhap");
+            //}
+
+            //// Thiết lập giao dịch với IsolationLevel
+            //var transactionOptions = new TransactionOptions
+            //{
+            //    IsolationLevel = IsolationLevel.Serializable // Hoặc mức khác như ReadCommitted
+            //};
+
+            //try
+            //{
+            //    using (var scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+            //    {
+            //        using (var db = new YourDbContext())
+            //        {
+                    
+            //        }
+
+            //        // Xác nhận giao dịch
+            //        scope.Complete();
+            //        return Content("Giao dịch thành công!");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Rollback tự động nếu không gọi scope.Complete()
+            //    return Content($"Giao dịch thất bại: {ex.Message}");
+            //}
+
+            
         }
 
         [HttpPost]

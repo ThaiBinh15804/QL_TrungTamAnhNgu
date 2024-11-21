@@ -3,27 +3,6 @@ const user = document.querySelector(".user")
 const iconEye = document.querySelector(".iconEye")
 const inputPassWord = document.getElementById("inputMatKhau")
 
-//const form1 = document.querySelector(".myForm1");
-//const form2 = document.querySelector(".myForm2");
-//const form3 = document.querySelector(".myForm3");
-//const form4 = document.querySelector(".myForm4");
-
-//if (form1) {
-//    form1.addEventListener("submit", handleForm1)
-//}
-
-//if (form2) {
-//    form2.addEventListener("submit", handleForm2)
-//}
-
-//if (form3) {
-//    form3.addEventListener("submit", handleForm3)
-//}
-
-//if (form4) {
-//    form4.addEventListener("submit", handleForm4)
-//}
-
 function handleClickUser(event) {
     event.stopPropagation(); // Ngăn sự kiện nhấp lan truyền ra ngoài
     if (user.classList.contains("visible")) {
@@ -84,292 +63,157 @@ function toggleSubMenu(submenuId) {
     }
 }
 
-const errTenDangNhap = document.querySelector(".errTenDangNhap");
-const errMatKhau = document.querySelector(".errMatKhau");
-const errEmail = document.querySelector(".errEmail");
-const errHoTen = document.querySelector(".errHoTen");
-const errNhomNguoiDung = document.querySelector(".errNhomNguoiDung");
-const errAvatar = document.querySelector(".errAvatar")
 
-const inputTenDangNhap = document.getElementById("TenDangNhap");
-const inputMatKhau = document.getElementById("MatKhau");
-const inputEmail = document.getElementById("Email");
-const inputHoTen = document.getElementById("HoTen");
-const inputMaNhom = document.getElementById("MaNhom");
+const tenKhoaHocInput = document.getElementById("TenKhoaHoc")
+const moTaInput = document.getElementById("MoTa")
+const hocPhiInput = document.getElementById("HocPhi")
+const capDoInput = document.getElementById("CapDo")
+const label = document.getElementById("label")
+const trangThai = document.getElementById("TrangThai")
+const hoTenInput = document.getElementById("HoTen")
+const emailInput = document.getElementById("Email")
+const soDienThoaiInput = document.getElementById("SoDienThoai")
+const trangThaiInput = document.getElementById("TrangThai")
+const chuyenMonInput = document.getElementById("ChuyenMon")
+const trinhDoInput = document.getElementById("TrinhDo")
+const diaChiInput = document.getElementById("DiaChi")
+const mucLuongInput = document.getElementById("MucLuong")
+const gioiTinhInput = document.getElementById("GioiTinh")
+const ngaySinhInput = document.getElementById("NgaySinh")
+const ngayBatDauInput = document.getElementById("NgayBatDau")
+const ngayKetThucInput = document.getElementById("NgayKetThuc")
+const tiLeGiamInput = document.getElementById("TiLeGiam")
+const soLuongToiDaInput = document.getElementById("SoLuongToiDa")
+const soLuongToiThieuInput = document.getElementById("SoLuongToiThieu")
+const phongHocInput = document.getElementById("PhongHoc")
+const giangVienInput = document.getElementById("GiangVien")
+const thoiLuongInput = document.getElementById("ThoiLuong")
+const tenLopInput = document.getElementById("TenLop")
 
-function handleForm1(event) {
-    if (errTenDangNhap) {
-        errTenDangNhap.innerText = "";
-    }
-    errMatKhau.innerText = "";
-    errEmail.innerText = "";
-    errHoTen.innerText = "";
-    if (errNhomNguoiDung) {
-        errNhomNguoiDung.innerText = "";
-    }
-    errAvatar.innerText = "";
+const hinhThucInput = document.getElementById("HinhThuc")
+const tongTienInput = document.getElementById("TongTien")
 
-    let isValid = true;
+const tenPhongInput = document.getElementById("TenPhong")
+const sucChuaInput = document.getElementById("SucChua")
+const thietBiInput = document.getElementById("ThietBi")
+const viTriInput = document.getElementById("ViTri")
+
+const thoiGianBatDauInput = document.getElementById("ThoiGianBatDau")
+const thoiGianKetThucInput = document.getElementById("ThoiGianKetThuc")
+const ngayHocInput = document.getElementById("NgayHoc")
+
+const btnSua = document.getElementById("btnSua")
+const btnLuu = document.getElementById("btnLuu")
     
-    if (inputMaNhom.value === "") {
-        errNhomNguoiDung.innerText = "Nhóm người dùng bắt buộc!"
-        isValid = false;
-    }
-    
-    if (inputTenDangNhap.value.trim() === "") {
-         errTenDangNhap.innerText = "Tên đăng nhập bắt buộc!";
-         isValid = false;
-    } else if (inputTenDangNhap.value.length < 5) {
-        errTenDangNhap.innerText = "Tên đăng nhập ít nhất 5 kí tự!";
-    } else if (inputTenDangNhap.value.trim().includes(" ")) {
-        errTenDangNhap.innerText = "Tên đăng nhập không chứa khoảng trắng!";
-        isValid = false;
-    }
+if (btnSua) {
+    btnSua.addEventListener("click", function () {
+        btnLuu.disabled = false;
+        btnSua.disabled = true;
+        if (tenKhoaHocInput) {
+            tenKhoaHocInput.removeAttribute("readonly");
+        }
+        if (moTaInput) {
+            moTaInput.removeAttribute("readonly")
+        }
+        if (hocPhiInput) {
+            hocPhiInput.removeAttribute("readonly")
+        }
+        if (capDoInput) {
+            capDoInput.removeAttribute("readonly")
+        }
+        if (label) {
+            label.style.cursor = "pointer";
+            label.style.pointerEvents = "auto";
+        }
+        if (hoTenInput) {
+            hoTenInput.removeAttribute("readonly")
+        }
+        if (emailInput) {
+            emailInput.removeAttribute("readonly")
+        }
+        if (soDienThoaiInput) {
+            soDienThoaiInput.removeAttribute("readonly")
+        }
+        if (trangThaiInput) {
+            trangThaiInput.disabled = false;
+        }
+        if (chuyenMonInput) {
+            chuyenMonInput.removeAttribute("readonly")
+        }
+        if (trinhDoInput) {
+            trinhDoInput.removeAttribute("readonly")
+        }
+        if (diaChiInput) {
+            diaChiInput.removeAttribute("readonly")
+        }
+        if (mucLuongInput) {
+            mucLuongInput.removeAttribute("readonly")
+        }
+        if (gioiTinhInput) {
+            gioiTinhInput.disabled = false;
+        }
+        if (ngaySinhInput) {
+            ngaySinhInput.removeAttribute("readonly")
+        }
+        if (tenPhongInput) {
+            tenPhongInput.removeAttribute("readonly")
+        }
+        if (sucChuaInput) {
+            sucChuaInput.removeAttribute("readonly")
+        }
+        if (viTriInput) {
+            viTriInput.removeAttribute("readonly")
+        }
+        if (thietBiInput) {
+            thietBiInput.removeAttribute("readonly")
+        }
 
-    if (inputMatKhau.value.trim() === "") {
-         errMatKhau.innerText = "Mật khẩu bắt buộc!";
-         isValid = false;
-    } else if (inputMatKhau.value.length < 8) {
-        errMatKhau.innerText = "Mật khẩu ít nhất 8 kí tự!";
-        isValid = false;
-    }
+        if (ngayBatDauInput) {
+            ngayBatDauInput.removeAttribute("readonly")
+        }
+        if (ngayKetThucInput) {
+            ngayKetThucInput.removeAttribute("readonly")
+        }
+        if (tiLeGiamInput) {
+            tiLeGiamInput.removeAttribute("readonly")
+        }
+        if (soLuongToiThieuInput) {
+            soLuongToiThieuInput.removeAttribute("readonly")
+        }
+        if (soLuongToiDaInput) {
+            soLuongToiDaInput.removeAttribute("readonly")
+        }
+        if (phongHocInput) {
+            phongHocInput.removeAttribute("readonly")
+        }
+        if (giangVienInput) {
+            giangVienInput.removeAttribute("readonly")
+        }
+        if (thoiLuongInput) {
+            thoiLuongInput.removeAttribute("readonly")
+        } 
+        if (tenLopInput) {
+            tenLopInput.removeAttribute("readonly")
+        }
+        if (hinhThucInput) {
+            hinhThucInput.removeAttribute("readonly")
+        }
 
-     let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-     if (inputEmail.value.trim() === "") {
-          errEmail.innerText = "Email bắt buộc!";
-         isValid = false;
-     } else if (!regexEmail.test(inputEmail.value)) {
-          errEmail.innerText = "Email không hợp lệ!";
-          isValid = false;
-     }
+        if (tongTienInput) {
+            tongTienInput.removeAttribute("readonly")
+        }
 
-     let regexHoTen = /\d/; // \d đại diện kí tự số
-     if (inputHoTen.value.trim() === "") {
-          errHoTen.innerText = "Họ tên bắt buộc!";
-          isValid = false;
-     } else if (regexHoTen.test(inputHoTen.value)) {
-         errHoTen.innerText = "Họ tên không chứa kí tự số!";
-         isValid = false;
-     } else if (inputHoTen.value.length < 6) {
-         errHoTen.innerText = "Họ tên ít nhất 6 kí tự!";
-         isValid = false;
-     }
+        if (thoiGianBatDauInput) {
+            thoiGianBatDauInput.removeAttribute("readonly")
+        }
+        if (thoiGianKetThucInput) {
+            thoiGianKetThucInput.removeAttribute("readonly")
+        }
 
-     var avatarPreview = document.getElementById("avatarPreview").getAttribute("src");
-     if(avatarPreview.includes("avatar_default.jpg")) {
-         errAvatar.innerText = "Avatar bắt buộc!";
-         isValid = false;
-     }
-
-     if (!isValid) {
-          event.preventDefault();  // Ngăn submit nếu có lỗi
-     }
-}
-
-const selectMaNhom = document.getElementById("MaNhom");
-const btnClearForm = document.getElementById("btnClearForm")
-if (btnClearForm) {
-    btnClearForm.addEventListener("click", function (event) {
-        event.preventDefault();
-        inputTenDangNhap.value = "";
-        inputMatKhau.value = "";
-        inputEmail.value = "";
-        inputHoTen.value = "";
-        selectMaNhom.value = "";
+        if (ngayHocInput) {
+            ngayHocInput.removeAttribute("readonly")
+        }
     })
-}
-
-const errSoDienThoai = document.querySelector(".errSoDienThoai");
-const errDiaChi = document.querySelector(".errDiaChi");
-const errChuyenNganh = document.querySelector(".errChuyenNganh");
-const inputSoDienThoai = document.getElementById("SoDienThoai");
-const inputDiaChi = document.getElementById("DiaChi");
-const inputChuyenNganh = document.getElementById("ChuyenNganh");
-
-function handleForm2(event) {
-    if (errTenDangNhap) {
-        errTenDangNhap.innerText = "";
-    }
-    errMatKhau.innerText = "";
-    errEmail.innerText = "";
-    errHoTen.innerText = "";
-    errSoDienThoai.innerText = "";
-    errDiaChi.innerText = "";
-    errChuyenNganh.innerText = "";
-    errAvatar.innerText = "";
-
-    let isValid = true;
-
-    if (inputTenDangNhap.value.trim() === "") {
-        errTenDangNhap.innerText = "Tên đăng nhập bắt buộc!";
-        isValid = false;
-    } else if (inputTenDangNhap.value.length < 5) {
-        errTenDangNhap.innerText = "Tên đăng nhập ít nhất 5 kí tự!";
-    } else if (inputTenDangNhap.value.trim().includes(" ")) {
-        errTenDangNhap.innerText = "Tên đăng nhập không chứa khoảng trắng!";
-        isValid = false;
-    }
-
-    if (inputMatKhau.value.trim() === "") {
-        errMatKhau.innerText = "Mật khẩu bắt buộc!";
-        isValid = false;
-    } else if (inputMatKhau.value.length < 8) {
-        errMatKhau.innerText = "Mật khẩu ít nhất 8 kí tự!";
-        isValid = false;
-    }
-
-    let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (inputEmail.value.trim() === "") {
-        errEmail.innerText = "Email bắt buộc!";
-        isValid = false;
-    } else if (!regexEmail.test(inputEmail.value)) {
-        errEmail.innerText = "Email không hợp lệ!";
-        isValid = false;
-    }
-
-    let regexHoTen = /\d/; // \d đại diện kí tự số
-    if (inputHoTen.value.trim() === "") {
-        errHoTen.innerText = "Họ tên bắt buộc!";
-        isValid = false;
-    } else if (regexHoTen.test(inputHoTen.value)) {
-        errHoTen.innerText = "Họ tên không chứa kí tự số!";
-        isValid = false;
-    } else if (inputHoTen.value.length < 6) {
-        errHoTen.innerText = "Họ tên ít nhất 6 kí tự!";
-        isValid = false;
-    }
-
-    let regexChuCai = /[a-zA-Z]/; // \d đại diện kí tự chữ
-    if (inputSoDienThoai.value.trim() === "") {
-        errSoDienThoai.innerText = "Số điện thoại bắt buộc!";
-        isValid = false;
-    } else if (regexChuCai.test(inputSoDienThoai.value)) {
-        errSoDienThoai.innerText = "Số điện thoại không chứa kí tự chữ!";
-        isValid = false;
-    }
-
-    if (inputDiaChi.value.trim() === "") {
-        errDiaChi.innerText = "Địa chỉ bắt buộc!";
-        isValid = false;
-    }
-
-    if (inputChuyenNganh.value.trim() === "") {
-        errChuyenNganh.innerText = "Chuyên ngành bắt buộc!";
-        isValid = false;
-    }
-
-    var avatarPreview = document.getElementById("avatarPreview").getAttribute("src");
-    if (avatarPreview.includes("avatar_default.jpg")) {
-        errAvatar.innerText = "Avatar bắt buộc!";
-        isValid = false;
-    }
-
-    if (!isValid) {
-        event.preventDefault();  // Ngăn submit nếu có lỗi
-    }
-}
-
-const btnClearForm2 = document.getElementById("btnClearForm2")
-if (btnClearForm2) {
-    btnClearForm2.addEventListener("click", function (event) {
-        event.preventDefault();
-        inputTenDangNhap1.value = "";
-        inputMatKhau1.value = "";
-        inputEmail1.value = "";
-        inputHoTen1.value = "";
-        inputSoDienThoai1.value = "";
-        inputDiaChi1.value = "";
-        inputChuyenNganh1.value = "";
-    })
-}
-
-const errNgaySinh = document.querySelector(".errNgaySinh")
-const errGioiTinh = document.querySelector(".errGioiTinh")
-const inputNgaySinh = document.getElementById("NgaySinh");
-const inputGioiTinh = document.getElementById("GioiTinh")
-
-function handleForm3(event) {
-    if (errTenDangNhap) {
-        errTenDangNhap.innerText = "";
-    }
-    errMatKhau.innerText = "";
-    errEmail.innerText = "";
-    errHoTen.innerText = "";
-    errSoDienThoai.innerText = "";
-    errDiaChi.innerText = "";
-    if (errNgaySinh) {
-        errNgaySinh.innerText = "";
-    }
-
-    let isValid = true;
-
-    if (inputTenDangNhap.value.trim() === "") {
-        errTenDangNhap.innerText = "Tên đăng nhập bắt buộc!";
-        isValid = false;
-    } else if (inputTenDangNhap.value.length < 5) {
-        errTenDangNhap.innerText = "Tên đăng nhập ít nhất 5 kí tự!";
-    } else if (inputTenDangNhap.value.trim().includes(" ")) {
-        errTenDangNhap.innerText = "Tên đăng nhập không chứa khoảng trắng!";
-        isValid = false;
-    }
-
-    if (inputMatKhau.value.trim() === "") {
-        errMatKhau.innerText = "Mật khẩu bắt buộc!";
-        isValid = false;
-    } else if (inputMatKhau.value.length < 8) {
-        errMatKhau.innerText = "Mật khẩu ít nhất 8 kí tự!";
-        isValid = false;
-    }
-
-    let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (inputEmail.value.trim() === "") {
-        errEmail.innerText = "Email bắt buộc!";
-        isValid = false;
-    } else if (!regexEmail.test(inputEmail.value)) {
-        errEmail.innerText = "Email không hợp lệ!";
-        isValid = false;
-    }
-
-    let regexHoTen = /\d/; // \d đại diện kí tự số
-    if (inputHoTen.value.trim() === "") {
-        errHoTen.innerText = "Họ tên bắt buộc!";
-        isValid = false;
-    } else if (regexHoTen.test(inputHoTen.value)) {
-        errHoTen.innerText = "Họ tên không chứa kí tự số!";
-        isValid = false;
-    } else if (inputHoTen.value.length < 6) {
-        errHoTen.innerText = "Họ tên ít nhất 6 kí tự!";
-        isValid = false;
-    }
-
-    let regexChuCai = /[a-zA-Z]/;
-    if (inputSoDienThoai.value.trim() === "") {
-        errSoDienThoai.innerText = "Số điện thoại bắt buộc!";
-        isValid = false;
-    } else if (regexChuCai.test(inputSoDienThoai.value)) {
-        errSoDienThoai.innerText = "Số điện thoại không chứa kí tự chữ!";
-        isValid = false;
-    }
-
-    if (inputDiaChi.value.trim() === "") {
-        errDiaChi.innerText = "Địa chỉ bắt buộc!";
-        isValid = false;
-    }
-
-    if (inputNgaySinh.value.trim() === "") {
-        errNgaySinh.innerText = "Ngày sinh bắt buộc!";
-        isValid = false;
-    }
-
-    var avatarPreview = document.getElementById("avatarPreview").getAttribute("src");
-    if (avatarPreview.includes("avatar_default.jpg")) {
-        errAvatar.innerText = "Avatar bắt buộc!";
-        isValid = false;
-    }
-
-    if (!isValid) {
-        event.preventDefault();  // Ngăn submit nếu có lỗi
-    }
 }
 
 const avatar = document.getElementById("Avatar")
@@ -390,191 +234,14 @@ if (avatar) {
     })
 }
 
-const btnHuy = document.getElementById("btnHuy")
-const btnSua = document.getElementById("btnSua")
-const btnLuu = document.getElementById("btnLuu")
-
-const label = document.getElementById("label")
-const matKhau = document.getElementById("MatKhau")
-const email = document.getElementById("Email")
-const hoTen = document.getElementById("HoTen")
-const trangThai = document.getElementById("TrangThai")
-const maNhom = document.getElementById("MaNhom")
-const soDienThoai = document.getElementById("SoDienThoai")
-const chuyenNganh = document.getElementById("ChuyenNganh")
-const diaChi = document.getElementById("DiaChi")
-const gioiTinh = document.getElementById("GioiTinh")
-const ngaySinh = document.getElementById("NgaySinh")
-
-const tenLoai = document.getElementById("TenLoai")
-const moTa = document.getElementById("MoTa")
-
-let saveMatKhau = "";
-let saveEmail = "";
-let saveHoten = "";
-let saveTrangThai = "";
-let saveMaNhom = "";
-let saveSoDienThoai = "";
-let saveChuyenNganh = "";
-let saveDiaChi = "";
-let saveGioiTinh = "";
-let saveNgaySinh = "";
-let saveTenLoai = "";
-let saveMoTa = "";
-
-if (matKhau) {
-    saveMatKhau = matKhau.value;
-}
-if (email) {
-    saveEmail = email.value;
-}
-if (hoTen) {
-    saveHoten = hoTen.value;
-}
-if (trangThai) {
-    saveTrangThai = trangThai.value;
-}
-if (maNhom) {
-    saveMaNhom = maNhom.value;
-}
-if (soDienThoai) {
-    saveSoDienThoai = soDienThoai.value;
-}
-if (chuyenNganh) {
-    saveChuyenNganh = chuyenNganh.value;
-}
-if (diaChi) {
-    saveDiaChi = diaChi.value;
-}
-if (gioiTinh) {
-    saveGioiTinh = gioiTinh.value;
-}
-if (ngaySinh) {
-    saveNgaySinh = ngaySinh.value;
-}
-if (tenLoai) {
-    saveTenLoai = tenLoai.value;
-}
-if (moTa) {
-    saveMoTa = moTa.value;
-}
-    
-if (btnSua) {
-    btnSua.addEventListener("click", function () {
-        btnHuy.disabled = false;
-        btnLuu.disabled = false;
-        btnSua.disabled = true;
-        if (matKhau) {
-            matKhau.removeAttribute("readonly");
-        }
-        if (email) {
-            email.removeAttribute("readonly");
-        }
-        if (hoTen) {
-            hoTen.removeAttribute("readonly");
-        }
-        if (trangThai) {
-            trangThai.disabled = false;
-        }
-        if (maNhom) {
-            maNhom.disabled = false;
-        }
-        if (label) {
-            label.style.cursor = "pointer";
-            label.style.pointerEvents = "auto";
-        }
-
-        if (soDienThoai) {
-            soDienThoai.removeAttribute("readonly");
-        }
-        if(chuyenNganh) {
-            chuyenNganh.removeAttribute("readonly");
-        }
-        if (diaChi) {
-            diaChi.removeAttribute("readonly");
-        }
-        if (gioiTinh) {
-            gioiTinh.disabled = false;
-        }
-        if (ngaySinh) {
-            ngaySinh.removeAttribute("readonly");
-        }
-        if (tenLoai) {
-            tenLoai.removeAttribute("readonly");
-        }
-        if (moTa) {
-            moTa.removeAttribute("readonly");
-        }
+const btnClearForm = document.getElementById("btnClearForm")
+if (btnClearForm) {
+    btnClearForm.addEventListener("click", function (event) {
+        event.preventDefault();
+        inputTenDangNhap.value = "";
+        inputMatKhau.value = "";
+        inputEmail.value = "";
+        inputHoTen.value = "";
+        selectMaNhom.value = "";
     })
-    btnHuy.addEventListener("click", function () {
-        if (matKhau) {
-            matKhau.value = saveMatKhau;
-        }
-        if (email) {
-            email.value = saveEmail;
-        }
-        if (hoTen) {
-            hoTen.value = saveHoten;
-        }
-        if (trangThai) {
-            trangThai.value = saveTrangThai;
-        }
-        if (maNhom) {
-            maNhom.value = saveMaNhom;
-        }
-        if (soDienThoai) {
-            soDienThoai.value = saveSoDienThoai;
-        }
-        if (chuyenNganh) {
-            chuyenNganh.value = saveChuyenNganh;
-        }
-        if (diaChi) {
-            diaChi.value = saveDiaChi;
-        }
-        if (gioiTinh) {
-            gioiTinh.value = saveGioiTinh;
-        }
-        if (ngaySinh) {
-            ngaySinh.save = saveNgaySinh;
-        }
-        if (tenLoai) {
-            tenLoai.value = saveTenLoai;
-        }
-        if (moTa) {
-            moTa.value = saveMoTa;
-        }
-    })
-}
-
-function handleDeleteItemTemporary(button) {
-    var item = button.parentElement;
-    var row = item.parentElement;
-    row.remove();
-}
-
-const errTenLoai = document.querySelector(".errTenLoai")
-const errMoTa = document.querySelector(".errMoTa")
-const inputTenLoai = document.getElementById("TenLoai")
-const inputMoTa = document.getElementById("MoTa")
-function handleForm4() {
-    errTenLoai.innerText = "";
-    errMoTa.innerText = "";
-    let isValid = true;
-    let regexHoTen = /\d/; // \d đại diện kí tự số
-    if (inputTenLoai.value.trim() === "") {
-        errTenLoai.innerText = "Tên loại bắt buộc!";
-        isValid = false;
-    } else if (regexHoTen.test(inputTenLoai.value)) {
-        errTenLoai.innerText = "Tên loại không chứa kí tự số!";
-        isValid = false;
-    }
-
-    if (inputMoTa.value.trim() === "") {
-        errMoTa.innerText = "Mô tả bắt buộc!";
-        isValid = false;
-    }
-
-    if (!isValid) {
-        event.preventDefault();  // Ngăn submit nếu có lỗi
-    }
 }
