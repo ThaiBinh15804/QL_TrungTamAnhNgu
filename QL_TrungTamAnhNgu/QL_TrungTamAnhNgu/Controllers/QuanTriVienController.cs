@@ -21,6 +21,13 @@ namespace QL_TrungTamAnhNgu.Controllers
         public static string connn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
         DataClasses1DataContext db = new DataClasses1DataContext(connn);
 
+        public ActionResult Error()
+        {
+            return View();
+        }
+
+
+
         public int GetSoLuongNguoiDung_KhoaHoc_PhongHoc(string loaiNguoiDung)
         {
             // Xây dựng câu lệnh SQL động

@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GiangVienController.cs" />
     <Compile Include="Controllers\HocVienController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -432,6 +433,8 @@
     <Content Include="Views\HocVien\ThanhToan.cshtml" />
     <Content Include="Views\HocVien\ThongTinNguoiDung.cshtml" />
     <Content Include="Views\HocVien\TrangChu.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\QuanTriVien\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
