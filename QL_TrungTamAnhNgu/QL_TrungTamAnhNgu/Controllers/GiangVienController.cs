@@ -15,8 +15,6 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class GiangVienController : Controller
     {
-        //
-        // GET: /GiangVien/
 
         public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
         DataClasses1DataContext data = new DataClasses1DataContext(conn);

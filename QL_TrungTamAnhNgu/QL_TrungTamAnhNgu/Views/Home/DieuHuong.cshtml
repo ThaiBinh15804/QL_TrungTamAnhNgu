@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "DieuHuong";
+}
+
+<h2>Bạn là ai?</h2>
+
+<a href="/Home/XuLyDieuHuong/?ng=HocVien">Học viên</a>
+<a href="/Home/XuLyDieuHuong/?ng=GiangVien">Giảng viên</a>
+<a href="/Home/XuLyDieuHuong/?ng=QTV">Quản trị viên</a>
+
+@if (TempData["Error"] != null)
+{
+    <p>Lỗi: <span>@TempData["Error"]</span></p>
+}

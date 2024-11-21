@@ -141,10 +141,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuanTriVienModel.cs" />
     <Compile Include="ViewModel\BangDiem.cs" />
-    <Compile Include="ViewModel\HocVien_DiemDanh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\BangDiem.cs" />
     <Compile Include="ViewModel\HocVien_DiemDanh.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -396,6 +395,7 @@
     <Content Include="Views\GiangVien\LichGiangDay.cshtml" />
     <Content Include="Views\GiangVien\LichHoc.cshtml" />
     <Content Include="Views\GiangVien\TimKiem.cshtml" />
+    <Content Include="Views\Home\DieuHuong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -16,6 +16,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         public static string conn = "Data Source=MSI\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=123";
         // GET: /HocVien/
         DataClasses1DataContext db = new DataClasses1DataContext(conn);
+
         public ActionResult TrangChu()
         {
             var kh = db.KhoaHocs.ToList();
