@@ -346,5 +346,33 @@ namespace QL_TrungTamAnhNgu.Controllers
         {
             return PartialView(data.LichHocs.Where(t => t.MaLop == malop).OrderBy(t => t.NgayHoc).ToList());
         }
+
+        [HttpPost]
+        public JsonResult DoiMatKhau(string username, string currentPassword, string newPassword)
+        {
+            try
+            {
+                var user = data.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == data.AuthenticateUser(username, currentPassword));
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Mật khẩu hiện tại không đúng hoặc tài khoản không tồn tại." });
+                }
+                using (data = new DataClasses1DataContext("Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123"))
+                {
+                    // Đổi mật khẩu
+                    data.CapNhatMatKhau(username, currentPassword, newPassword);
+
+                }
+
+                conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=" + username + ";Password=" + newPassword + "";
+                data = new DataClasses1DataContext(conn);
+
+                return Json(new { success = true, message = "Đổi mật khẩu thành công." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+            }
+        }
     }
 }

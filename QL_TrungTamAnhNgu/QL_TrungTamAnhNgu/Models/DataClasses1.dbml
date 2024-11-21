@@ -443,12 +443,6 @@
     <Parameter Name="MaThanhToan" Parameter="maThanhToan" Type="System.String" DbType="VarChar(10)" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.CapNhatMatKhau" Method="CapNhatMatKhau">
-    <Parameter Name="TenTaiKhoan" Parameter="tenTaiKhoan" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="MatKhauCu" Parameter="matKhauCu" Type="System.String" DbType="NVarChar(255)" />
-    <Parameter Name="MatKhauMoi" Parameter="matKhauMoi" Type="System.String" DbType="NVarChar(255)" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.CreateMultipleUserAccounts" Method="CreateMultipleUserAccounts">
     <Return Type="System.Int32" />
   </Function>
@@ -553,11 +547,6 @@
   </Function>
   <Function Name="dbo.usp_CapNhatTrangThaiGiamGia" Method="usp_CapNhatTrangThaiGiamGia">
     <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.AuthenticateUser" Method="AuthenticateUser" IsComposable="true">
-    <Parameter Name="TenTaiKhoan" Parameter="tenTaiKhoan" Type="System.String" DbType="NVarChar(50)" />
-    <Parameter Name="MatKhau" Parameter="matKhau" Type="System.String" DbType="NVarChar(255)" />
-    <Return Type="System.String" />
   </Function>
   <Function Name="dbo.fn_VaiTro_KhongThuocNND" Method="fn_VaiTro_KhongThuocNND" IsComposable="true">
     <Parameter Name="MaNhomND" Parameter="maNhomND" Type="System.String" DbType="VarChar(10)" />
@@ -796,5 +785,16 @@
   <Function Name="dbo.fn_TinhSoNgayConLai" Method="fn_TinhSoNgayConLai" IsComposable="true">
     <Parameter Name="MaGiamGia" Parameter="maGiamGia" Type="System.String" DbType="VarChar(10)" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CapNhatMatKhau" Method="CapNhatMatKhau">
+    <Parameter Name="TenTaiKhoan" Parameter="tenTaiKhoan" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="MatKhauCu" Parameter="matKhauCu" Type="System.String" DbType="NVarChar(255)" />
+    <Parameter Name="MatKhauMoi" Parameter="matKhauMoi" Type="System.String" DbType="NVarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AuthenticateUser" Method="AuthenticateUser" IsComposable="true">
+    <Parameter Name="TenTaiKhoan" Parameter="tenTaiKhoan" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="MatKhau" Parameter="matKhau" Type="System.String" DbType="NVarChar(255)" />
+    <Return Type="System.String" />
   </Function>
 </Database>

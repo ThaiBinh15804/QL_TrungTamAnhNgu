@@ -460,13 +460,6 @@ namespace QL_TrungTamAnhNgu.Models
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CapNhatMatKhau")]
-		public int CapNhatMatKhau([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TenTaiKhoan", DbType="NVarChar(100)")] string tenTaiKhoan, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhauCu", DbType="NVarChar(255)")] string matKhauCu, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhauMoi", DbType="NVarChar(255)")] string matKhauMoi)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), tenTaiKhoan, matKhauCu, matKhauMoi);
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CreateMultipleUserAccounts")]
 		public int CreateMultipleUserAccounts()
 		{
@@ -584,12 +577,6 @@ namespace QL_TrungTamAnhNgu.Models
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AuthenticateUser", IsComposable=true)]
-		public string AuthenticateUser([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TenTaiKhoan", DbType="NVarChar(50)")] string tenTaiKhoan, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhau", DbType="NVarChar(255)")] string matKhau)
-		{
-			return ((string)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), tenTaiKhoan, matKhau).ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.fn_VaiTro_KhongThuocNND", IsComposable=true)]
@@ -740,6 +727,19 @@ namespace QL_TrungTamAnhNgu.Models
 		public System.Nullable<int> fn_TinhSoNgayConLai([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaGiamGia", DbType="VarChar(10)")] string maGiamGia)
 		{
 			return ((System.Nullable<int>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), maGiamGia).ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CapNhatMatKhau")]
+		public int CapNhatMatKhau([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TenTaiKhoan", DbType="NVarChar(100)")] string tenTaiKhoan, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhauCu", DbType="NVarChar(255)")] string matKhauCu, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhauMoi", DbType="NVarChar(255)")] string matKhauMoi)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), tenTaiKhoan, matKhauCu, matKhauMoi);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AuthenticateUser", IsComposable=true)]
+		public string AuthenticateUser([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TenTaiKhoan", DbType="NVarChar(50)")] string tenTaiKhoan, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhau", DbType="NVarChar(255)")] string matKhau)
+		{
+			return ((string)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), tenTaiKhoan, matKhau).ReturnValue));
 		}
 	}
 	
