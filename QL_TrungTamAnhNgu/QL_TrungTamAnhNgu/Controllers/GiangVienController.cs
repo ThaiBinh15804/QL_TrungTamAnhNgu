@@ -59,6 +59,9 @@ namespace QL_TrungTamAnhNgu.Controllers
             // Xóa session của người dùng
             Session["User"] = null;
 
+            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+            data = new DataClasses1DataContext(conn);
+
             // Hủy cookie xác thực của FormsAuthentication (nếu sử dụng FormsAuthentication)
             FormsAuthentication.SignOut();
 

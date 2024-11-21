@@ -230,6 +230,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 Session["user"] = null;
                 string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
                 connn = newConnectionString;
+                db = new DataClasses1DataContext(connn);
                 FormsAuthentication.SignOut();
             }
             return RedirectToAction("DieuHuong", "Home");

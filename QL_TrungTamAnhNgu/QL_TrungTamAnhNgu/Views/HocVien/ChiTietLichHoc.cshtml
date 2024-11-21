@@ -18,6 +18,9 @@
                 <thead class="table-primary">
                     <tr>
                         <th>
+                            <i class="fas fa-calendar-day me-2"></i>Tên lớp
+                        </th>
+                        <th>
                             <i class="fas fa-calendar-day me-2"></i>Ngày học
                         </th>
                         <th>
@@ -38,6 +41,7 @@
                     @foreach (var lich in Model)
                     {
                         <tr>
+                            <td>@lich.TenLop</td>
                             <td>@lich.NgayHoc.ToString("dd/MM/yyyy")</td>
                             <td>@lich.ThoiGianBatDau</td>
                             <td>@lich.TenPhong</td>
