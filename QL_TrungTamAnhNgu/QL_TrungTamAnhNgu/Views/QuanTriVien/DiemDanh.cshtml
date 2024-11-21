@@ -1,0 +1,137 @@
+﻿@using QL_TrungTamAnhNgu.ViewModel;
+@model IEnumerable<QL_TrungTamAnhNgu.ViewModel.HocVien_DiemDanh>
+
+@{
+    var dsDiemDanh = Session["dsDiemDanh"] as List<HocVien_DiemDanh>;
+}
+
+<div class="mt-4">
+    <h2 class="text-center mb-2">Danh Sách Điểm Danh Học Viên</h2>
+
+    @using (Html.BeginForm("LuuDiemDanh", "GiangVien", FormMethod.Post))
+    {
+        <div class="mb-3 text-end">
+            <button id="btn-diem-danh" type="button" class="btn btn-primary mb-3">Điểm danh</button>
+            <button id="btn-luu" type="submit" class="btn btn-success mb-3 d-none">Lưu</button>
+            <button id="btn-huy" type="button" class="btn btn-secondary mb-3 d-none">Hủy</button>
+        </div>
+
+        <table class="table table-bordered table-striped text-center">
+            <thead class="thead-light">
+                <tr>
+                    <th>Tên học viên</th>
+                    @if (Model.Any() && dsDiemDanh.First().ds.Any())
+                    {
+                        foreach (var i in dsDiemDanh.First().ds)
+                        {
+                            <th>@i.LichH.NgayHoc.ToString("dd/MM/yyyy")</th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < dsDiemDanh.Count(); i++)
+                {
+                    var hocVien = dsDiemDanh.ElementAt(i);
+                    <tr>
+                        <td>
+                            @hocVien.hv.HoTen
+                            @Html.HiddenFor(model => model.ElementAt(i).hv.MaHocVien)
+                        </td>
+                        @for (int j = 0; j < hocVien.ds.Count(); j++)
+                        {
+                            <td>
+                                <span class="diem-danh-text">
+                                    @(hocVien.ds[j].TrangThai == "Có mặt" ? "x" : hocVien.ds[j].TrangThai == "Vắng" ? "-" : "")
+                                </span>
+                                <input type="text" id="TrangThai_@i@j" name="dsDiemDanh[@i].ds[@j].TrangThai"
+                                       value="@hocVien.ds[j].TrangThai"
+                                       class="diem-danh-input d-none text-center w-100"
+                                       data-hocvien-index="@i" data-diemdanh-index="@j" />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var btnDiemDanh = $("#btn-diem-danh");
+        var btnLuu = $("#btn-luu");
+        var btnHuy = $("#btn-huy");
+        var textElements = $(".diem-danh-text");
+        var inputElements = $(".diem-danh-input");
+
+        // Hiển thị các input và ẩn các span khi nhấn nút Điểm danh
+        btnDiemDanh.on("click", function () {
+            textElements.addClass("d-none");
+            inputElements.removeClass("d-none");
+
+            btnDiemDanh.addClass("d-none");
+            btnLuu.removeClass("d-none");
+            btnHuy.removeClass("d-none");
+        });
+
+        // Hủy và trở về chế độ ban đầu
+        btnHuy.on("click", function () {
+            inputElements.addClass("d-none");
+            textElements.removeClass("d-none");
+
+            btnDiemDanh.removeClass("d-none");
+            btnLuu.addClass("d-none");
+            btnHuy.addClass("d-none");
+        });
+
+        // Lắng nghe sự kiện thay đổi giá trị của input
+        inputElements.on("blur", function () {
+            
+            var hocVienIndex = $(this).data("hocvien-index");
+            var diemDanhIndex = $(this).data("diemdanh-index");
+
+            if (hocVienIndex !== undefined && diemDanhIndex !== undefined) {
+                // Cập nhật trạng thái trong dsDiemDanh
+                var newTrangThai = $(this).val();
+                console.log(newTrangThai);
+
+                // Gửi dữ liệu qua AJAX tới controller
+                $.ajax({
+                    url: '@Url.Action("CapNhatDiemDanh", "GiangVien")',
+                    type: 'POST',
+                    data: {
+                        hocVienIndex: hocVienIndex,
+                        diemDanhIndex: diemDanhIndex,
+                        trangThai: newTrangThai
+                    },
+                    success: function (response) {
+                        console.log("Cập nhật thành công!");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Có lỗi xảy ra: " + error);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<style>
+    .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .diem-danh-text {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .diem-danh-input {
+        padding: 0;
+        border: 1px solid #ccc;
+    }
+</style>

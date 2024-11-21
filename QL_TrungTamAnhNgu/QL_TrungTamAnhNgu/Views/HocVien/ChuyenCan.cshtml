@@ -1,0 +1,63 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.view_dshocvien_diemdanh>
+
+<hr class="my-0">
+<div class="bg-light py-1 shadow-sm border-bottom mt-0">
+    <div class="container">
+        <ul class="nav justify-content-center mb-0">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="@Url.Action("LopHoc", "HocVien", new { id = Session["MaLop"] })">Thông tin lớp học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/BaiTap">Bài tập</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/TaiLieu">Tài liệu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/ChuyenCan">Chuyên cần</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">Danh sách chuyên cần</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            Không có dữ liệu chuyên cần.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive" style="max-width: 800px; margin: 0 auto;">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Ngày điểm danh</th>
+                        <th scope="col">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NgayDiemDanh.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (item.TrangThai == "Có mặt")
+                                {
+                                    <span class="badge bg-success">Có mặt</span>
+                                }
+                                else if (item.TrangThai == "Vắng")
+                                {
+                                    <span class="badge bg-danger">Vắng</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.fn_DSHocVienCuaLopResult>
+@{
+    int index =1;    
+}
+
+<div class="mt-4">
+    <h2 class="text-center mb-4" style="font-size: 22px; font-weight: 500;">Danh Sách Học Viên</h2>
+
+    <table class="table table-striped table-striped table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th style="text-align: center;">STT</th>
+                <th style="text-align: center;">Họ tên</th>
+                <th style="text-align: center;">Email</th>
+                <th style="text-align: center;">Trình độ</th>
+                <th style="text-align: center;">Mục tiêu</th>
+                <th style="text-align: center;">Số buổi tham gia</th>
+                <th style="text-align: center;">Số buổi vắng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center;">@index</td>
+                    <td style="text-align: center;">@Html.DisplayFor(modelItem => item.HoTen)</td>
+                    <td style="text-align: center;">@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td style="text-align: center;">@Html.DisplayFor(modelItem => item.TrinhDo)</td>
+                    <td style="text-align: center;">@Html.DisplayFor(modelItem => item.MucTieuHocTap)</td>
+                    <td style="text-align: center;">@Html.DisplayFor(modelItem => item.SoBuoiDaHoc)</td>
+                    <td style="text-align: center;">@Html.DisplayFor(modelItem => item.SoBuoiVang)</td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+</div>

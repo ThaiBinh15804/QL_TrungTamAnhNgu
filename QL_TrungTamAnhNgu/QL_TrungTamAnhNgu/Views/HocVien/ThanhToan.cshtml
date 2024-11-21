@@ -1,0 +1,36 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.ThongTinThanhToan>
+
+<div class="container">
+    <h2>Danh sách Thanh Toán</h2>
+
+    @if (Model != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Khóa Học</th>
+                    <th>Số Tiền</th>
+                    <th>Tỉ lệ Giảm</th>
+                    <th>Tổng Tiền</th>
+                    <th>Ngày Thực Hiện</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TenKhoaHoc</td>
+                        <td>@item.TongTien</td>
+                        <td>@(item.TiLeGiam.HasValue ? item.TiLeGiam.Value.ToString("0") : "0")%</td>
+                        <td>@item.TongTienSauGiam</td>
+                        <td>@(item.NgayThucHien.HasValue ? item.NgayThucHien.Value.ToString("dd/MM/yyyy") : "Chưa có thông tin")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Không có dữ liệu thanh toán.</p>
+    }
+</div>

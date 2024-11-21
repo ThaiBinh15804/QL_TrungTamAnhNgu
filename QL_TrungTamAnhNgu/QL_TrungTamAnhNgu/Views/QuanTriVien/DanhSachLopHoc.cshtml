@@ -1,0 +1,71 @@
+﻿@model List<QL_TrungTamAnhNgu.Models.LopHoc>
+@using QL_TrungTamAnhNgu.Models
+@{
+    ViewBag.Title = "DanhSachLopHoc";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<div>
+    <header style="position: sticky; left:0 ; top: 0; background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0px 16px; border-bottom: 1px solid #edede9; height: 80px;">
+        <div style="display: flex; align-items: center; column-gap: 8px;">
+            <i class="fa-solid fa-bars" style="color: black; font-size: 20px;"></i>
+            <h2 style="font-size: 18px; color: #000; font-weight: 500;">Quản lý Trung tâm Anh ngữ Yola</h2>
+        </div>
+        <div style="position: relative">
+            <button onclick="handleClickUser(event)" style="display: flex; align-items: center; column-gap: 4px; color: #000">
+                <span style="font-size: 16px; font-weight: 500; color: #000">
+                    Xin chào,
+                    @if (Session["user"] != null)
+                    {
+                        NguoiDung user = Session["user"] as NguoiDung;
+                        <span>@user.TenTaiKhoan</span>
+                    }
+                </span>
+                <img src="~/Content/HinhAnh/GiaoDien/avatar.jpg" alt="Alternate Text" style="width: 30px; height: 30px; border-radius: 999px;" />
+            </button>
+            <div style="position: absolute; right: 0; top: 25px;" class="user">
+                <div class="d-flex flex-column mt-3 user__body">
+                    <a class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; display: block; text-align: center; font-size: 15px;">Thông tin tài khoản</a>
+                    <a href="/QuanTriVien/DangXuat" class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; border-top: 0px; display: block; text-align: center; font-size: 15px;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="padding:8px 20px;">
+        <div class="d-flex gap-2 mt-2">
+            <i style="color: #343a40" class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #343a40">Danh sách lớp học</span>
+        </div>
+        <div class="d-flex justify-content-between" style="margin-top: 20px;">
+            <h1 style="font-size: 22px; font-weight: 600; color: #000; ">Danh sách lớp học của khóa học</h1>
+            <a href="/QuanTriVien/ThemLopHoc" class="btn btn-primary" style="font-size: 16px;">
+                Thêm lớp học
+            </a>
+        </div>
+        <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
+            <div class="row g-4">
+                @foreach (var item in Model)
+                {
+                    <div class="col-3" style="border-radius: 10px;">
+                        <img src="~/Content/HinhAnh/KhoaHoc/@item.KhoaHoc.AnhBia" alt="@item.TenLop" style="display: block ; width: 100%; height: 150px; border-top-left-radius: 5px; border-top-right-radius: 5px; " />
+                        <div style="padding: 8px 12px 0; height: 170px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border: 1px solid #dadada; background-color: #fff;">
+                            <span style="font-size: 16px; font-weight: 500;">@item.TenLop</span>
+                            @*<span style="font-size: 14px; display: block; margin-top: 15px; color: #7f7f7f; ">Giảng viên: @item.GiangVien.HoTen</span>*@
+                            <span style="font-size: 14px; display: block; margin: 20px 0;">
+                                Trạng thái:
+                                <span style="padding: 4px 12px; background-color: #248823; color: #fff; border-radius: 20px; font-size: 12px;">@item.TrangThai</span>
+                                <span style="font-size: 15px; display: block;  margin-top: 15px; font-weight: 500; color: #ff0000; ">
+                                    Người dạy: @String.Format("{0:N0}", item.GiangVien.HoTen) 
+                                </span>
+                            </span>
+                            <div class="d-flex justify-content-end">
+                                <a href="/QuanTriVien/ChiTietLopHoc?malop=@item.MaLop" class="btn btn-primary">Chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

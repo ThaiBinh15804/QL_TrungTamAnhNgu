@@ -1,0 +1,108 @@
+﻿@model QL_TrungTamAnhNgu.Models.view_tailieu_theokhoahoc
+
+@{
+    ViewBag.Title = "Chi tiết tài liệu";
+    Layout = "~/Views/Shared/_LayoutHocVien.cshtml";
+}
+<hr class="my-0">
+<div class="bg-light py-1 shadow-sm border-bottom mt-0">
+    <div class="container">
+        <ul class="nav justify-content-center mb-0">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="@Url.Action("LopHoc", "HocVien", new { id = Session["MaLop"] })">Thông tin lớp học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/BaiTap">Bài tập</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/TaiLieu">Tài liệu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/HocVien/ChuyenCan">Chuyên cần</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>Chi Tiết Tài Liệu</h3>
+        </div>
+        <div class="card-body">
+            <!-- Khóa Học -->
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-graduation-cap me-2 text-primary"></i>
+                    <strong>Khóa Học:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.TenKhoaHoc</span>
+                </div>
+            </div>
+            <!-- Mô tả -->
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2 text-info"></i>
+                    <strong>Mô tả:</strong>
+                </div>
+                <div class="col-sm-8">
+                    <span>@Model.MoTa</span>
+                </div>
+            </div>
+            <!-- Ngày tạo -->
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-calendar-alt me-2 text-success"></i>
+                    <strong>Ngày tạo:</strong>
+                </div>
+                <div class="col-sm-8">
+                    @if (Model.NgayTao.HasValue)
+                    {
+                        <span>@Model.NgayTao.Value.ToString("dd/MM/yyyy")</span>
+                    }
+                    else
+                    {
+                        <span>Không rõ</span>
+                    }
+                </div>
+            </div>
+            <!-- Trạng thái -->
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2 text-secondary"></i>
+                    <strong>Trạng Thái:</strong>
+                </div>
+                <div class="col-sm-8">
+                    @if (Model.TrangThai == "Đang hoạt động")
+                    {
+                        <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Đang hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary"><i class="fas fa-times-circle me-1"></i> @Model.TrangThai</span>
+                    }
+                </div>
+            </div>
+            <!-- File tài liệu -->
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center">
+                    <i class="fas fa-download me-2 text-warning"></i>
+                    <strong>File tài liệu:</strong>
+                </div>
+                <div class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.FileTaiLieu))
+                    {
+                        <a href="~/Content/HinhAnh/TaiLieu/@Model.FileTaiLieu" class="btn btn-primary btn-sm" target="_blank">
+                            <i class="fas fa-download me-2"></i>Tải tài liệu
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-danger"><i class="fas fa-times-circle me-2"></i>Tài liệu chưa có file đính kèm.</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

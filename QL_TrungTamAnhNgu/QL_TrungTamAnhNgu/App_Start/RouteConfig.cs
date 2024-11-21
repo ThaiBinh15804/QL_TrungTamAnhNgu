@@ -16,14 +16,9 @@ namespace QL_TrungTamAnhNgu
             routes.MapRoute(
               name: "Default2",
               url: "{controller}/{action}/{id}",
-              defaults: new { controller = "QuanTriVien", action = "DangNhap", id = UrlParameter.Optional }
+              defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "GiangVien", action = "Index", id = UrlParameter.Optional }
-            );
         }
     }
 }

@@ -1,0 +1,75 @@
+﻿@model QL_TrungTamAnhNgu.Models.LopHoc
+@using QL_TrungTamAnhNgu.Models
+@{
+    ViewBag.Title = "ChiTietLopHoc";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<div>
+    <header style="position: sticky; left:0 ; top: 0; z-index: 10; background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0px 16px; border-bottom: 1px solid #edede9; height: 80px;">
+        <div style="display: flex; align-items: center; column-gap: 8px;">
+            <i class="fa-solid fa-bars" style="color: black; font-size: 20px;"></i>
+            <h2 style="font-size: 18px; color: #000; font-weight: 500;">Quản lý Trung tâm Anh ngữ Yola</h2>
+        </div>
+        <div style="position: relative">
+            <button onclick="handleClickUser(event)" style="display: flex; align-items: center; column-gap: 4px; color: #000">
+                <span style="font-size: 16px; font-weight: 500; color: #000">
+                    Xin chào,
+                    @if (Session["user"] != null)
+                    {
+                        NguoiDung user = Session["user"] as NguoiDung;
+                        <span>@user.TenTaiKhoan</span>
+                    }
+                </span>
+                <img src="~/Content/HinhAnh/GiaoDien/avatar.jpg" alt="Alternate Text" style="width: 30px; height: 30px; border-radius: 999px;" />
+            </button>
+            <div style="position: absolute; right: 0; top: 25px;" class="user">
+                <div class="d-flex flex-column mt-3 user__body">
+                    <a class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; display: block; text-align: center; font-size: 15px;">Thông tin tài khoản</a>
+                    <a href="/QuanTriVien/DangXuat" class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; border-top: 0px; display: block; text-align: center; font-size: 15px;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="padding:8px 20px;">
+        <div class="d-flex gap-2 mt-2">
+            <i style="color: #343a40" class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #343a40">Danh sách lớp học</span>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #000; ">Chi tiết</span>
+        </div>
+        <div class="d-flex mt-3 p-2" style="background-color: #dadada; color: #000">
+            <a style="color: black;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=ThongTinLopHoc">Thông tin lớp học</a>
+            <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=HocVienLopHoc">Học viên</a>
+            <a style="color: black; margin-left: 25px;" href="/QuanTriVien/XuLyDieuHuong/?malop=@Model.MaLop&page=DiemDanh">Điểm danh</a>
+            <span style="margin-left: 25px;">Lịch học</span>
+            <span style="margin-left: 25px;">Bài tập</span>
+        </div>
+        <div>
+            <div id="contentArea" style="height: auto; overflow-y: auto; transition: margin-left 0.3s;">
+                @{
+                    string dieuHuong = TempData["DieuHuong"] as string;
+
+                    switch (dieuHuong)
+                    {
+                        case "ThongTinLopHoc":
+                        @Html.Action("ThongTinLopHoc", "QuanTriVien", new { malop = Model.MaLop })
+                            break;
+                        case "HocVienLopHoc":
+                        @Html.Action("HocVienLopHoc", "QuanTriVien", new { malop = Model.MaLop })
+                            break;
+                        case "DiemDanh":
+                        @Html.Action("DiemDanh", "QuanTriVien", new { malop = Model.MaLop })
+                            break;
+                        default:
+                        @Html.Action("ThongTinLopHoc", "QuanTriVien", new { malop = Model.MaLop })
+                            break;
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

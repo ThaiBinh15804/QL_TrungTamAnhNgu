@@ -1,0 +1,87 @@
+﻿@using QL_TrungTamAnhNgu.Models;
+
+@model QL_TrungTamAnhNgu.Models.NhomNguoiDung
+
+@{
+    ViewBag.Title = "Thêm Nhóm Người Dùng";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<div>
+    <header style="position: sticky; left:0; top: 0; background-color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid #edede9; height: 80px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-bars" style="color: black; font-size: 20px;"></i>
+            <h2 style="font-size: 18px; color: #000; font-weight: 500;">Quản lý Trung tâm Anh ngữ Yola</h2>
+        </div>
+        <div style="position: relative">
+            <button onclick="handleClickUser(event)" style="display: flex; align-items: center; gap: 4px; color: #000;">
+                <span style="font-size: 16px; font-weight: 500; color: #000;">
+                    Xin chào,
+                    @if (Session["user"] != null)
+                    {
+                        NguoiDung user = Session["user"] as NguoiDung;
+                        <span>@user.TenTaiKhoan</span>
+                    }
+                </span>
+                <img src="~/Content/HinhAnh/GiaoDien/avatar.jpg" alt="Avatar" style="width: 30px; height: 30px; border-radius: 999px;" />
+            </button>
+            <div style="position: absolute; right: 0; top: 25px;" class="user">
+                <div class="d-flex flex-column mt-3 user__body">
+                    <a class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; display: block; text-align: center; font-size: 15px;">Thông tin tài khoản</a>
+                    <a href="/QuanTriVien/DangXuat" class="user__btn" style="padding: 8px 8px; border: 1px solid #f2f2f2; border-top: 0px; display: block; text-align: center; font-size: 15px;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="padding: 8px 20px;">
+        <div class="d-flex gap-2 mt-2">
+            <i class="fa-solid fa-house" style="color: #343a40;"></i>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #343a40;">Danh sách nhóm người dùng</span>
+            <i class="fa-solid fa-angle-right"></i>
+            <span style="color: #000;">Thêm nhóm người dùng</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px;">Thêm Nhóm Người Dùng</h1>
+        </div>
+
+        <div style="background-color: #fff; border-radius: 5px; margin-top: 10px; padding: 16px; border: 1px solid #dadada;">
+            @using (Html.BeginForm("XuLyThemNhomNguoiDung", "QuanTriVien", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                
+                <div class="mb-3">
+                    <label for="TenNhomND" class="form-label" style="font-weight: 500; color: #374151;">Tên nhóm:</label>
+                    @Html.EditorFor(model => model.MaNhomND, new { @class = "form-control", @id = "MaNhomND", placeholder = "Nhập mã nhóm" })
+                    @Html.ValidationMessageFor(model => model.MaNhomND, "", new { @class = "text-danger mt-1 d-block" })
+                </div>
+
+                <div class="mb-3">
+                    <label for="TenNhomND" class="form-label" style="font-weight: 500; color: #374151;">Tên nhóm:</label>
+                    @Html.EditorFor(model => model.TenNhomND, new { @class = "form-control", @id = "TenNhomND", placeholder = "Nhập tên nhóm" })
+                    @Html.ValidationMessageFor(model => model.TenNhomND, "", new { @class = "text-danger mt-1 d-block" })
+                </div>
+
+                <div class="mb-3">
+                    <label for="MoTaNhomND" class="form-label" style="font-weight: 500; color: #374151;">Mô tả nhóm:</label>
+                    @Html.TextAreaFor(model => model.MoTaNhomND, new { @class = "form-control", @id = "MoTaNhomND", placeholder = "Nhập mô tả nhóm", rows = 3 })
+                    @Html.ValidationMessageFor(model => model.MoTaNhomND, "", new { @class = "text-danger mt-1 d-block" })
+                </div>
+
+                if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="reset" class="btn btn-danger">Xóa</button>
+                    <button type="submit" class="btn btn-success">Tạo</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
