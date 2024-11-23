@@ -18,7 +18,8 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class QuanTriVienController : Controller
     {
-        public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
+        //public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
+        public static string connn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
         DataClasses1DataContext db = new DataClasses1DataContext(connn);
 
         public ActionResult Error()
@@ -182,11 +183,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
-                string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
-                connn = newConnectionString;
-                db = new DataClasses1DataContext(connn);
-
-
+                
                 if (user.TrangThai == "Đã khóa" && (user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
                     ViewBag.text = "Tài khoản đã bị đình chỉ!";
@@ -195,11 +192,16 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                 if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
+                    string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
+                    connn = newConnectionString;
+                    db = new DataClasses1DataContext(connn);
+
+
                     Session["user"] = user;
                     FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
                     return RedirectToAction("Index", "QuanTriVien");
                 }
-                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND002" || user.MaNhomND == "NND003"))
+                if (user != null && (user.MaNhomND == "NND002" || user.MaNhomND == "NND003"))
                 {
                     ViewBag.text = "Tài khoản không đủ quyền truy cập!";
                     return View();
@@ -222,7 +224,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (Session["user"] != null)
             {
                 Session["user"] = null;
-                string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
+                string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=sa123";
                 connn = newConnectionString;
                 db = new DataClasses1DataContext(connn);
                 FormsAuthentication.SignOut();
@@ -1250,7 +1252,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 }
 
                 // Tạo mã tài liệu
-                string maTaiLieu = db.TaiLieus.OrderByDescending(t => t.MaTaiLieu).FirstOrDefault()?.MaTaiLieu;
+                string maTaiLieu = db.TaiLieus.OrderByDescending(t => t.MaTaiLieu).FirstOrDefault().MaTaiLieu;
                 int k = maTaiLieu != null ? (int.Parse(maTaiLieu.Substring(2)) + 1) : 1;
                 string maTaiLieuMoi = "TL" + k.ToString("D3");
 

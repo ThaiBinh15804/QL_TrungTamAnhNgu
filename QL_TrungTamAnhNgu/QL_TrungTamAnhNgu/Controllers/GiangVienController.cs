@@ -16,7 +16,8 @@ namespace QL_TrungTamAnhNgu.Controllers
     public class GiangVienController : Controller
     {
 
-        public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
+        //public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
+        public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
         DataClasses1DataContext data = new DataClasses1DataContext(conn);
 
         public ActionResult Index()
@@ -39,17 +40,30 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             NguoiDung user = data.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == data.AuthenticateUser(username, password));
 
-            string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+            string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
             conn = newConnectionString;
             data = new DataClasses1DataContext(newConnectionString);
 
 
-            if (user != null)
+            if (user != null && user.MaNhomND == "NND002" )
             {
-                GiangVien gv = data.GiangViens.FirstOrDefault(t => t.MaGiangVien == user.MaNguoiDung);
-                Session["User"] = gv;
+                if (user.TrangThai != "Đang hoạt động")
+                {
+                    TempData["Error"] = "Tài khoản đã bị ngừng hoạt động. Liên hệ trung tâm để được hỗ trợ";
+                    return RedirectToAction("DangNhap", "GiangVien");
+                }
+                else
+                {
+                    GiangVien gv = data.GiangViens.FirstOrDefault(t => t.MaGiangVien == user.MaNguoiDung);
+                    Session["User"] = gv;
 
-                FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
+                    FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
+                }
+            }
+            else
+            {
+                TempData["Error"] = "Tài khoản không tồn tại hoặc sai tên đăng nhập, mật khẩu";
+                return RedirectToAction("DangNhap", "GiangVien");
             }
             return RedirectToAction("Index", "GiangVien");
         }
@@ -59,7 +73,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             // Xóa session của người dùng
             Session["User"] = null;
 
-            conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
+            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=sa123";
             data = new DataClasses1DataContext(conn);
 
             // Hủy cookie xác thực của FormsAuthentication (nếu sử dụng FormsAuthentication)

@@ -14,7 +14,8 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class HocVienController : Controller
     {
-        public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
+        //public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
+        public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
         
         DataClasses1DataContext db = new DataClasses1DataContext(conn);
         public ActionResult TrangChu()
@@ -405,16 +406,25 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult DangNhap(string username, string password)
         {
             var user = db.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == db.AuthenticateUser(username, password));
-            if (user != null)
+            if (user != null && user.MaNhomND == "NND003")
             {
-                conn = "Data Source = PHAMTHUAN\\MSSQLSERVER01; Initial Catalog = QL_TrungTamAnhNgu; Persist Security Info = True;User ID=" + username + ";Password=" + password + "";
-                db = new DataClasses1DataContext(conn);
-                Session["UserId"] = user.MaNguoiDung;
-                Session["MaHocVien"] = user.HocVien.MaHocVien;
-                Session["User"] = user;
-                Session["UserName"] = user.TenTaiKhoan;
-                FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
-                return RedirectToAction("TrangChu", "HocVien");
+                if (user.TrangThai != "Đang hoạt động")
+                {
+                    ViewBag.ErrorMessage = "Tài khoản đã bị ngừng hoạt động";
+                    return View();
+                }
+                else
+                {
+                    conn = "Data Source = THAIBINH-LAPTOP; Initial Catalog = QL_TrungTamAnhNgu; Persist Security Info = True;User ID=" + username + ";Password=" + password + "";
+                    db = new DataClasses1DataContext(conn);
+                    Session["UserId"] = user.MaNguoiDung;
+                    Session["MaHocVien"] = user.HocVien.MaHocVien;
+                    Session["User"] = user;
+                    Session["UserName"] = user.TenTaiKhoan;
+                    FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
+                    return RedirectToAction("TrangChu", "HocVien");
+                }
+                
             }
             else
             {
@@ -427,7 +437,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult DangXuat()
         {
             Session.Clear();
-            conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
+            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=sa123;Encrypt=False";
             db = new DataClasses1DataContext(conn);
             FormsAuthentication.SignOut();
             return RedirectToAction("DieuHuong", "Home");
@@ -451,7 +461,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                 }
 
-                conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + newPassword + "";
+                conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + newPassword + "";
                 db = new DataClasses1DataContext(conn);
 
                 return Json(new { success = true, message = "Đổi mật khẩu thành công." });
