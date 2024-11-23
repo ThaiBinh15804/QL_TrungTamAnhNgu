@@ -42,7 +42,6 @@
             <h1 style="font-size: 22px; font-weight: 600; color: #000;">Danh sách khóa học sử dụng bài tập</h1>
             @if (ViewBag.TrangThaiKhoaHoc != null)
             {
-                <span style="color: red;">@ViewBag.TrangThaiKhoaHoc</span>
                 <a style="pointer-events: none;" class="btn btn-primary" href="/QuanTriVien/ThemKhoaHoc_BaiTap?maBT=@ViewBag.MaBaiTap">Thêm bài tập cho khóa học</a>
             }
             else
@@ -73,6 +72,12 @@
                 }
             </div>
         </div>
+        @if (ViewBag.TrangThaiKhoaHoc != null)
+        {
+            <div class="mt-2 alert alert-danger">
+                @ViewBag.TrangThaiKhoaHoc
+            </div>
+        }
     </div>
 </div>
 

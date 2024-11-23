@@ -216,7 +216,7 @@ if (btnSua) {
     })
 }
 
-const avatar = document.getElementById("Avatar")
+const avatar = document.getElementById("Avatar");
 if (avatar) {
     avatar.addEventListener("change", function (event) {
         var reader = new FileReader();
@@ -231,8 +231,9 @@ if (avatar) {
             }
             reader.readAsDataURL(file);
         }
-    })
+    });
 }
+
 
 const btnClearForm = document.getElementById("btnClearForm")
 if (btnClearForm) {

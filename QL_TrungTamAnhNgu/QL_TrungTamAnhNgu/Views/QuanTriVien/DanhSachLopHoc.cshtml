@@ -59,14 +59,15 @@
                 {
                     <div class="col-3" style="border-radius: 10px;">
                         <img src="~/Content/HinhAnh/KhoaHoc/@item.KhoaHoc.AnhBia" alt="@item.TenLop" style="display: block ; width: 100%; height: 150px; border-top-left-radius: 5px; border-top-right-radius: 5px; " />
-                        <div style="padding: 8px 12px 0; height: 170px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border: 1px solid #dadada; background-color: #fff;">
+                        <div style="padding: 8px 12px 0; height: 190px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border: 1px solid #dadada; background-color: #fff;">
                             <span style="font-size: 16px; font-weight: 500;">@item.TenLop</span>
-                            @*<span style="font-size: 14px; display: block; margin-top: 15px; color: #7f7f7f; ">Giảng viên: @item.GiangVien.HoTen</span>*@
+                                @*<span style="font-size: 14px; display: block; margin-top: 15px; color: #7f7f7f; ">Giảng viên: @item.GiangVien.HoTen</span>*@
                             <span style="font-size: 14px; display: block; margin: 20px 0;">
                                 Trạng thái:
                                 <span style="padding: 4px 12px; background-color: #248823; color: #fff; border-radius: 20px; font-size: 12px;">@item.TrangThai</span>
+                                <span style=" margin-top: 15px; display: block; font-size: 14px; font-weight: 400; color: #343a40">Khóa hoc: @item.KhoaHoc.TenKhoaHoc</span>
                                 <span style="font-size: 15px; display: block;  margin-top: 15px; font-weight: 500; color: #ff0000; ">
-                                    Người dạy: @String.Format("{0:N0}", item.GiangVien.HoTen) 
+                                    Người dạy: @String.Format("{0:N0}", item.GiangVien.HoTen)
                                 </span>
                             </span>
                             <div class="d-flex justify-content-end">

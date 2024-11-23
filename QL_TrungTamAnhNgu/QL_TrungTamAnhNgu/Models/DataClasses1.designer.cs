@@ -33,9 +33,6 @@ namespace QL_TrungTamAnhNgu.Models
     partial void InsertBaiTap(BaiTap instance);
     partial void UpdateBaiTap(BaiTap instance);
     partial void DeleteBaiTap(BaiTap instance);
-    partial void InsertVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
-    partial void UpdateVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
-    partial void DeleteVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
     partial void InsertBaoCaoThang(BaoCaoThang instance);
     partial void UpdateBaoCaoThang(BaoCaoThang instance);
     partial void DeleteBaoCaoThang(BaoCaoThang instance);
@@ -96,13 +93,10 @@ namespace QL_TrungTamAnhNgu.Models
     partial void InsertVaiTro(VaiTro instance);
     partial void UpdateVaiTro(VaiTro instance);
     partial void DeleteVaiTro(VaiTro instance);
+    partial void InsertVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
+    partial void UpdateVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
+    partial void DeleteVaiTro_NhomNguoiDung(VaiTro_NhomNguoiDung instance);
     #endregion
-		
-		public DataClasses1DataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["QL_TrungTamAnhNguConnectionString1"].ConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
 		
 		public DataClasses1DataContext(string connection) : 
 				base(connection, mappingSource)
@@ -133,14 +127,6 @@ namespace QL_TrungTamAnhNgu.Models
 			get
 			{
 				return this.GetTable<BaiTap>();
-			}
-		}
-		
-		public System.Data.Linq.Table<VaiTro_NhomNguoiDung> VaiTro_NhomNguoiDungs
-		{
-			get
-			{
-				return this.GetTable<VaiTro_NhomNguoiDung>();
 			}
 		}
 		
@@ -301,6 +287,14 @@ namespace QL_TrungTamAnhNgu.Models
 			get
 			{
 				return this.GetTable<VaiTro>();
+			}
+		}
+		
+		public System.Data.Linq.Table<VaiTro_NhomNguoiDung> VaiTro_NhomNguoiDungs
+		{
+			get
+			{
+				return this.GetTable<VaiTro_NhomNguoiDung>();
 			}
 		}
 		
@@ -978,174 +972,6 @@ namespace QL_TrungTamAnhNgu.Models
 		{
 			this.SendPropertyChanging();
 			entity.BaiTap = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.VaiTro_NhomNguoiDung")]
-	public partial class VaiTro_NhomNguoiDung : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _MaVaiTro;
-		
-		private string _MaNhomND;
-		
-		private EntityRef<NhomNguoiDung> _NhomNguoiDung;
-		
-		private EntityRef<VaiTro> _VaiTro;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnMaVaiTroChanging(string value);
-    partial void OnMaVaiTroChanged();
-    partial void OnMaNhomNDChanging(string value);
-    partial void OnMaNhomNDChanged();
-    #endregion
-		
-		public VaiTro_NhomNguoiDung()
-		{
-			this._NhomNguoiDung = default(EntityRef<NhomNguoiDung>);
-			this._VaiTro = default(EntityRef<VaiTro>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaVaiTro", DbType="VarChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string MaVaiTro
-		{
-			get
-			{
-				return this._MaVaiTro;
-			}
-			set
-			{
-				if ((this._MaVaiTro != value))
-				{
-					if (this._VaiTro.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMaVaiTroChanging(value);
-					this.SendPropertyChanging();
-					this._MaVaiTro = value;
-					this.SendPropertyChanged("MaVaiTro");
-					this.OnMaVaiTroChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaNhomND", DbType="VarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string MaNhomND
-		{
-			get
-			{
-				return this._MaNhomND;
-			}
-			set
-			{
-				if ((this._MaNhomND != value))
-				{
-					if (this._NhomNguoiDung.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMaNhomNDChanging(value);
-					this.SendPropertyChanging();
-					this._MaNhomND = value;
-					this.SendPropertyChanged("MaNhomND");
-					this.OnMaNhomNDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="NhomNguoiDung_VaiTro_NhomNguoiDung", Storage="_NhomNguoiDung", ThisKey="MaNhomND", OtherKey="MaNhomND", IsForeignKey=true)]
-		public NhomNguoiDung NhomNguoiDung
-		{
-			get
-			{
-				return this._NhomNguoiDung.Entity;
-			}
-			set
-			{
-				NhomNguoiDung previousValue = this._NhomNguoiDung.Entity;
-				if (((previousValue != value) 
-							|| (this._NhomNguoiDung.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._NhomNguoiDung.Entity = null;
-						previousValue.VaiTro_NhomNguoiDungs.Remove(this);
-					}
-					this._NhomNguoiDung.Entity = value;
-					if ((value != null))
-					{
-						value.VaiTro_NhomNguoiDungs.Add(this);
-						this._MaNhomND = value.MaNhomND;
-					}
-					else
-					{
-						this._MaNhomND = default(string);
-					}
-					this.SendPropertyChanged("NhomNguoiDung");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="VaiTro_VaiTro_NhomNguoiDung", Storage="_VaiTro", ThisKey="MaVaiTro", OtherKey="MaVaiTro", IsForeignKey=true)]
-		public VaiTro VaiTro
-		{
-			get
-			{
-				return this._VaiTro.Entity;
-			}
-			set
-			{
-				VaiTro previousValue = this._VaiTro.Entity;
-				if (((previousValue != value) 
-							|| (this._VaiTro.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._VaiTro.Entity = null;
-						previousValue.VaiTro_NhomNguoiDungs.Remove(this);
-					}
-					this._VaiTro.Entity = value;
-					if ((value != null))
-					{
-						value.VaiTro_NhomNguoiDungs.Add(this);
-						this._MaVaiTro = value.MaVaiTro;
-					}
-					else
-					{
-						this._MaVaiTro = default(string);
-					}
-					this.SendPropertyChanged("VaiTro");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -5222,9 +5048,9 @@ namespace QL_TrungTamAnhNgu.Models
 		
 		private string _MoTaNhomND;
 		
-		private EntitySet<VaiTro_NhomNguoiDung> _VaiTro_NhomNguoiDungs;
-		
 		private EntitySet<NguoiDung> _NguoiDungs;
+		
+		private EntitySet<VaiTro_NhomNguoiDung> _VaiTro_NhomNguoiDungs;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -5240,8 +5066,8 @@ namespace QL_TrungTamAnhNgu.Models
 		
 		public NhomNguoiDung()
 		{
-			this._VaiTro_NhomNguoiDungs = new EntitySet<VaiTro_NhomNguoiDung>(new Action<VaiTro_NhomNguoiDung>(this.attach_VaiTro_NhomNguoiDungs), new Action<VaiTro_NhomNguoiDung>(this.detach_VaiTro_NhomNguoiDungs));
 			this._NguoiDungs = new EntitySet<NguoiDung>(new Action<NguoiDung>(this.attach_NguoiDungs), new Action<NguoiDung>(this.detach_NguoiDungs));
+			this._VaiTro_NhomNguoiDungs = new EntitySet<VaiTro_NhomNguoiDung>(new Action<VaiTro_NhomNguoiDung>(this.attach_VaiTro_NhomNguoiDungs), new Action<VaiTro_NhomNguoiDung>(this.detach_VaiTro_NhomNguoiDungs));
 			OnCreated();
 		}
 		
@@ -5305,19 +5131,6 @@ namespace QL_TrungTamAnhNgu.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="NhomNguoiDung_VaiTro_NhomNguoiDung", Storage="_VaiTro_NhomNguoiDungs", ThisKey="MaNhomND", OtherKey="MaNhomND")]
-		public EntitySet<VaiTro_NhomNguoiDung> VaiTro_NhomNguoiDungs
-		{
-			get
-			{
-				return this._VaiTro_NhomNguoiDungs;
-			}
-			set
-			{
-				this._VaiTro_NhomNguoiDungs.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="NhomNguoiDung_NguoiDung", Storage="_NguoiDungs", ThisKey="MaNhomND", OtherKey="MaNhomND")]
 		public EntitySet<NguoiDung> NguoiDungs
 		{
@@ -5328,6 +5141,19 @@ namespace QL_TrungTamAnhNgu.Models
 			set
 			{
 				this._NguoiDungs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="NhomNguoiDung_VaiTro_NhomNguoiDung", Storage="_VaiTro_NhomNguoiDungs", ThisKey="MaNhomND", OtherKey="MaNhomND")]
+		public EntitySet<VaiTro_NhomNguoiDung> VaiTro_NhomNguoiDungs
+		{
+			get
+			{
+				return this._VaiTro_NhomNguoiDungs;
+			}
+			set
+			{
+				this._VaiTro_NhomNguoiDungs.Assign(value);
 			}
 		}
 		
@@ -5351,18 +5177,6 @@ namespace QL_TrungTamAnhNgu.Models
 			}
 		}
 		
-		private void attach_VaiTro_NhomNguoiDungs(VaiTro_NhomNguoiDung entity)
-		{
-			this.SendPropertyChanging();
-			entity.NhomNguoiDung = this;
-		}
-		
-		private void detach_VaiTro_NhomNguoiDungs(VaiTro_NhomNguoiDung entity)
-		{
-			this.SendPropertyChanging();
-			entity.NhomNguoiDung = null;
-		}
-		
 		private void attach_NguoiDungs(NguoiDung entity)
 		{
 			this.SendPropertyChanging();
@@ -5370,6 +5184,18 @@ namespace QL_TrungTamAnhNgu.Models
 		}
 		
 		private void detach_NguoiDungs(NguoiDung entity)
+		{
+			this.SendPropertyChanging();
+			entity.NhomNguoiDung = null;
+		}
+		
+		private void attach_VaiTro_NhomNguoiDungs(VaiTro_NhomNguoiDung entity)
+		{
+			this.SendPropertyChanging();
+			entity.NhomNguoiDung = this;
+		}
+		
+		private void detach_VaiTro_NhomNguoiDungs(VaiTro_NhomNguoiDung entity)
 		{
 			this.SendPropertyChanging();
 			entity.NhomNguoiDung = null;
@@ -6433,6 +6259,174 @@ namespace QL_TrungTamAnhNgu.Models
 		{
 			this.SendPropertyChanging();
 			entity.VaiTro = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.VaiTro_NhomNguoiDung")]
+	public partial class VaiTro_NhomNguoiDung : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _MaVaiTro;
+		
+		private string _MaNhomND;
+		
+		private EntityRef<NhomNguoiDung> _NhomNguoiDung;
+		
+		private EntityRef<VaiTro> _VaiTro;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMaVaiTroChanging(string value);
+    partial void OnMaVaiTroChanged();
+    partial void OnMaNhomNDChanging(string value);
+    partial void OnMaNhomNDChanged();
+    #endregion
+		
+		public VaiTro_NhomNguoiDung()
+		{
+			this._NhomNguoiDung = default(EntityRef<NhomNguoiDung>);
+			this._VaiTro = default(EntityRef<VaiTro>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaVaiTro", DbType="VarChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string MaVaiTro
+		{
+			get
+			{
+				return this._MaVaiTro;
+			}
+			set
+			{
+				if ((this._MaVaiTro != value))
+				{
+					if (this._VaiTro.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMaVaiTroChanging(value);
+					this.SendPropertyChanging();
+					this._MaVaiTro = value;
+					this.SendPropertyChanged("MaVaiTro");
+					this.OnMaVaiTroChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaNhomND", DbType="VarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string MaNhomND
+		{
+			get
+			{
+				return this._MaNhomND;
+			}
+			set
+			{
+				if ((this._MaNhomND != value))
+				{
+					if (this._NhomNguoiDung.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMaNhomNDChanging(value);
+					this.SendPropertyChanging();
+					this._MaNhomND = value;
+					this.SendPropertyChanged("MaNhomND");
+					this.OnMaNhomNDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="NhomNguoiDung_VaiTro_NhomNguoiDung", Storage="_NhomNguoiDung", ThisKey="MaNhomND", OtherKey="MaNhomND", IsForeignKey=true)]
+		public NhomNguoiDung NhomNguoiDung
+		{
+			get
+			{
+				return this._NhomNguoiDung.Entity;
+			}
+			set
+			{
+				NhomNguoiDung previousValue = this._NhomNguoiDung.Entity;
+				if (((previousValue != value) 
+							|| (this._NhomNguoiDung.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._NhomNguoiDung.Entity = null;
+						previousValue.VaiTro_NhomNguoiDungs.Remove(this);
+					}
+					this._NhomNguoiDung.Entity = value;
+					if ((value != null))
+					{
+						value.VaiTro_NhomNguoiDungs.Add(this);
+						this._MaNhomND = value.MaNhomND;
+					}
+					else
+					{
+						this._MaNhomND = default(string);
+					}
+					this.SendPropertyChanged("NhomNguoiDung");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="VaiTro_VaiTro_NhomNguoiDung", Storage="_VaiTro", ThisKey="MaVaiTro", OtherKey="MaVaiTro", IsForeignKey=true)]
+		public VaiTro VaiTro
+		{
+			get
+			{
+				return this._VaiTro.Entity;
+			}
+			set
+			{
+				VaiTro previousValue = this._VaiTro.Entity;
+				if (((previousValue != value) 
+							|| (this._VaiTro.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._VaiTro.Entity = null;
+						previousValue.VaiTro_NhomNguoiDungs.Remove(this);
+					}
+					this._VaiTro.Entity = value;
+					if ((value != null))
+					{
+						value.VaiTro_NhomNguoiDungs.Add(this);
+						this._MaVaiTro = value.MaVaiTro;
+					}
+					else
+					{
+						this._MaVaiTro = default(string);
+					}
+					this.SendPropertyChanged("VaiTro");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

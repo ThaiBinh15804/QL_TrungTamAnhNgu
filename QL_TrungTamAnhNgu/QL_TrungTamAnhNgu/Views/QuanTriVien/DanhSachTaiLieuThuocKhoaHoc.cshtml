@@ -38,11 +38,10 @@
             <i class="fa-solid fa-angle-right"></i>
             <span>Danh sách khóa học sử dụng tài liệu</span>
         </div>
-        <div style=" margin-top: 20px;" class="d-flex justify-content-between align-items-center" >
+        <div style=" margin-top: 20px;" class="d-flex justify-content-between align-items-center">
             <h1 style="font-size: 22px; font-weight: 600; color: #000;">Danh sách khóa học sử dụng tài liệu</h1>
             @if (ViewBag.TrangThaiKhoaHoc != null)
             {
-                <span style="color: red;">@ViewBag.TrangThaiKhoaHoc</span>
                 <a style="pointer-events: none;" class="btn btn-primary" href="/QuanTriVien/ThemKhoaHoc_TaiLieu?maTL=@ViewBag.MaTaiLieu">Thêm tài liệu cho khóa học</a>
             }
             else
@@ -71,7 +70,13 @@
                         </span>
                     </div>
                 }
-            </div>  
+            </div>
         </div>
+        @if (ViewBag.TrangThaiKhoaHoc != null)
+            {
+            <div class="mt-2 alert alert-danger">
+                @ViewBag.TrangThaiKhoaHoc
+            </div>
+            }
     </div>
 </div>

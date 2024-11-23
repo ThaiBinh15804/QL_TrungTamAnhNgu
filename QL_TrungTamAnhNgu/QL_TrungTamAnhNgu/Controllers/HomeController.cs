@@ -12,8 +12,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         {
             return View();
         }
-
-        
+  
         public ActionResult XuLyDieuHuong(string ng)
         {
             if (ng == "HocVien")

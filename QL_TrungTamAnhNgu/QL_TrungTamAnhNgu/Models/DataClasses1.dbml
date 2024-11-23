@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QL_TrungTamAnhNgu" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QL_TrungTamAnhNguConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BaiTap" Member="BaiTaps">
     <Type Name="BaiTap">
       <Column Name="MaBaiTap" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -10,14 +9,6 @@
       <Column Name="TrangThai" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Association Name="BaiTap_DangKy_BaiTap" Member="DangKy_BaiTaps" ThisKey="MaBaiTap" OtherKey="MaBaiTap" Type="DangKy_BaiTap" />
       <Association Name="BaiTap_KhoaHoc_BaiTap" Member="KhoaHoc_BaiTaps" ThisKey="MaBaiTap" OtherKey="MaBaiTap" Type="KhoaHoc_BaiTap" />
-    </Type>
-  </Table>
-  <Table Name="dbo.VaiTro_NhomNguoiDung" Member="VaiTro_NhomNguoiDungs">
-    <Type Name="VaiTro_NhomNguoiDung">
-      <Column Name="MaVaiTro" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="MaNhomND" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="NhomNguoiDung_VaiTro_NhomNguoiDung" Member="NhomNguoiDung" ThisKey="MaNhomND" OtherKey="MaNhomND" Type="NhomNguoiDung" IsForeignKey="true" />
-      <Association Name="VaiTro_VaiTro_NhomNguoiDung" Member="VaiTro" ThisKey="MaVaiTro" OtherKey="MaVaiTro" Type="VaiTro" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.BaoCaoThang" Member="BaoCaoThangs">
@@ -210,8 +201,8 @@
       <Column Name="MaNhomND" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="TenNhomND" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="MoTaNhomND" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Association Name="NhomNguoiDung_VaiTro_NhomNguoiDung" Member="VaiTro_NhomNguoiDungs" ThisKey="MaNhomND" OtherKey="MaNhomND" Type="VaiTro_NhomNguoiDung" />
       <Association Name="NhomNguoiDung_NguoiDung" Member="NguoiDungs" ThisKey="MaNhomND" OtherKey="MaNhomND" Type="NguoiDung" />
+      <Association Name="NhomNguoiDung_VaiTro_NhomNguoiDung" Member="VaiTro_NhomNguoiDungs" ThisKey="MaNhomND" OtherKey="MaNhomND" Type="VaiTro_NhomNguoiDung" />
     </Type>
   </Table>
   <Table Name="dbo.PhongHoc" Member="PhongHocs">
@@ -266,6 +257,14 @@
       <Column Name="TenVaiTro" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="MoTa" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Association Name="VaiTro_VaiTro_NhomNguoiDung" Member="VaiTro_NhomNguoiDungs" ThisKey="MaVaiTro" OtherKey="MaVaiTro" Type="VaiTro_NhomNguoiDung" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VaiTro_NhomNguoiDung" Member="VaiTro_NhomNguoiDungs">
+    <Type Name="VaiTro_NhomNguoiDung">
+      <Column Name="MaVaiTro" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MaNhomND" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="NhomNguoiDung_VaiTro_NhomNguoiDung" Member="NhomNguoiDung" ThisKey="MaNhomND" OtherKey="MaNhomND" Type="NhomNguoiDung" IsForeignKey="true" />
+      <Association Name="VaiTro_VaiTro_NhomNguoiDung" Member="VaiTro" ThisKey="MaVaiTro" OtherKey="MaVaiTro" Type="VaiTro" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.thongke_caclop_trungtam" Member="thongke_caclop_trungtams">

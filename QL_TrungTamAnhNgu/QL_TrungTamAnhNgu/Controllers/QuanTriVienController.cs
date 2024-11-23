@@ -18,15 +18,13 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class QuanTriVienController : Controller
     {
-        public static string connn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+        public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
         DataClasses1DataContext db = new DataClasses1DataContext(connn);
 
         public ActionResult Error()
         {
             return View();
         }
-
-
 
         public int GetSoLuongNguoiDung_KhoaHoc_PhongHoc(string loaiNguoiDung)
         {
@@ -102,8 +100,6 @@ namespace QL_TrungTamAnhNgu.Controllers
                 }
             }
         }
-
-
 
         public ActionResult GetThongKeSoTuoi()
         {
@@ -186,12 +182,12 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
-                string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
+                string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
                 connn = newConnectionString;
                 db = new DataClasses1DataContext(connn);
 
 
-                if (user.TrangThai == "Đã khóa" && (user.MaNhomND == "NND002" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
+                if (user.TrangThai == "Đã khóa" && (user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
                     ViewBag.text = "Tài khoản đã bị đình chỉ!";
                     return View();
@@ -203,21 +199,19 @@ namespace QL_TrungTamAnhNgu.Controllers
                     FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
                     return RedirectToAction("Index", "QuanTriVien");
                 }
-                else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND002")
-                {
-                    Session["user"] = user;
-                    FormsAuthentication.SetAuthCookie(user.TenTaiKhoan, false);
-                    return RedirectToAction("Index", "GiangVien");
-                }
-                else if (user != null && user.TrangThai == "Đang hoạt động" && user.MaNhomND == "NND003")
+                if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND002" || user.MaNhomND == "NND003"))
                 {
                     ViewBag.text = "Tài khoản không đủ quyền truy cập!";
+                    return View();
                 }
             }
             catch (Exception ex)
             {
+                db = null;
+                connn = null;
                 // Nếu có lỗi khi kết nối hoặc truy vấn, thông báo cho người dùng
                 ViewBag.text = "Không thể kết nối đến cơ sở dữ liệu hoặc quyền truy cập bị từ chối. Lỗi: " + ex.Message;
+                // Reset chuỗi kết nối để tránh sử dụng lại thông tin cũ
                 return View();
             }
             return View();
@@ -228,7 +222,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (Session["user"] != null)
             {
                 Session["user"] = null;
-                string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+                string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
                 connn = newConnectionString;
                 db = new DataClasses1DataContext(connn);
                 FormsAuthentication.SignOut();
@@ -265,28 +259,27 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
-            using (var db = new DataClasses1DataContext())
+
+            // Gọi stored procedure thông qua DataContext
+            var sql = "select * from fn_timKiemKhoaHoc(N'" + search + "')";
+            IEnumerable<KhoaHoc> listKH = db.ExecuteQuery<KhoaHoc>(sql).ToList();
+
+            var totalRecords = listKH.Count();
+            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+            var khoahocList = listKH.OrderBy(q => q.MaKhoaHoc).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var model = new KhoaHocPagedList
             {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from fn_timKiemKhoaHoc(N'" + search + "')";
-                IEnumerable<KhoaHoc> listKH = db.ExecuteQuery<KhoaHoc>(sql).ToList();
+                DsKhoaHoc = khoahocList,
+                PageSize = pageSize,
+                TotalPages = totalPages,
+                CurrentPage = page,
+                SearchQuery = search
+            };
 
-                var totalRecords = listKH.Count();
-                var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-
-                var khoahocList = listKH.OrderBy(q => q.MaKhoaHoc).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-                var model = new KhoaHocPagedList
-                {
-                    DsKhoaHoc = khoahocList,
-                    PageSize = pageSize,
-                    TotalPages = totalPages,
-                    CurrentPage = page,
-                    SearchQuery = search
-                };
-
-                return View(model);
-            }
+            return View(model);
+                        
         }
 
         public ActionResult DanhSachKhoaHocThamKhao()
@@ -374,7 +367,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChiTietKhoaHoc(KhoaHoc kh)
+        public ActionResult ChiTietKhoaHoc(KhoaHoc kh, string AnhBiaHienTai)
         {
             string newcon = connn;
 
@@ -387,6 +380,12 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                 try
                 {
+                    // Kiểm tra nếu không có ảnh bìa mới, sử dụng ảnh bìa hiện tại
+                    if (string.IsNullOrEmpty(kh.AnhBia))
+                    {
+                        kh.AnhBia = AnhBiaHienTai;  // Nếu không có ảnh mới, lấy ảnh hiện tại
+                    }
+
                     // Kiểm tra xem khóa học đã tồn tại trong cơ sở dữ liệu chưa
                     var sqlCheck = "SELECT COUNT(1) FROM KhoaHoc WHERE MaKhoaHoc = @MaKhoaHoc";
                     SqlCommand checkCommand = new SqlCommand(sqlCheck, connection, transaction);
@@ -395,23 +394,23 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                     if (count > 0)
                     {
-                        // Cập nhật thông tin khóa học nếu tồn tại
+                        // Cập nhật thông tin khóa học
                         var sqlUpdate = @"
-                    UPDATE KhoaHoc
-                    SET TenKhoaHoc = @TenKhoaHoc,
-                        MoTa = @MoTa,
-                        HocPhi = @HocPhi,
-                        CapDo = @CapDo,
-                        AnhBia = @AnhBia,
-                        TrangThai = @TrangThai
-                    WHERE MaKhoaHoc = @MaKhoaHoc";
+                                        UPDATE KhoaHoc
+                                        SET TenKhoaHoc = @TenKhoaHoc,
+                                            MoTa = @MoTa,
+                                            HocPhi = @HocPhi,
+                                            CapDo = @CapDo,
+                                            AnhBia = @AnhBia,
+                                            TrangThai = @TrangThai
+                                        WHERE MaKhoaHoc = @MaKhoaHoc";
 
                         SqlCommand updateCommand = new SqlCommand(sqlUpdate, connection, transaction);
                         updateCommand.Parameters.AddWithValue("@TenKhoaHoc", kh.TenKhoaHoc);
                         updateCommand.Parameters.AddWithValue("@MoTa", kh.MoTa);
                         updateCommand.Parameters.AddWithValue("@HocPhi", kh.HocPhi);
                         updateCommand.Parameters.AddWithValue("@CapDo", kh.CapDo);
-                        updateCommand.Parameters.AddWithValue("@AnhBia", string.IsNullOrEmpty(kh.AnhBia) ? (object)DBNull.Value : kh.AnhBia);
+                        updateCommand.Parameters.AddWithValue("@AnhBia", kh.AnhBia);  // Kiểm tra null hoặc giá trị trống
                         updateCommand.Parameters.AddWithValue("@TrangThai", kh.TrangThai);
                         updateCommand.Parameters.AddWithValue("@MaKhoaHoc", kh.MaKhoaHoc);
 
@@ -782,13 +781,22 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
-            var giangVien = db.GiangViens.FirstOrDefault(k => k.MaGiangVien == maGV);
-            if (giangVien != null)
+            try
             {
-                db.GiangViens.DeleteOnSubmit(giangVien);
-                db.SubmitChanges();
+                var giangVien = db.GiangViens.FirstOrDefault(k => k.MaGiangVien == maGV);
+                if (giangVien != null)
+                {
+                    db.GiangViens.DeleteOnSubmit(giangVien);
+                    db.SubmitChanges();
+                }
+                return RedirectToAction("GiangVien");
+                
             }
-            return RedirectToAction("GiangVien");
+            catch (SqlException sqlEx)
+            {
+                TempData["ErrorMessage"] = "Không thể xóa giảng viên này";
+                return RedirectToAction("GiangVien");
+            }
         }
 
         public ActionResult HocVien(int page = 1, int pageSize = 5)
@@ -1224,7 +1232,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(tailieu);
         }
         [HttpPost]
-        public ActionResult ThemTaiLieu(TaiLieu tl)
+        public ActionResult ThemTaiLieu(TaiLieu tl, HttpPostedFileBase FileUpload)
         {
             if (Session["user"] == null)
             {
@@ -1232,9 +1240,21 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
-                string maTaiLieu = db.TaiLieus.OrderByDescending(t => t.MaTaiLieu).FirstOrDefault().MaTaiLieu;
+                // Xử lý tải lên file
+                if (FileUpload != null && FileUpload.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(FileUpload.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/TaiLieu"), fileName);
+                    FileUpload.SaveAs(path);
+                    tl.FileUpload = fileName; // Gán giá trị file upload
+                }
+
+                // Tạo mã tài liệu
+                string maTaiLieu = db.TaiLieus.OrderByDescending(t => t.MaTaiLieu).FirstOrDefault()?.MaTaiLieu;
                 int k = maTaiLieu != null ? (int.Parse(maTaiLieu.Substring(2)) + 1) : 1;
                 string maTaiLieuMoi = "TL" + k.ToString("D3");
+
+                // Thêm mới tài liệu
                 var tailieu = new TaiLieu
                 {
                     MaTaiLieu = maTaiLieuMoi,
@@ -1261,6 +1281,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return View(tl);
             }
         }
+
         public ActionResult XoaTaiLieu(string maTL)
         {
             if (Session["user"] == null)
@@ -1404,28 +1425,26 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
-            using (var db = new DataClasses1DataContext())
+
+            // Gọi stored procedure thông qua DataContext
+            var sql = "select * from fn_timKiemPhongHoc(N'" + search + "')";
+            IEnumerable<PhongHoc> listPH = db.ExecuteQuery<PhongHoc>(sql).ToList();
+
+            var totalRecords = listPH.Count();
+            var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+            var phongHocList = listPH.OrderBy(q => q.MaPhong).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var model = new PhongHocPagedList
             {
-                // Gọi stored procedure thông qua DataContext
-                var sql = "select * from fn_timKiemPhongHoc(N'" + search + "')";
-                IEnumerable<PhongHoc> listPH = db.ExecuteQuery<PhongHoc>(sql).ToList();
+                DsPhongHoc = phongHocList,
+                PageSize = pageSize,
+                TotalPages = totalPages,
+                CurrentPage = page,
+                SearchQuery = search
+            };
 
-                var totalRecords = listPH.Count();
-                var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-
-                var phongHocList = listPH.OrderBy(q => q.MaPhong).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-                var model = new PhongHocPagedList
-                {
-                    DsPhongHoc = phongHocList,
-                    PageSize = pageSize,
-                    TotalPages = totalPages,
-                    CurrentPage = page,
-                    SearchQuery = search
-                };
-
-                return View(model);
-            }
+            return View(model);               
         }
 
         public ActionResult ThemPhongHoc()
@@ -1593,32 +1612,30 @@ namespace QL_TrungTamAnhNgu.Controllers
                 if (sqlEx.Number == 547)
                 {
                     TempData["ErrorMessage"] = "Lỗi: Mã khóa học, phòng học hoặc giảng viên không tồn tại.";
-                }
-                else if (sqlEx.Number == 2627)
-                {
-                    TempData["ErrorMessage"] = "Lỗi: Mã lớp đã tồn tại.";
+                    return RedirectToAction("ThemLopHoc", new { makh = lopHoc.KhoaHoc.MaKhoaHoc });
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Lỗi SQL: " + sqlEx.Message;
+                    TempData["ErrorMessage"] = sqlEx.Message;
+                    return RedirectToAction("ThemLopHoc", new { makh = lopHoc.KhoaHoc.MaKhoaHoc });
                 }
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+                return RedirectToAction("ThemLopHoc", new { makh = lopHoc.KhoaHoc.MaKhoaHoc });
             }
-            ViewBag.MaKhoaHoc = db.KhoaHocs.Where(kh => kh.TrangThai == "Đang hoạt động").ToList();
-            ViewBag.MaPhong = db.PhongHocs.Where(ph => ph.TrangThai == "Đang hoạt động").ToList();
             return View(lh);
         }
         public ActionResult XoaLopHoc(string malop, string makh)
         {
 
             var lophoc = db.LopHocs.FirstOrDefault(t => t.MaLop == malop);
+            int demSoLuongHocVienTrongLopDKi = db.DangKies.Where(t => t.MaLop == malop).Count();
 
             if (lophoc != null)
             {
-                if (lophoc.TrangThai == "Chờ xác nhận")
+                if (lophoc.TrangThai == "Chờ xác nhận" && db.fn_DemSoLuongHocVienTrongLop(malop) == 0)
                 {
 
                     db.LopHocs.DeleteOnSubmit(lophoc);
@@ -1627,7 +1644,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Không thể xóa lớp học đang hoạt động!";
+                    TempData["ErrorMessage"] = "Không thể xóa lớp học đang hoạt động hoặc có học viên đăng ký!";
                 }
             }
             else
@@ -1999,6 +2016,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 return RedirectToAction("DangNhap");
             }
+             string a = lh.MaLichHoc;
             var lichHocExists = db.LichHocs.FirstOrDefault(k => k.MaLichHoc == lh.MaLichHoc);
             if (lichHocExists != null)
             {
@@ -2007,7 +2025,8 @@ namespace QL_TrungTamAnhNgu.Controllers
                 lichHocExists.ThoiGianKetThuc = lh.ThoiGianKetThuc;
                 lichHocExists.TrangThai = lh.TrangThai;
                 db.SubmitChanges();
-                return RedirectToAction("DanhSachLichHoc");
+                TempData["DieuHuong"] = "DanhSachLichHoc";
+                return RedirectToAction("ChiTietLopHoc", new { malop = lichHocExists.MaLop });
             }
             return View(lh);
         }
@@ -2305,7 +2324,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         [HttpPost]
         public JsonResult LayDanhSachLopHoc(string MaKH)
         {
-            var lopHocs = db.LopHocs.Where(t => t.MaKhoaHoc == MaKH).ToList();
+            var lopHocs = db.LopHocs.Where(t => t.MaKhoaHoc == MaKH && t.TrangThai == "Đang hoạt động").ToList();
 
             List<LopHoc> lh = new List<LopHoc>();
 
@@ -2342,7 +2361,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         [HttpPost]
         public JsonResult LayDanhSachGiamGia(string MaKH)
         {
-            var giamGias = db.GiamGias.Where(t => t.KhoaHoc_GiamGias.Where(u => u.MaKhoaHoc == MaKH).Any()).ToList();
+            var giamGias = db.GiamGias.Where(t => t.KhoaHoc_GiamGias.Where(u => u.MaKhoaHoc == MaKH).Any() && t.TrangThai == "Đang hoạt động").ToList();
 
             List<GiamGia> gg = new List<GiamGia>();
 

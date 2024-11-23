@@ -94,13 +94,12 @@
                     </div>
                     <div style="margin-top: 15px; width: 100%">
                         @Html.TextBoxFor(model => model.FileUpload, new { @style = "display: none;", @value = @Model.FileUpload, @id = "Avatar", @type = "file", @class = "form-control my-2" })
-                        @if (!string.IsNullOrEmpty(Model.FileUpload))
-                        {
-                            <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/TaiLieu/" + Model.FileUpload)"  width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
-                        }
-                        else
+                        @if (string.IsNullOrEmpty(Model.FileUpload))
                         {
                             <p class="text-muted">Không có tệp bài tập nào được tải lên.</p>
+                        } else
+                        {
+                            <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/TaiLieu/" + Model.FileUpload)"  width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
                         }
                         <label for="Avatar" id="label" class="custom-file-upload mt-2" style="pointer-events: none;cursor: not-allowed; width: 150px; text-align: center; padding: 10px 12px; background-color: #0077b6; color: white; border-radius: 5px;">
                             Chọn tập tin

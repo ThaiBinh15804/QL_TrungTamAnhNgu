@@ -50,13 +50,19 @@
         <div>
             <form method="post" action="/QuanTriVien/ChiTietLichHoc" class="mt-4">
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="MaLop">Mã lớp:</label>
                             <input type="text" class="mt-2 form-control" id="MaLop" name="MaLop" readonly value="@Model.MaLop">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="MaLop">Mã lich học:</label>
+                            <input type="text" class="mt-2 form-control" id="MaLichHoc" name="MaLichHoc" readonly value="@Model.MaLichHoc">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="MaGiangVien">Ngày học:</label>
                             @Html.TextBoxFor(model => model.NgayHoc, new
@@ -75,13 +81,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="ThoiGianBatDau">Thời gian bắt Đầu:</label>
-                            <input readonly value="@Model.ThoiGianBatDau" type="time" class="mt-2 form-control" id="ThoiGianBatDau" name="ThoiGianBatDau" required>
+                            <input readonly value="@Model.ThoiGianBatDau" type="text" class="mt-2 form-control" id="ThoiGianBatDau" name="ThoiGianBatDau" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="ThoiGianKetThuc">Thời gian kết Thúc:</label>
-                            <input readonly value="@Model.ThoiGianKetThuc" type="time" class="mt-2 form-control" id="ThoiGianKetThuc" name="ThoiGianKetThuc" required>
+                            <input readonly value="@Model.ThoiGianKetThuc" type="text" class="mt-2 form-control" id="ThoiGianKetThuc" name="ThoiGianKetThuc" required>
                         </div>
                     </div>
                 </div>
