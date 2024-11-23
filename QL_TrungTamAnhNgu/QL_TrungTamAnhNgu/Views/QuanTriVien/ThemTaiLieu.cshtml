@@ -58,17 +58,10 @@
                     </div>
                     <div style="margin-top: 15px; width: 100%">
                         @Html.TextBoxFor(model => model.FileUpload, new { @style = "display: none;", @value = @Model.FileUpload, @id = "Avatar", @type = "file", @class = "form-control my-2" })
+                        <iframe id="avatarPreview" src="" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
                         <label for="Avatar" id="label" class="custom-file-upload mt-2" style="width: 150px; text-align: center; padding: 10px 12px; background-color: #0077b6; color: white; border-radius: 5px;">
                             Chọn tập tin
                         </label>
-                        @if (string.IsNullOrEmpty(Model.FileUpload))
-                        {
-                            <p class="mt-2 text-muted">Không có tệp bài tập nào được tải lên.</p>
-                        }
-                        else
-                        {
-                            <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/TaiLieu/" + Model.FileUpload)" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
-                        }
                     </div>
                 </div>
                 <div>
@@ -88,32 +81,3 @@
 </div>
 
 
-<script>
-    document.getElementById('Avatar').addEventListener('change', function () {
-        const fileInput = this;
-        const displayDiv = document.getElementById('fileDisplay');
-
-        if (fileInput.files && fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const fileName = file.name;
-
-            // Tạo đường dẫn tạm (chỉ hoạt động trên trình duyệt, không tải lên server)
-            const fileURL = URL.createObjectURL(file);
-
-            // Hiển thị nội dung tệp tùy theo loại file
-            if (file.type.startsWith('image/')) {
-                displayDiv.innerHTML = `<img src="${fileURL}" alt="Preview" style="max-width: 100%; max-height: 600px; border: 1px solid #ddd;" />`;
-            } else if (file.type === 'application/pdf') {
-                displayDiv.innerHTML = `<iframe src="${fileURL}" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>`;
-            } else {
-                displayDiv.innerHTML = `<p>File đã chọn: <strong>${fileName}</strong></p>`;
-            }
-
-            // Cập nhật giá trị hidden input
-            document.getElementById('HiddenFilePath').value = fileName;
-        } else {
-            // Khi không có file nào được chọn
-            displayDiv.innerHTML = `<p class="text-muted">Không có tệp nào được tải lên.</p>`;
-        }
-    });
-</script>

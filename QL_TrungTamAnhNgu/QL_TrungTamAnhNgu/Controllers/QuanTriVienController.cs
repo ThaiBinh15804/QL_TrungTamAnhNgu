@@ -12,14 +12,14 @@ using QL_TrungTamAnhNgu.Models;
 using QL_TrungTamAnhNgu.ViewModel;
 using System.IO;
 using System.Data;
+using static System.Net.WebRequestMethods;
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
     [Authorize]
     public class QuanTriVienController : Controller
     {
-        //public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
-        public static string connn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+        public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
         DataClasses1DataContext db = new DataClasses1DataContext(connn);
 
         public ActionResult Error()
@@ -192,7 +192,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                 if (user != null && user.TrangThai == "Đang hoạt động" && (user.MaNhomND == "NND001" || user.MaNhomND == "NND004" || user.MaNhomND == "NND005" || user.MaNhomND == "NND006"))
                 {
-                    string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
+                    string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password;
                     connn = newConnectionString;
                     db = new DataClasses1DataContext(connn);
 
@@ -209,11 +209,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             catch (Exception ex)
             {
-                db = null;
-                connn = null;
-                // Nếu có lỗi khi kết nối hoặc truy vấn, thông báo cho người dùng
                 ViewBag.text = "Không thể kết nối đến cơ sở dữ liệu hoặc quyền truy cập bị từ chối. Lỗi: " + ex.Message;
-                // Reset chuỗi kết nối để tránh sử dụng lại thông tin cũ
                 return View();
             }
             return View();
@@ -224,7 +220,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             if (Session["user"] != null)
             {
                 Session["user"] = null;
-                string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=sa123";
+                string newConnectionString = "Data Source = PHAMTHUAN\\MSSQLSERVER01; Initial Catalog = QL_TrungTamAnhNgu; Persist Security Info = True; User ID = sa; Password = 123; Encrypt = False";
                 connn = newConnectionString;
                 db = new DataClasses1DataContext(connn);
                 FormsAuthentication.SignOut();

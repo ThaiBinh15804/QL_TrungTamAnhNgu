@@ -135,7 +135,7 @@
                         <span style="font-size: 15px; color: #374151; font-weight: 500; display: block; margin-top: 10px; margin-bottom: 5px;">Ảnh đại diện</span>
                         <img id="avatarPreview" src="~/Content/HinhAnh/Avatar/@Model.NguoiDung.AnhDaiDien" alt="avatar preview" style="width: 150px; object-fit: cover; height: 150px; border-radius: 999px;" />
                         @Html.TextBoxFor(model => model.NguoiDung.AnhDaiDien, new { @id = "Avatar", @value = @Model.NguoiDung.AnhDaiDien, @class = "mt-2", @style = "display: none;", @type = "file", @accept = "image/*" })
-                        <label for="Avatar" id="label" class="custom-file-upload mt-2" style="pointer-events: none;cursor: not-allowed; width: 150px; text-align: center; padding: 10px 12px; background-color: #0077b6; color: white; border-radius: 5px;">
+                        <label for="Avatar" id="label" class="custom-file-upload mt-2" style="opacity: 0.5; pointer-events: none;cursor: not-allowed; width: 150px; text-align: center; padding: 10px 12px; background-color: #0077b6; color: white; border-radius: 5px;">
                             Chọn tập tin
                         </label>
                         <span style="min-height: 20px; display: inline-block; color: red; font-size: 14px; margin-top: 5px;" class="errAvatar"></span>

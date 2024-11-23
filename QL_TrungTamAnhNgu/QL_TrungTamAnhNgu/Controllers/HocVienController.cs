@@ -14,8 +14,7 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class HocVienController : Controller
     {
-        //public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
-        public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+        public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
         
         DataClasses1DataContext db = new DataClasses1DataContext(conn);
         public ActionResult TrangChu()
@@ -415,7 +414,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 }
                 else
                 {
-                    conn = "Data Source = THAIBINH-LAPTOP; Initial Catalog = QL_TrungTamAnhNgu; Persist Security Info = True;User ID=" + username + ";Password=" + password + "";
+                    conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password + "";
                     db = new DataClasses1DataContext(conn);
                     Session["UserId"] = user.MaNguoiDung;
                     Session["MaHocVien"] = user.HocVien.MaHocVien;
@@ -437,7 +436,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult DangXuat()
         {
             Session.Clear();
-            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=sa123;Encrypt=False";
+            conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
             db = new DataClasses1DataContext(conn);
             FormsAuthentication.SignOut();
             return RedirectToAction("DieuHuong", "Home");
@@ -461,7 +460,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                 }
 
-                conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + newPassword + "";
+                conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + newPassword + "";
                 db = new DataClasses1DataContext(conn);
 
                 return Json(new { success = true, message = "Đổi mật khẩu thành công." });

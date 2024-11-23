@@ -15,9 +15,7 @@ namespace QL_TrungTamAnhNgu.Controllers
     [Authorize]
     public class GiangVienController : Controller
     {
-
-        //public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
-        public static string conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;User ID=sa;Password=sa123";
+        public static string conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123;Encrypt=False";
         DataClasses1DataContext data = new DataClasses1DataContext(conn);
 
         public ActionResult Index()
@@ -40,7 +38,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             NguoiDung user = data.NguoiDungs.FirstOrDefault(u => u.MaNguoiDung == data.AuthenticateUser(username, password));
 
-            string newConnectionString = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+            string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
             conn = newConnectionString;
             data = new DataClasses1DataContext(newConnectionString);
 
@@ -73,7 +71,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             // Xóa session của người dùng
             Session["User"] = null;
 
-            conn = "Data Source=THAIBINH-LAPTOP;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=sa123";
+            conn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
             data = new DataClasses1DataContext(conn);
 
             // Hủy cookie xác thực của FormsAuthentication (nếu sử dụng FormsAuthentication)

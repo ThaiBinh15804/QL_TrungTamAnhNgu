@@ -43,12 +43,7 @@
         </div>
         <div class="d-flex justify-content-between">
             <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thông tin mã giám giá khóa học</h1>
-            @if (TempData["ErrorMessageGiamGia"] != null)
-            {
-                <div class="alert alert-danger">
-                    @TempData["ErrorMessageGiamGia"]
-                </div>
-            }
+
             <div>
                 <a href="/QuanTriVien/DanhSachGiamGiaThuocKhoaHoc?maGG=@Model.MaGiamGia" class="btn btn-primary">Xem danh sách khóa học sử dụng</a>
                 <a href="/QuanTriVien/XoaGiamGia?maGG=@Model.MaGiamGia" class="btn btn-danger" id="btnXoaKhoaHoc" data-makh="@Model.MaGiamGia">
@@ -95,7 +90,7 @@
                                       @type = "date",
                                       @id = "NgayBatDau",
                                       @class = "form-control mt-2",
-                                      Value = Model.NgayBatDau.ToString("yyyy-MM-dd") 
+                                      Value = Model.NgayBatDau.ToString("yyyy-MM-dd")
                                   })
                         </div>
                         <div style="width: 100%">
@@ -106,11 +101,11 @@
                                       @type = "date",
                                       @id = "NgayKetThuc",
                                       @class = "form-control mt-2",
-                                      Value = Model.NgayKetThuc.ToString("yyyy-MM-dd") 
+                                      Value = Model.NgayKetThuc.ToString("yyyy-MM-dd")
                                   })
                         </div>
                     </div>
-                
+
                     <div style="margin-top: 15px;" class="d-flex justify-content-between gap-4">
                         <div style="width: 100%">
                             <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TiLeGiam">Tỉ lệ giảm: </label>
@@ -131,5 +126,11 @@
                 </div>
             </form>
         </div>
+        @if (TempData["ErrorMessageGiamGia"] != null)
+        {
+            <div class="mt-2 alert alert-danger">
+                @TempData["ErrorMessageGiamGia"]
+            </div>
+        }
     </div>
 </div>

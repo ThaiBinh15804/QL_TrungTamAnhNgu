@@ -124,6 +124,7 @@ if (btnSua) {
         if (label) {
             label.style.cursor = "pointer";
             label.style.pointerEvents = "auto";
+            label.style.opacity = "1";
         }
         if (hoTenInput) {
             hoTenInput.removeAttribute("readonly")
