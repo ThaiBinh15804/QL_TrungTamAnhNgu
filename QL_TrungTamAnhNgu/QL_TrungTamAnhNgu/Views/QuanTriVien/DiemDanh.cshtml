@@ -6,8 +6,7 @@
 }
 
 <div class="mt-4">
-    <h2 class="text-center mb-2">Danh Sách Điểm Danh Học Viên</h2>
-
+    <h2 class="text-center mb-4" style="font-size: 22px; font-weight: 500;">Danh Sách Điểm Danh Học Viên</h2>
     @using (Html.BeginForm("LuuDiemDanh", "QuanTriVien", FormMethod.Post))
     {
         <div class="mb-3 text-end">
@@ -42,7 +41,7 @@
                         {
                             <td>
                                 <span class="diem-danh-text">
-                                    @(hocVien.ds[j].TrangThai == "Có mặt" ? "x" : hocVien.ds[j].TrangThai == "Vắng" ? "-" : "")
+                                    @(hocVien.ds[j].TrangThai == "Có mặt" ? "+" : hocVien.ds[j].TrangThai == "Vắng" ? "-" : "")
                                 </span>
                                 <select class="diem-danh-input d-none text-center w-100"
                                         data-hocvien-index="@i" data-diemdanh-index="@j" name="dsDiemDanh[@i].ds[@j].TrangThai">
