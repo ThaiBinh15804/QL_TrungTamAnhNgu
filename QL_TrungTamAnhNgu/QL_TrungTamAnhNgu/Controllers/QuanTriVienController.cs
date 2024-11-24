@@ -13,6 +13,7 @@ using QL_TrungTamAnhNgu.ViewModel;
 using System.IO;
 using System.Data;
 using static System.Net.WebRequestMethods;
+using System.Web.UI.WebControls;
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
@@ -1307,12 +1308,21 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(tailieu);
         }
         [HttpPost]
-        public ActionResult ChiTietTaiLieu(TaiLieu tailieu)
+        public ActionResult ChiTietTaiLieu(TaiLieu tailieu, HttpPostedFileBase FileUpload)
         {
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap");
             }
+            // Xử lý tải lên file
+            if (FileUpload != null && FileUpload.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(FileUpload.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/TaiLieu"), fileName);
+                FileUpload.SaveAs(path);
+                tailieu.FileUpload = fileName; // Gán giá trị file upload
+            }
+
             var taiLieuExists = db.TaiLieus.FirstOrDefault(k => k.MaTaiLieu == tailieu.MaTaiLieu);
             if (taiLieuExists != null)
             {
@@ -1561,17 +1571,17 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult ThemLopHoc(string makh)
         {
             string Makhoahoc = db.KhoaHocs.FirstOrDefault(t => t.MaKhoaHoc == makh).MaKhoaHoc;
-            var phonghoc = db.PhongHocs.Where(ph => ph.TrangThai == "Đang hoạt động").ToList();
+            List<PhongHoc> phonghoc = db.PhongHocs.Where(ph => ph.TrangThai == "Đang hoạt động").ToList();
             if (Makhoahoc == null || phonghoc == null || phonghoc.Count == 0)
             {
                 TempData["ErrorMessage"] = "Không có khóa học hoặc phòng học nào đang hoạt động!";
                 return RedirectToAction("DanhSachLopHoc");
             }
             ViewBag.Makhoahoc = Makhoahoc;
-            ViewBag.MaPhong = phonghoc;
+            TempData["MaPhong"] = phonghoc;
 
             return View();
-        }
+        } 
 
         [HttpPost]
         public ActionResult ThemLopHoc(LopHoc lh)
@@ -1623,7 +1633,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
                 return RedirectToAction("ThemLopHoc", new { makh = lopHoc.KhoaHoc.MaKhoaHoc });
             }
-            return View(lh);
+            return RedirectToAction("DanhSachLopHoc", "QuanTriVien", new { maKH = lh.MaKhoaHoc });  
         }
         public ActionResult XoaLopHoc(string malop, string makh)
         {
@@ -1773,7 +1783,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(baitap);
         }
         [HttpPost]
-        public ActionResult ThemBaiTap(BaiTap bt)
+        public ActionResult ThemBaiTap(BaiTap bt, HttpPostedFileBase FileUpload)
         {
             if (Session["user"] == null)
             {
@@ -1781,6 +1791,15 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
+                // Xử lý tải lên file
+                if (FileUpload != null && FileUpload.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(FileUpload.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/BaiTap"), fileName);
+                    FileUpload.SaveAs(path);
+                    bt.FileUpload = fileName; // Gán giá trị file upload
+                }
+
                 string maBaiTap = db.BaiTaps.OrderByDescending(t => t.MaBaiTap).FirstOrDefault().MaBaiTap;
                 int k = maBaiTap != null ? (int.Parse(maBaiTap.Substring(2)) + 1) : 1;
                 string maBaiTapMoi = "BT" + k.ToString("D3");
@@ -1821,12 +1840,22 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(baitap);
         }
         [HttpPost]
-        public ActionResult ChiTietBaiTap(BaiTap baitap)
+        public ActionResult ChiTietBaiTap(BaiTap baitap, HttpPostedFileBase FileUpload)
         {
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap");
             }
+
+            // Xử lý tải lên file
+            if (FileUpload != null && FileUpload.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(FileUpload.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/BaiTap"), fileName);
+                FileUpload.SaveAs(path);
+                baitap.FileUpload = fileName; // Gán giá trị file upload
+            }
+
             var baiTapExists = db.BaiTaps.FirstOrDefault(k => k.MaBaiTap == baitap.MaBaiTap);
             if (baiTapExists != null)
             {

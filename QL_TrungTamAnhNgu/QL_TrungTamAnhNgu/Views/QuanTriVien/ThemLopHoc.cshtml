@@ -1,5 +1,7 @@
-﻿@model QL_TrungTamAnhNgu.Models.LopHoc
-@using QL_TrungTamAnhNgu.Models
+﻿@using QL_TrungTamAnhNgu.Models;
+
+@model QL_TrungTamAnhNgu.Models.LopHoc
+
 @{
     ViewBag.Title = "ThemLopHoc";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
@@ -42,18 +44,7 @@
             <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thêm lớp học</h1>
         </div>
         <div style=" margin-top: 10px; padding: 16px; background: #fff; border: 1px solid #dadada; border-radius: 10px;">
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success">
-                    @TempData["SuccessMessage"]
-                </div>
-            }
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger">
-                    @TempData["ErrorMessage"]
-                </div>
-            }
+
             <form method="post" action="/QuanTriVien/ThemLopHoc">
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -81,10 +72,17 @@
                             <label for="MaPhong">Phòng Học:</label>
                             <select class="mt-2 form-control" id="MaPhong" name="MaPhong" required>
                                 <option value="">-- Chọn Phòng Học --</option>
-                                @foreach (var ph in ViewBag.MaPhong)
-                                {
-                                    <option value="@ph.MaPhong">@ph.MaPhong - @ph.TenPhong</option>
+                                @{
+                                    var phongs = TempData["MaPhong"] as List<PhongHoc>;
+                                    if (phongs != null)
+                                    {
+                                        foreach (var ph in phongs)
+                                        {
+                                            <option value="@ph.MaPhong">@ph.MaPhong - @ph.TenPhong</option>
+                                        }
+                                    }
                                 }
+
                             </select>
                         </div>
                     </div>
@@ -132,5 +130,11 @@
                 </div>
             </form>
         </div>
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="mt-2 alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
     </div>
 </div>
