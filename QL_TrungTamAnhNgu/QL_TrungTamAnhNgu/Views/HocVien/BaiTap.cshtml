@@ -62,7 +62,7 @@
                    @item.FileBaiTap
                 </td>
                 <td class="text-center">
-                    <a href="@Url.Action("ChiTietBaiTap", "HocVien", new { maBaiTap = item.MaBaiTap })" class="btn btn-outline-primary btn-sm">
+                    <a href="/HocVien/ChiTietBaiTap?maBaiTap=@item.MaBaiTap&maKH=@item.MaKhoaHoc" class="btn btn-outline-primary btn-sm">
                         Xem chi tiết
                     </a>
                 </td>

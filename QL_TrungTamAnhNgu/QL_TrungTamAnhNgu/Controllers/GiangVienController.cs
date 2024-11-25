@@ -20,7 +20,8 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var kh = data.KhoaHocs.ToList();
+            return View(kh);     
         }
 
         [AllowAnonymous]

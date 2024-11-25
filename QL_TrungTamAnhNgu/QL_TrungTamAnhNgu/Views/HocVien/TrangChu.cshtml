@@ -12,7 +12,6 @@
         @foreach (var item in Model)
         {
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                @*<a href="@Url.Action("ChiTietKhoaHoc", "HocVien", new { id = item.MaKhoaHoc })" class="text-decoration-none text-dark">*@
                     <div class="card h-100 shadow-sm">
                         <img src="~/Content/HinhAnh/KhoaHoc/@item.AnhBia"
                              class="card-img-top" alt="Ảnh khóa học" style="height: 150px; object-fit: cover;">
@@ -25,9 +24,7 @@
                             </p>
                             <p class="card-text text-danger fw-bold">@String.Format(CultureInfo.InvariantCulture, "{0:N0} đ", item.HocPhi)</p>
                         </div>
-
                     </div>
-                @*</a>*@
             </div>
         }
     </div>

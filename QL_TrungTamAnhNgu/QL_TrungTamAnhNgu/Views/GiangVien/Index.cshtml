@@ -1,5 +1,6 @@
-﻿@using QL_TrungTamAnhNgu.Models;
-
+﻿@using System.Globalization
+@using QL_TrungTamAnhNgu.Models;
+@model IEnumerable<QL_TrungTamAnhNgu.Models.KhoaHoc>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutGiangVien.cshtml";
@@ -17,5 +18,27 @@
             <span>@ng.HoTen</span>
         }
     </h2>
-    
+    <div class="mt-4">
+        <h3>Danh sách các khóa học</h3>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/Content/HinhAnh/KhoaHoc/@item.AnhBia"
+                             class="card-img-top" alt="Ảnh khóa học" style="height: 150px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate">@item.TenKhoaHoc</h5>
+                            <p class="card-text text-warning">
+                                @for (var i = 0; i < 5; i++)
+                                {<i class="bi bi-star-fill"></i>} <!-- Thêm ngôi sao đánh giá -->
+                                <span class="text-dark">(100)</span>
+                            </p>
+                            <p class="card-text text-danger fw-bold">@String.Format(CultureInfo.InvariantCulture, "{0:N0} đ", item.HocPhi)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

@@ -121,10 +121,8 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(chiTietBaiTap);
         }
 
-        public ActionResult ChiTietBaiTap(string maBaiTap)
+        public ActionResult ChiTietBaiTap(string maBaiTap, string maKH)
         {
-            string maHV = Session["UserId"] as string;
-            string maDk = db.DangKies.FirstOrDefault(t => t.ThanhToan.MaHocVien == maHV).MaDangKy;
             if (string.IsNullOrEmpty(maBaiTap))
             {
                 ViewBag.ThongBao = "Không tìm thấy bài tập.";
@@ -132,7 +130,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
 
             // Lấy chi tiết bài tập từ view_baitap_theodangky
-            var chiTietBaiTap = db.view_baitap_theodangkies.FirstOrDefault(v => v.MaBaiTap == maBaiTap && v.MaDangKy == maDk);
+            var chiTietBaiTap = db.view_baitap_theodangkies.FirstOrDefault(v => v.MaBaiTap == maBaiTap && v.MaKhoaHoc == maKH);
             if (chiTietBaiTap == null)
             {
                 ViewBag.ThongBao = "Không tìm thấy thông tin bài tập.";
