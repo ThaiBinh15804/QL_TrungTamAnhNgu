@@ -158,13 +158,6 @@ namespace QL_TrungTamAnhNgu.Controllers
             {
                 try
                 {
-                    // Tạo thư mục nếu chưa tồn tại
-                    string uploadFolder = Server.MapPath("~/Uploads");
-                    if (!Directory.Exists(uploadFolder))
-                    {
-                        Directory.CreateDirectory(uploadFolder);
-                    }
-
                     // Kiểm tra kích thước file
                     if (fileUpload.ContentLength > 5 * 1024 * 1024) // Giới hạn 5MB
                     {
@@ -172,14 +165,14 @@ namespace QL_TrungTamAnhNgu.Controllers
                         TempData["Success"] = null; // Xóa thông báo thành công nếu có
                         return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
                     }
+                    var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap);
 
                     // Lưu file
                     string fileName = Path.GetFileName(fileUpload.FileName);
-                    string path = Path.Combine(uploadFolder, fileName);
+                    string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/DangKy_BaiTap"), fileName);
                     fileUpload.SaveAs(path);
 
                     // Cập nhật cơ sở dữ liệu
-                    var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap);
                     if (baiTap != null)
                     {
                         baiTap.FileUpload = fileName;

@@ -111,7 +111,7 @@
                         <strong>Bài Tập:</strong>
                     </div>
                     <div class="col-sm-8">
-                        @if (!string.IsNullOrEmpty(Model.FileHocVien))
+                        @if (string.IsNullOrEmpty(Model.FileHocVien))
                         {
                             <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-warning btn-sm">
                                 <i class="fas fa-upload me-1"></i>Nộp bài tập
@@ -119,9 +119,9 @@
                         }
                         else
                         {
-                    <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-primary btn-sm">
-                        <i class="fas fa-upload me-1"></i>Nộp lại bài tập
-                    </a>
+                            <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-primary btn-sm">
+                                <i class="fas fa-upload me-1"></i>Nộp lại bài tập
+                            </a>
                         }
                     </div>
 
