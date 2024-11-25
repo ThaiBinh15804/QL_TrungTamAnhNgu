@@ -1,0 +1,44 @@
+﻿@model IEnumerable<QL_TrungTamAnhNgu.Models.TaiLieu>
+
+@{
+    ViewBag.Title = "TaiLieu";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Danh Sách Tài Liệu</h2>
+    <p class="text-muted text-center">Nhấp vào tài liệu để xem chi tiết nội dung.</p>
+
+
+    <table class="table table-bordered table-hover shadow-sm mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>Tên tài liệu</th>
+                <th>Ngày tạo</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr onclick="window.location='@Url.Action("ChiTietTaiLieu", "GiangVien", new { matailieu = item.MaTaiLieu })';" style="cursor: pointer;">
+                        <td>@Html.DisplayFor(modelItem => item.TenTaiLieu)</td>
+                        <td>@DateTime.Parse(item.NgayTao.ToString()).ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="badge @(item.TrangThai == "Đang hoạt động" ? "bg-success" : "bg-secondary")">
+                                @Html.DisplayFor(modelItem => item.TrangThai)
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Hiện không có tài liệu nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

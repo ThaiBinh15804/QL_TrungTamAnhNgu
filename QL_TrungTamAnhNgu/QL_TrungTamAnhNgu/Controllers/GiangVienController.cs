@@ -390,5 +390,31 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
             }
         }
+
+        public ActionResult TaiLieu(string malop)
+        {
+            List<TaiLieu> lst = data.TaiLieus.Where(t => t.KhoaHoc_TaiLieus.Where(r => r.KhoaHoc.LopHocs.Where(a => a.MaLop == malop).Any()).Any()).ToList();
+
+            return PartialView(lst);
+
+        }
+
+        public ActionResult ChiTietTaiLieu(string matailieu)
+        {
+            return View(data.TaiLieus.FirstOrDefault(t => t.MaTaiLieu == matailieu));
+        }
+
+        public ActionResult BaiTap(string malop)
+        {
+            List<BaiTap> lst = data.BaiTaps.Where(t => t.KhoaHoc_BaiTaps.Where(r => r.KhoaHoc.LopHocs.Where(a => a.MaLop == malop).Any()).Any()).ToList();
+
+            return PartialView(lst);
+
+        }
+
+        public ActionResult ChiTietBaiTap(string mabaitap)
+        {
+            return View(data.BaiTaps.FirstOrDefault(t => t.MaBaiTap == mabaitap));
+        }
     }
 }

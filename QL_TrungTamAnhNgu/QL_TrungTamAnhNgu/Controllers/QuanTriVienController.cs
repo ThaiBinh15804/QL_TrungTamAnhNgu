@@ -2593,20 +2593,22 @@ namespace QL_TrungTamAnhNgu.Controllers
                                 SoTien = i.SoTien,
                                 ThucTra = i.ThucTra
                             };
+                            List<KhoaHoc_BaiTap> khbt = db.KhoaHoc_BaiTaps.Where(t => t.MaKhoaHoc == d.LopHoc.KhoaHoc.MaKhoaHoc).ToList();
+                            foreach (var k in khbt)
+                            {
+                                DangKy_BaiTap dkbt = new DangKy_BaiTap()
+                                {
+                                    MaDangKy = d.MaDangKy,
+                                    MaBaiTap = k.MaBaiTap,
+                                    Diem = null,
+                                    TrangThai = "Chưa chấm",
+                                    FileUpload = null,
+                                    NgayCham = null,
+                                    NgayNop = null,
+                                };
 
-                            //List<KhoaHoc_BaiTap> khbt = db.KhoaHoc_BaiTaps.Where(t => t.MaKhoaHoc == d.LopHoc.KhoaHoc.MaKhoaHoc).ToList();
-                            //foreach (var k in khbt) 
-                            //{
-                            //    DangKy_BaiTap dkbt = new DangKy_BaiTap()
-                            //    {
-                            //        MaDangKy = d.MaDangKy,
-                            //        MaBaiTap = k.MaBaiTap,
-                            //        Diem = null,
-                            //        TrangThai = "Chưa chấm",
-                            //        FileUpload = null,
-                            //        NgayCham
-                            //    }; 
-                            //}
+                                db.DangKy_BaiTaps.InsertOnSubmit(dkbt);
+                            }
 
                             db.DangKies.InsertOnSubmit(d);
                         }

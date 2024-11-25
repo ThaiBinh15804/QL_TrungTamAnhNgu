@@ -458,6 +458,10 @@
     <Content Include="Views\HocVien\TrangChu.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\QuanTriVien\Error.cshtml" />
+    <Content Include="Views\GiangVien\BaiTap.cshtml" />
+    <Content Include="Views\GiangVien\ChiTietBaiTap.cshtml" />
+    <Content Include="Views\GiangVien\ChiTietTaiLieu.cshtml" />
+    <Content Include="Views\GiangVien\TaiLieu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

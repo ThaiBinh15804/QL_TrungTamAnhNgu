@@ -40,25 +40,37 @@
 
             <li class="nav-item mb-2">
                 <a class="nav-link d-flex align-items-center px-0 py-2" onclick="toggleSubMenu('baiTapSubMenu')" style="cursor: pointer;">
-                    <i class="me-1 fa-solid fa-tasks me-2"></i> 
+                    <i class="me-1 fa-solid fa-tasks me-2"></i>
                     <span>Bài tập</span>
                     <i id="baiTapArrow" class="ms-auto fa fa-chevron-down"></i>
                 </a>
-                
+
                 <ul id="baiTapSubMenu" class="nav flex-column ps-4 d-none" style="border-left: 2px solid #ddd; padding-left: 10px;">
                     <li class="nav-item">
                         <a class="nav-link px-0 py-1 text-secondary" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=ChamDiem" style="cursor: pointer;">
-                            <i class="me-1 fa-solid fa-pen me-2"></i> 
+                            <i class="me-1 fa-solid fa-pen me-2"></i>
                             Chấm bài
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link px-0 py-1 text-secondary" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=BaiTap" style="cursor: pointer;">
+                            <i class="me-1 fa-solid fa-list me-2"></i>
+                            Danh sách
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link px-0 py-1 text-secondary" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=BangDiem" style="cursor: pointer;">
-                            <i class="me-1 fa-solid fa-table me-2"></i> 
+                            <i class="me-1 fa-solid fa-table me-2"></i>
                             Bảng điểm
                         </a>
                     </li>
+
                 </ul>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center px-0 py-2" href="/GiangVien/XuLyDieuHuong/?malop=@Model.MaLop&page=TaiLieu">
+                    <i class=" me-1 fa-solid fa-calendar me-2"></i>
+                    <span>Tài liệu</span>
+                </a>
             </li>
         </ul>
 
@@ -83,11 +95,17 @@
                 case "BangDiem":
                 @Html.Action("BangDiem", "GiangVien")
                     break;
+                case "BaiTap":
+                @Html.Action("BaiTap", "GiangVien")
+                    break;
                 case "HocVien":
                 @Html.Action("HocVien", "GiangVien")
                     break;
                 case "LichHoc":
                 @Html.Action("LichHoc", "GiangVien")
+                    break;
+                case "TaiLieu":
+                @Html.Action("TaiLieu", "GiangVien")
                     break;
                 default:
                 @Html.Action("ThongTin", "GiangVien")
