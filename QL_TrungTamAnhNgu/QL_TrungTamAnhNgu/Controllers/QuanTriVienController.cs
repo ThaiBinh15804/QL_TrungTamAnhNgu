@@ -2004,6 +2004,23 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             db.KhoaHoc_BaiTaps.InsertOnSubmit(khoahoc_baitap);
             db.SubmitChanges();
+            List<DangKy> dsHocVienDangKyKhoaHoc = db.DangKies.Where(t => t.LopHoc.MaKhoaHoc == khbt.MaKhoaHoc).ToList();
+            foreach(var item in dsHocVienDangKyKhoaHoc)
+            {
+                DangKy_BaiTap dkbt = new DangKy_BaiTap()
+                {
+                    MaDangKy = item.MaDangKy,
+                    MaBaiTap = khbt.MaBaiTap,
+                    Diem = null,
+                    TrangThai = "Chưa chấm",
+                    FileUpload = null,
+                    NgayCham = null,
+                    NgayNop = null,
+                };
+
+                db.DangKy_BaiTaps.InsertOnSubmit(dkbt);
+                db.SubmitChanges();
+            }
             return RedirectToAction("DanhSachBaiTapThuocKhoaHoc", new { maBT = khoahoc_baitap.MaBaiTap });
         }
 
@@ -2192,7 +2209,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                     if (chuyenCan == null && trangThaiMoi != "Chưa điểm danh")
                     {
                         // Trường hợp không tìm thấy bản ghi trong bảng ChuyenCans
-                        var dk = db.DangKies.FirstOrDefault(d => d.ThanhToan.MaHocVien == hocVien.hv.MaHocVien);
+                        var dk = db.DangKies.FirstOrDefault(d => d.ThanhToan.MaHocVien == hocVien.hv.MaHocVien && d.MaLop == malop);
                         if (dk != null)
                         {
                             var newChuyenCan = new ChuyenCan
@@ -2593,7 +2610,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                                 SoTien = i.SoTien,
                                 ThucTra = i.ThucTra
                             };
-                            List<KhoaHoc_BaiTap> khbt = db.KhoaHoc_BaiTaps.Where(t => t.MaKhoaHoc == d.LopHoc.KhoaHoc.MaKhoaHoc).ToList();
+                            List<BaiTap> khbt = db.BaiTaps.Where(t => t.KhoaHoc_BaiTaps.Where(r => r.KhoaHoc.LopHocs.Where(a => a.MaLop == i.MaLop).Any()).Any()).ToList();
                             foreach (var k in khbt)
                             {
                                 DangKy_BaiTap dkbt = new DangKy_BaiTap()
@@ -2649,7 +2666,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         private string TaoHoaDonPDF(ThanhToan tt)
         {
-            string fileName = $"HoaDon_{tt.MaThanhToan}_{DateTime.Now.Ticks}.pdf";
+            string fileName = "HoaDon_" + tt.MaThanhToan + "_" + DateTime.Now.Ticks + ".pdf";
             string filePath = Path.Combine(Server.MapPath("~/Content/HinhAnh/ThanhToan"), fileName);
 
             // Tạo tài liệu PDF
@@ -2669,19 +2686,18 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             gfx.DrawString("TRUNG TÂM ANH NGỮ YOLA", font, XBrushes.Black, new XPoint(50, 50)); // Căn giữa ở đây
             gfx.DrawString("HÓA ĐƠN THANH TOÁN", font, XBrushes.Black, new XPoint(50, 150));
-            gfx.DrawString($"Mã Thanh Toán: {tt.MaThanhToan}", font, XBrushes.Black, new XPoint(50, 200));
-            gfx.DrawString($"Mã Học Viên: {tt.MaHocVien}", font, XBrushes.Black, new XPoint(50, 250));
-            gfx.DrawString($"Tổng Tiền: {tt.TongTien:N0} VNĐ", font, XBrushes.Black, new XPoint(50, 300));
-            gfx.DrawString($"Hình Thức: {tt.HinhThuc}", font, XBrushes.Black, new XPoint(50, 350));
-            gfx.DrawString($"Ngày Thực Hiện: {DateTime.Now:dd/MM/yyyy HH:mm:ss}", font, XBrushes.Black, new XPoint(50, 400));
+            gfx.DrawString("HÓA ĐƠN THANH TOÁN", font, XBrushes.Black, new XPoint(50, 150));
+            gfx.DrawString("Mã Thanh Toán: " + tt.MaThanhToan, font, XBrushes.Black, new XPoint(50, 200));
+            gfx.DrawString("Mã Học Viên: " + tt.MaHocVien, font, XBrushes.Black, new XPoint(50, 250));
+            gfx.DrawString("Tổng Tiền: " + tt.TongTien.ToString("N0") + " VNĐ", font, XBrushes.Black, new XPoint(50, 300));
+            gfx.DrawString("Hình Thức: " + tt.HinhThuc, font, XBrushes.Black, new XPoint(50, 350));
+            gfx.DrawString("Ngày Thực Hiện: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), font, XBrushes.Black, new XPoint(50, 400));
 
             // Lưu tài liệu PDF
             pdfDoc.Save(filePath);
 
             return filePath;
         }
-
-
         private string ChuyenPDFThanhAnh(string pdfPath, int dpi = 300)
         {
             // Đường dẫn file ảnh đầu ra
@@ -2691,7 +2707,8 @@ namespace QL_TrungTamAnhNgu.Controllers
             string ghostscriptPath = @"C:\Program Files\gs\gs10.04.0\bin\gswin64c.exe";
 
             // Cấu hình lệnh Ghostscript
-            string arguments = $"-q -dQUIET -dBATCH -dNOPAUSE -sDEVICE=pngalpha -r{dpi} -sOutputFile=\"{outputImagePath}\" \"{pdfPath}\"";
+            string arguments = "-q -dQUIET -dBATCH -dNOPAUSE -sDEVICE=pngalpha -r" + dpi +
+                               " -sOutputFile=\"" + outputImagePath + "\" \"" + pdfPath + "\"";
 
             try
             {
@@ -2714,14 +2731,14 @@ namespace QL_TrungTamAnhNgu.Controllers
                 // Kiểm tra mã thoát của Ghostscript
                 if (process.ExitCode != 0)
                 {
-                    throw new Exception($"Ghostscript lỗi: {error}");
+                    throw new Exception("Ghostscript lỗi: " + error);
                 }
 
                 return outputImagePath; // Trả về đường dẫn file ảnh
             }
             catch (Exception ex)
             {
-                throw new Exception($"Lỗi khi chuyển PDF sang ảnh: {ex.Message}");
+                throw new Exception("Lỗi khi chuyển PDF sang ảnh: " + ex.Message);
             }
         }
 

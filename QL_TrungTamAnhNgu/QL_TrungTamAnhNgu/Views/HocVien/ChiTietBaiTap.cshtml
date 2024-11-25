@@ -111,20 +111,28 @@
                         <strong>Bài Tập:</strong>
                     </div>
                     <div class="col-sm-8">
-                        @if (string.IsNullOrEmpty(Model.FileHocVien))
+                        @if (string.IsNullOrEmpty(Model.FileHocVien) && !Model.NgayCham.HasValue)
                         {
                             <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-warning btn-sm">
                                 <i class="fas fa-upload me-1"></i>Nộp bài tập
                             </a>
                         }
-                        else
+                        else if (!string.IsNullOrEmpty(Model.FileHocVien) && !Model.NgayCham.HasValue)
                         {
                             <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-primary btn-sm">
                                 <i class="fas fa-upload me-1"></i>Nộp lại bài tập
                             </a>
                         }
+                        else if(!string.IsNullOrEmpty(Model.FileHocVien) && Model.NgayCham.HasValue)
+                        {
+                            <div class="d-flex gap-2 align-items-center">
+                                <a style="pointer-events: none; opacity: 0.5;" href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-upload me-1"></i>Nộp lại bài tập
+                                </a>
+                                <span style="color: red; font-size: 14px;">Bài tập đã chấm</span>
+                            </div>
+                        }
                     </div>
-
                 </div>
                 <!-- Tên khóa học -->
                 <div class="row mb-3">

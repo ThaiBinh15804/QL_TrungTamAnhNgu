@@ -123,6 +123,8 @@ namespace QL_TrungTamAnhNgu.Controllers
 
         public ActionResult ChiTietBaiTap(string maBaiTap)
         {
+            string maHV = Session["UserId"] as string;
+            string maDk = db.DangKies.FirstOrDefault(t => t.ThanhToan.MaHocVien == maHV).MaDangKy;
             if (string.IsNullOrEmpty(maBaiTap))
             {
                 ViewBag.ThongBao = "Không tìm thấy bài tập.";
@@ -130,7 +132,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
 
             // Lấy chi tiết bài tập từ view_baitap_theodangky
-            var chiTietBaiTap = db.view_baitap_theodangkies.FirstOrDefault(v => v.MaBaiTap == maBaiTap);
+            var chiTietBaiTap = db.view_baitap_theodangkies.FirstOrDefault(v => v.MaBaiTap == maBaiTap && v.MaDangKy == maDk);
             if (chiTietBaiTap == null)
             {
                 ViewBag.ThongBao = "Không tìm thấy thông tin bài tập.";
@@ -154,6 +156,8 @@ namespace QL_TrungTamAnhNgu.Controllers
         [HttpPost]
         public ActionResult XuLyNopBaiTap(string maBaiTap, HttpPostedFileBase fileUpload)
         {
+            string maHV = Session["UserId"] as string;
+            string maDk = db.DangKies.FirstOrDefault(t => t.ThanhToan.MaHocVien == maHV).MaDangKy;
             if (fileUpload != null && fileUpload.ContentLength > 0)
             {
                 try
@@ -165,7 +169,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                         TempData["Success"] = null; // Xóa thông báo thành công nếu có
                         return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
                     }
-                    var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap);
+                    var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap && bt.MaDangKy == maDk);
 
                     // Lưu file
                     string fileName = Path.GetFileName(fileUpload.FileName);
@@ -200,7 +204,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 TempData["Error"] = "Bạn chưa chọn file!";
             }
 
-            return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+            return RedirectToAction("ChiTietBaiTap", "HocVien", new { maBaiTap = maBaiTap });
         }
 
         public ActionResult ChiTietLichHoc()

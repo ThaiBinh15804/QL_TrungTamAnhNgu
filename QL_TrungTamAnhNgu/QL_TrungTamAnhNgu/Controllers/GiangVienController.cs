@@ -177,7 +177,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                     if (chuyenCan == null && trangThaiMoi != "Chưa điểm danh")
                     {
                         // Trường hợp không tìm thấy bản ghi trong bảng ChuyenCans
-                        var dk = data.DangKies.FirstOrDefault(d => d.ThanhToan.MaHocVien == hocVien.hv.MaHocVien);
+                        var dk = data.DangKies.FirstOrDefault(d => d.ThanhToan.MaHocVien == hocVien.hv.MaHocVien && d.MaLop == malop);
                         if (dk != null)
                         {
                             var newChuyenCan = new ChuyenCan
