@@ -14,6 +14,11 @@ using System.IO;
 using System.Data;
 using static System.Net.WebRequestMethods;
 using System.Web.UI.WebControls;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Diagnostics;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 
 namespace QL_TrungTamAnhNgu.Controllers
 {
@@ -527,7 +532,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult ThemQuanTriVien(QuanTriVien qtv)
+        public ActionResult ThemQuanTriVien(QuanTriVien qtv, HttpPostedFileBase AnhDaiDien)
         {
             if (Session["user"] == null)
             {
@@ -535,6 +540,11 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             try
             {
+                string fileName = Path.GetFileName(AnhDaiDien.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
+                AnhDaiDien.SaveAs(path); // lưu vào dự án
+                qtv.NguoiDung.AnhDaiDien = fileName; // Gán giá trị file upload
+
                 string maND = db.NguoiDungs.OrderByDescending(t => t.MaNguoiDung).FirstOrDefault().MaNguoiDung;
                 int k = maND != null ? (int.Parse(maND.Substring(2)) + 1) : 1;
                 string maMoi = "ND" + k.ToString("D3");
@@ -594,9 +604,16 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(quanTriVienDetail);
         }
         [HttpPost]
-        public ActionResult ChiTietQuanTriVien(QuanTriVien qtv)
+        public ActionResult ChiTietQuanTriVien(QuanTriVien qtv, HttpPostedFileBase AnhDaiDien)
         {
             var quanTriVienExists = db.QuanTriViens.FirstOrDefault(k => k.MaQTV == qtv.MaQTV);
+            if (AnhDaiDien != null && AnhDaiDien.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(AnhDaiDien.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
+                AnhDaiDien.SaveAs(path); // lưu vào dự án
+                qtv.NguoiDung.AnhDaiDien = fileName; // Gán giá trị file upload
+            }
             if (quanTriVienExists != null)
             {
                 if (string.IsNullOrEmpty(qtv.NguoiDung.AnhDaiDien))
@@ -673,14 +690,22 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult ThemGiangVien(GiangVien gv)
+        public ActionResult ThemGiangVien(GiangVien gv, HttpPostedFileBase AnhDaiDien)
         {
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap");
             }
             try
-            {
+            {// Xử lý tải lên file
+                if (AnhDaiDien != null && AnhDaiDien.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(AnhDaiDien.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
+                    AnhDaiDien.SaveAs(path); // lưu vào dự án
+                    gv.NguoiDung.AnhDaiDien = fileName; // Gán giá trị file upload
+                }
+
                 string maND = db.NguoiDungs.OrderByDescending(t => t.MaNguoiDung).FirstOrDefault().MaNguoiDung;
                 int k = maND != null ? (int.Parse(maND.Substring(2)) + 1) : 1;
                 string maMoi = "ND" + k.ToString("D3");
@@ -746,9 +771,17 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(giangVienDetail);
         }
         [HttpPost]
-        public ActionResult ChiTietGiangVien(GiangVien gv)
+        public ActionResult ChiTietGiangVien(GiangVien gv, HttpPostedFileBase AnhDaiDien)
         {
             var giangVienExists = db.GiangViens.FirstOrDefault(k => k.MaGiangVien == gv.MaGiangVien);
+            if (AnhDaiDien != null && AnhDaiDien.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(AnhDaiDien.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
+                AnhDaiDien.SaveAs(path); // lưu vào dự án
+                gv.NguoiDung.AnhDaiDien = fileName; // Gán giá trị file upload
+            }
+
             if (giangVienExists != null)
             {
                 if (string.IsNullOrEmpty(gv.NguoiDung.AnhDaiDien))
@@ -857,7 +890,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult ThemHocVien(HocVien hv)
+        public ActionResult ThemHocVien(HocVien hv, HttpPostedFileBase AnhDaiDien)
         {
             if (Session["user"] == null)
             {
@@ -866,6 +899,14 @@ namespace QL_TrungTamAnhNgu.Controllers
 
             try
             {
+                if (AnhDaiDien != null && AnhDaiDien.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(AnhDaiDien.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
+                    AnhDaiDien.SaveAs(path); // lưu vào dự án
+                    hv.NguoiDung.AnhDaiDien = fileName; // Gán giá trị file upload
+                }
+
                 string maND = db.NguoiDungs.OrderByDescending(t => t.MaNguoiDung).FirstOrDefault().MaNguoiDung;
                 int k = maND != null ? (int.Parse(maND.Substring(2)) + 1) : 1;
                 string maMoi = "ND" + k.ToString("D3");
@@ -930,9 +971,16 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(hocVienDetail);
         }
         [HttpPost]
-        public ActionResult ChiTietHocVien(HocVien hv)
+        public ActionResult ChiTietHocVien(HocVien hv, HttpPostedFileBase AnhDaiDien)
         {
-            var hocVienExists = db.HocViens.FirstOrDefault(k => k.MaHocVien == hv.MaHocVien);
+            var hocVienExists = db.HocViens.FirstOrDefault(k => k.MaHocVien == hv.MaHocVien); 
+            if (AnhDaiDien != null && AnhDaiDien.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(AnhDaiDien.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
+                AnhDaiDien.SaveAs(path); // lưu vào dự án
+                hv.NguoiDung.AnhDaiDien = fileName; // Gán giá trị file upload
+            }
             if (hocVienExists != null)
             {
                 if (string.IsNullOrEmpty(hv.NguoiDung.AnhDaiDien))
@@ -964,11 +1012,14 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("DangNhap");
             }
             var hocVien = db.HocViens.FirstOrDefault(k => k.MaHocVien == maHV);
-            if (hocVien != null)
+
+            if (hocVien.ThanhToans.Any())
             {
-                db.HocViens.DeleteOnSubmit(hocVien);
-                db.SubmitChanges();
+                TempData["ErrorMessageHocVien"] = "Học viên đã đăng ký lớp học nên không thể xóa!";
+                return RedirectToAction("HocVien");
             }
+            db.HocViens.DeleteOnSubmit(hocVien);
+            db.SubmitChanges();
             return RedirectToAction("HocVien");
         }
 
@@ -2347,7 +2398,6 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(khoaHocs);
         }
 
-
         [HttpPost]
         public JsonResult LayDanhSachLopHoc(string MaKH)
         {
@@ -2490,7 +2540,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(tt);
         }
 
-        public ActionResult TienHanhThanhToan(FormCollection c, HttpPostedFileBase AnhHoaDon)
+        public ActionResult TienHanhThanhToan(FormCollection c)
         {
             ThanhToan tt = Session["ThanhToan"] as ThanhToan;
 
@@ -2512,13 +2562,11 @@ namespace QL_TrungTamAnhNgu.Controllers
                         tt.MaHocVien = c["MaHocVien"];
                         tt.HinhThuc = c["HinhThuc"];
 
-                        if (AnhHoaDon != null)
-                        {
-                            string fileName = Path.GetFileName(AnhHoaDon.FileName);
-                            string duongdan = Path.Combine(Server.MapPath("~/Content/HinhAnh/ThanhToan"), fileName);
-                            AnhHoaDon.SaveAs(duongdan);
-                            tt.AnhHoaDon = fileName;
-                        }
+                        string pdfPath = TaoHoaDonPDF(tt);
+                        string imagePath = ChuyenPDFThanhAnh(pdfPath);
+
+                        // Lưu đường dẫn ảnh vào database
+                        tt.AnhHoaDon = Path.GetFileName(imagePath);
 
                         // Thêm mới đối tượng ThanhToan
                         ThanhToan n = new ThanhToan()
@@ -2562,7 +2610,8 @@ namespace QL_TrungTamAnhNgu.Controllers
                     {
                         // Rollback nếu có lỗi xảy ra
                         transaction.Rollback();
-                        return Content(string.Format("Giao dịch thất bại: {0}", ex.Message));
+                        TempData["ErrorMessage"] = "Giao dịch thất bại: " + ex.Message;
+                        return RedirectToAction("XacNhanThanhToan");
                     }
                 }
             }
@@ -2576,6 +2625,84 @@ namespace QL_TrungTamAnhNgu.Controllers
             Session["ThanhToan"] = null;
             return RedirectToAction("QuanLyThanhToan");
         }
-    }
 
+        private string TaoHoaDonPDF(ThanhToan tt)
+        {
+            string fileName = $"HoaDon_{tt.MaThanhToan}_{DateTime.Now.Ticks}.pdf";
+            string filePath = Path.Combine(Server.MapPath("~/Content/HinhAnh/ThanhToan"), fileName);
+
+            // Tạo tài liệu PDF
+            PdfSharp.Pdf.PdfDocument pdfDoc = new PdfSharp.Pdf.PdfDocument();
+            pdfDoc.Info.Title = "Hóa Đơn Thanh Toán";
+
+            // Thêm trang vào tài liệu
+            PdfSharp.Pdf.PdfPage page = pdfDoc.AddPage();
+
+            // Khởi tạo đối tượng XGraphics để vẽ lên trang PDF
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Sử dụng font TrueType (hỗ trợ tiếng Việt)
+            XFont font = new XFont("Arial", 32, XFontStyle.Regular);
+
+            // Tạo đối tượng văn bản và vẽ lên trang
+
+            gfx.DrawString("TRUNG TÂM ANH NGỮ YOLA", font, XBrushes.Black, new XPoint(50, 50)); // Căn giữa ở đây
+            gfx.DrawString("HÓA ĐƠN THANH TOÁN", font, XBrushes.Black, new XPoint(50, 150));
+            gfx.DrawString($"Mã Thanh Toán: {tt.MaThanhToan}", font, XBrushes.Black, new XPoint(50, 200));
+            gfx.DrawString($"Mã Học Viên: {tt.MaHocVien}", font, XBrushes.Black, new XPoint(50, 250));
+            gfx.DrawString($"Tổng Tiền: {tt.TongTien:N0} VNĐ", font, XBrushes.Black, new XPoint(50, 300));
+            gfx.DrawString($"Hình Thức: {tt.HinhThuc}", font, XBrushes.Black, new XPoint(50, 350));
+            gfx.DrawString($"Ngày Thực Hiện: {DateTime.Now:dd/MM/yyyy HH:mm:ss}", font, XBrushes.Black, new XPoint(50, 400));
+
+            // Lưu tài liệu PDF
+            pdfDoc.Save(filePath);
+
+            return filePath;
+        }
+
+
+        private string ChuyenPDFThanhAnh(string pdfPath, int dpi = 300)
+        {
+            // Đường dẫn file ảnh đầu ra
+            string outputImagePath = Path.ChangeExtension(pdfPath, ".png");
+
+            // Đường dẫn Ghostscript (thay thế bằng đường dẫn nơi bạn đã cài Ghostscript)
+            string ghostscriptPath = @"C:\Program Files\gs\gs10.04.0\bin\gswin64c.exe";
+
+            // Cấu hình lệnh Ghostscript
+            string arguments = $"-q -dQUIET -dBATCH -dNOPAUSE -sDEVICE=pngalpha -r{dpi} -sOutputFile=\"{outputImagePath}\" \"{pdfPath}\"";
+
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = ghostscriptPath;
+                process.StartInfo.Arguments = arguments;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+
+                process.Start();
+
+                // Đọc đầu ra để kiểm tra lỗi
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                process.WaitForExit();
+
+                // Kiểm tra mã thoát của Ghostscript
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception($"Ghostscript lỗi: {error}");
+                }
+
+                return outputImagePath; // Trả về đường dẫn file ảnh
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi chuyển PDF sang ảnh: {ex.Message}");
+            }
+        }
+
+    }
 }

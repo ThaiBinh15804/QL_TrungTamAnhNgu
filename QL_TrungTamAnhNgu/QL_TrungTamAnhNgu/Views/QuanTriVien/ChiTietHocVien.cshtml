@@ -44,7 +44,7 @@
             <h1 style="font-size: 22px; font-weight: 600; color: #000; margin-top: 20px; display: block">Thông tin học viên</h1>
         </div>
         <div style="background-color: #fff; border-radius: 5px; width: 100%; margin-top: 10px; padding: 16px; border: 1px solid #dadada; width: 100%;">
-            <form class="myForm" action="/QuanTriVien/ChiTietHocVien" method="post">
+            <form class="myForm" action="/QuanTriVien/ChiTietHocVien" method="post" enctype="multipart/form-data">
                 <div style="width: 100%;" class="d-flex">
                     <div style="width: 60%;">
                         <div class="d-flex justify-content-between gap-4">
@@ -176,7 +176,7 @@
                     <div style="margin: 0 auto 0;" class="d-flex justify-content-center align-items-center flex-column">
                         <span style="font-size: 15px; color: #374151; font-weight: 500; display: block; margin-top: 10px; margin-bottom: 5px;">Ảnh đại diện</span>
                         <img id="avatarPreview" src="~/Content/HinhAnh/Avatar/@Model.NguoiDung.AnhDaiDien" alt="avatar preview" style="width: 150px; object-fit: cover; height: 150px; border-radius: 999px;" />
-                        @Html.TextBoxFor(model => model.NguoiDung.AnhDaiDien, new { @id = "Avatar", @value = @Model.NguoiDung.AnhDaiDien, @class = "mt-2", @style = "display: none;", @type = "file", @accept = "image/*" })
+                        <input name="AnhDaiDien" id="Avatar" value = @Model.NguoiDung.AnhDaiDien class="mt-2" style="display: none;" type="file" accept="image/*" />
                         <label for="Avatar" id="label" class="custom-file-upload mt-2" style="opacity: 0.5; pointer-events: none; cursor: not-allowed; width: 150px; text-align: center; padding: 10px 12px; background-color: #0077b6; color: white; border-radius: 5px;">
                             Chọn tập tin
                         </label>

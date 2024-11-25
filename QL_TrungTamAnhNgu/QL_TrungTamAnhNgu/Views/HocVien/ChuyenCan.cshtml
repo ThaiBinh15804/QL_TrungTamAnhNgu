@@ -44,6 +44,9 @@
                 <thead class="table-primary">
                     <tr>
                         <th scope="col">
+                            <i class="fas fa-calendar-alt me-2"></i>Lớp
+                        </th>
+                        <th scope="col">
                             <i class="fas fa-calendar-alt me-2"></i>Ngày điểm danh
                         </th>
                         <th scope="col">
@@ -55,6 +58,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>@item.TenLop</td>
                             <td>@item.NgayDiemDanh.ToString("dd/MM/yyyy")</td>
                             <td>
                                 @if (item.TrangThai == "Có mặt")

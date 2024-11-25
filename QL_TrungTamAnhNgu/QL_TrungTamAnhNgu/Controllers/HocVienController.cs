@@ -108,7 +108,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
 
             var chiTietBaiTap = db.view_baitap_theokhoahocs
-                                  .FirstOrDefault(bt => bt.MaKhoaHoc == maKhoaHoc);
+                                  .Where(bt => bt.MaKhoaHoc == maKhoaHoc).ToList();
 
             // Kiểm tra nếu không tìm thấy bài tập
             if (chiTietBaiTap == null)

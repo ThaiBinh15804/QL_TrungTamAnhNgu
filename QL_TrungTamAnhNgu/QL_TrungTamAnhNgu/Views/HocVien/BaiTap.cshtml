@@ -1,4 +1,4 @@
-﻿@model QL_TrungTamAnhNgu.Models.view_baitap_theokhoahoc
+﻿@model List<QL_TrungTamAnhNgu.Models.view_baitap_theokhoahoc>
 
 @{
     ViewBag.Title = "Bài tập";
@@ -42,12 +42,14 @@
 
         <!-- Dữ liệu bảng -->
         <tbody>
+        @foreach(var item in Model)
+            {
             <tr>
-                <td>@Model.TenBaiTap</td>
-                <td>@Model.MoTa</td>
-                <td>@(Model.NgayTao.HasValue ? Model.NgayTao.Value.ToString("dd/MM/yyyy") : "Không rõ")</td>
+                <td>@item.TenBaiTap</td>
+                <td>@item.MoTa</td>
+                <td>@(item.NgayTao.HasValue ? item.NgayTao.Value.ToString("dd/MM/yyyy") : "Không rõ")</td>
                 <td>
-                    @if (Model.TrangThai == "Đang hoạt động")
+                    @if (item.TrangThai == "Đang hoạt động")
                     {
                         <span class="badge bg-success">Đang hoạt động</span>
                     }
@@ -57,14 +59,15 @@
                     }
                 </td>
                 <td>
-                   @Model.FileBaiTap
+                   @item.FileBaiTap
                 </td>
                 <td class="text-center">
-                    <a href="@Url.Action("ChiTietBaiTap", "HocVien", new { maBaiTap = @Model.MaBaiTap })" class="btn btn-outline-primary btn-sm">
+                    <a href="@Url.Action("ChiTietBaiTap", "HocVien", new { maBaiTap = item.MaBaiTap })" class="btn btn-outline-primary btn-sm">
                         Xem chi tiết
                     </a>
                 </td>
             </tr>
+            }
         </tbody>
     </table>
 </div>

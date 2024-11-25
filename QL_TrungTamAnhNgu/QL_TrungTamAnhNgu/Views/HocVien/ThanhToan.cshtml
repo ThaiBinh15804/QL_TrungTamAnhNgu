@@ -28,9 +28,9 @@
                     {
                         <tr>
                             <td>@item.TenKhoaHoc</td>
-                            <td>@String.Format("{0:C}", item.TongTien)</td>
+                            <td>@string.Format("{0:#,0} VNĐ", item.TongTien)</td>
                             <td>@(item.TiLeGiam.HasValue ? item.TiLeGiam.Value.ToString("0") : "0")%</td>
-                            <td>@String.Format("{0:C}", item.TongTienSauGiam)</td>
+                            <td>@string.Format("{0:#,0} VNĐ", item.TongTienSauGiam)</td>
                             <td>@(item.NgayThucHien.HasValue ? item.NgayThucHien.Value.ToString("dd/MM/yyyy") : "Chưa có thông tin")</td>
                         </tr>
                     }
