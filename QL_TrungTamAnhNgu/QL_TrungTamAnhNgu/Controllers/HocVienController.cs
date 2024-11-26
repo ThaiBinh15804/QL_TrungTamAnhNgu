@@ -29,6 +29,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("DangNhap", "HocVien");
             }
             var maHocVien = Session["MaHocVien"].ToString();
+            
             var danhSachLopHoc = db.view_lophoc_dangkies.Where(v => v.MaHocVien == maHocVien).ToList();
             return View(danhSachLopHoc);
         }
