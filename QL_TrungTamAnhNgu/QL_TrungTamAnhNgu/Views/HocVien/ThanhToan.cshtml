@@ -26,7 +26,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr style="cursor: pointer;" data-image-url="/Content/HinhAnh/ThanhToan/@item.AnhHoaDon" onclick="showImageModal(this)">
                             <td>@item.TenKhoaHoc</td>
                             <td>@string.Format("{0:#,0} VNĐ", item.TongTien)</td>
                             <td>@(item.TiLeGiam.HasValue ? item.TiLeGiam.Value.ToString("0") : "0")%</td>
@@ -45,3 +45,33 @@
         </div>
     }
 </div>
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style=" height: 450px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Ảnh Hóa Đơn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Ảnh sẽ được hiển thị ở đây -->
+                <img id="modalImage" src="" alt="Hóa Đơn" class="img-fluid rounded" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showImageModal(row) {
+        // Lấy URL của ảnh từ thuộc tính data
+        var imageUrl = row.getAttribute("data-image-url");
+
+        // Gán URL vào thẻ <img> trong Modal
+        var modalImage = document.getElementById("modalImage");
+        modalImage.src = imageUrl;
+
+        // Hiển thị Modal
+        var modal = new bootstrap.Modal(document.getElementById("imageModal"));
+        modal.show();
+    }
+</script>

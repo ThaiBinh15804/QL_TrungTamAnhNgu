@@ -28,7 +28,7 @@
             <button type="submit" class="btn btn-success">
                 <i class="fas fa-upload"></i> Nộp bài
             </button>
-            <a href="@Url.Action("ChiTietBaiTap", "HocVien", new { maBaiTap = ViewBag.MaBaiTap })" class="btn btn-secondary">
+            <a href="@Url.Action("ChiTietBaiTap", "HocVien", new { maBaiTap = ViewBag.MaBaiTap, maDK = Session["madk"]})" class="btn btn-secondary">
                 <i class="fas fa-times"></i> Hủy
             </a>
         </div>

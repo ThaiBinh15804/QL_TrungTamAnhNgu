@@ -1,4 +1,5 @@
-﻿@model List<QL_TrungTamAnhNgu.Models.view_baitap_theokhoahoc>
+﻿@using QL_TrungTamAnhNgu.Models;
+@model List<QL_TrungTamAnhNgu.Models.BaiTap>
 
 @{
     ViewBag.Title = "Bài tập";
@@ -59,10 +60,10 @@
                     }
                 </td>
                 <td>
-                   @item.FileBaiTap
+                   @item.FileUpload
                 </td>
                 <td class="text-center">
-                    <a href="/HocVien/ChiTietBaiTap?maBaiTap=@item.MaBaiTap&maKH=@item.MaKhoaHoc" class="btn btn-outline-primary btn-sm">
+                    <a href="/HocVien/ChiTietBaiTap?maBaiTap=@item.MaBaiTap&maDK=@Session["madk"]" class="btn btn-outline-primary btn-sm">
                         Xem chi tiết
                     </a>
                 </td>

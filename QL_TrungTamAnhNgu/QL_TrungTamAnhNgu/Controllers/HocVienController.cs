@@ -30,7 +30,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
             var maHocVien = Session["MaHocVien"].ToString();
             
-            var danhSachLopHoc = db.view_lophoc_dangkies.Where(v => v.MaHocVien == maHocVien).ToList();
+            var danhSachLopHoc = db.LopHocs.Where(v => v.DangKies.Where(t => t.ThanhToan.MaHocVien == maHocVien).Any()).ToList();
             return View(danhSachLopHoc);
         }
 
@@ -107,10 +107,10 @@ namespace QL_TrungTamAnhNgu.Controllers
                 ViewBag.ThongBao = "Không tìm thấy mã bài tập.";
                 return RedirectToAction("BaiTap", "HocVien");
             }
-
-            var chiTietBaiTap = db.view_baitap_theokhoahocs
-                                  .Where(bt => bt.MaKhoaHoc == maKhoaHoc).ToList();
-
+            string maHV = Session["UserId"] as string;
+            string malop = Session["MaLop"] as string;
+            var chiTietBaiTap = db.BaiTaps.Where(t => t.DangKy_BaiTaps.Where(r => r.DangKy.ThanhToan.MaHocVien == maHV && r.DangKy.MaLop == malop).Any()).ToList();
+            Session["madk"] = db.DangKies.FirstOrDefault(t => t.MaLop == malop && t.ThanhToan.MaHocVien == maHV).MaDangKy;
             // Kiểm tra nếu không tìm thấy bài tập
             if (chiTietBaiTap == null)
             {
@@ -122,7 +122,7 @@ namespace QL_TrungTamAnhNgu.Controllers
             return View(chiTietBaiTap);
         }
 
-        public ActionResult ChiTietBaiTap(string maBaiTap, string maKH)
+        public ActionResult ChiTietBaiTap(string maBaiTap, string maDK)
         {
             if (string.IsNullOrEmpty(maBaiTap))
             {
@@ -130,18 +130,16 @@ namespace QL_TrungTamAnhNgu.Controllers
                 return RedirectToAction("BaiTap", "HocVien");
             }
 
-            // Lấy chi tiết bài tập từ view_baitap_theodangky
-            var chiTietBaiTap = db.view_baitap_theodangkies.FirstOrDefault(v => v.MaBaiTap == maBaiTap && v.MaKhoaHoc == maKH);
+            var chiTietBaiTap = db.DangKy_BaiTaps.FirstOrDefault(t => t.MaDangKy == maDK && t.MaBaiTap == maBaiTap);
             if (chiTietBaiTap == null)
             {
                 ViewBag.ThongBao = "Không tìm thấy thông tin bài tập.";
                 return View();
             }
-
             return View(chiTietBaiTap);
         }
 
-        public ActionResult NopBaiTap(string maBaiTap)
+        public ActionResult NopBaiTap(string maBaiTap, string maDK)
         {
             if (string.IsNullOrEmpty(maBaiTap))
             {
@@ -156,7 +154,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         public ActionResult XuLyNopBaiTap(string maBaiTap, HttpPostedFileBase fileUpload)
         {
             string maHV = Session["UserId"] as string;
-            string maDk = db.DangKies.FirstOrDefault(t => t.ThanhToan.MaHocVien == maHV).MaDangKy;
+            string maDK = Session["madk"] as string;
             if (fileUpload != null && fileUpload.ContentLength > 0)
             {
                 try
@@ -168,7 +166,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                         TempData["Success"] = null; // Xóa thông báo thành công nếu có
                         return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
                     }
-                    var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap && bt.MaDangKy == maDk);
+                    var baiTap = db.DangKy_BaiTaps.FirstOrDefault(bt => bt.MaBaiTap == maBaiTap && bt.MaDangKy == maDK);
 
                     // Lưu file
                     string fileName = Path.GetFileName(fileUpload.FileName);
@@ -193,7 +191,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                     // Xóa thông báo thành công nếu có và hiển thị thông báo lỗi
                     TempData["Success"] = null;
                     TempData["Error"] = "Có lỗi xảy ra: " + ex.Message;
-                    return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap });
+                    return RedirectToAction("NopBaiTap", "HocVien", new { maBaiTap, maDK });
                 }
             }
             else
@@ -203,7 +201,7 @@ namespace QL_TrungTamAnhNgu.Controllers
                 TempData["Error"] = "Bạn chưa chọn file!";
             }
 
-            return RedirectToAction("ChiTietBaiTap", "HocVien", new { maBaiTap = maBaiTap });
+            return RedirectToAction("ChiTietBaiTap", "HocVien", new { maBaiTap = maBaiTap, maDK = maDK });
         }
 
         public ActionResult ChiTietLichHoc()

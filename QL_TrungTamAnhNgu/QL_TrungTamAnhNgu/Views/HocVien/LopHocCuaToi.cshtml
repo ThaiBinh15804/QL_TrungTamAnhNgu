@@ -1,5 +1,6 @@
-﻿@model List<QL_TrungTamAnhNgu.Models.view_lophoc_dangky>
-@using System.Globalization
+﻿@using System.Globalization;
+@using QL_TrungTamAnhNgu.Models;
+@model List<QL_TrungTamAnhNgu.Models.LopHoc>
 
 @{
     ViewBag.Title = "TrangChu";
@@ -36,6 +37,12 @@
                                     <strong>Thời gian:</strong>
                                     @item.NgayBatDau.ToString("dd/MM/yyyy") - @item.NgayKetThuc.ToString("dd/MM/yyyy")
                                 </p>
+
+                                <p class="card-text">
+                                    <strong>Tên giảng viên:</strong>
+                                    @item.GiangVien.HoTen
+                                </p>
+
 
                                 <!-- Trạng thái -->
                                 <p class="card-text">

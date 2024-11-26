@@ -1,4 +1,4 @@
-﻿@model QL_TrungTamAnhNgu.Models.view_baitap_theodangky
+﻿@model QL_TrungTamAnhNgu.Models.DangKy_BaiTap
 
 @{
     ViewBag.Title = "Chi tiết bài tập";
@@ -44,7 +44,7 @@
                         <strong>Tên Bài Tập:</strong>
                     </div>
                     <div class="col-sm-8">
-                        <span>@Model.TenBaiTap</span>
+                        <span>@Model.BaiTap.TenBaiTap</span>
                     </div>
                 </div>
                 <!-- Mô tả -->
@@ -54,7 +54,7 @@
                         <strong>Mô Tả:</strong>
                     </div>
                     <div class="col-sm-8">
-                        <span>@Model.MoTa</span>
+                        <span>@Model.BaiTap.MoTa</span>
                     </div>
                 </div>
                 <!-- Điểm -->
@@ -64,7 +64,7 @@
                         <strong>Điểm:</strong>
                     </div>
                     <div class="col-sm-8">
-                        <span>@(Model.Diem)</span>
+                        <span>@Model.Diem</span>
                     </div>
                 </div>
                 <!-- Trạng thái -->
@@ -111,19 +111,19 @@
                         <strong>Bài Tập:</strong>
                     </div>
                     <div class="col-sm-8">
-                        @if (string.IsNullOrEmpty(Model.FileHocVien) && !Model.NgayCham.HasValue)
+                        @if (string.IsNullOrEmpty(Model.FileUpload) && !Model.NgayCham.HasValue)
                         {
-                            <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-warning btn-sm">
+                            <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap, maDK = Model.MaDangKy })" class="btn btn-warning btn-sm">
                                 <i class="fas fa-upload me-1"></i>Nộp bài tập
                             </a>
                         }
-                        else if (!string.IsNullOrEmpty(Model.FileHocVien) && !Model.NgayCham.HasValue)
+                        else if (!string.IsNullOrEmpty(Model.FileUpload) && !Model.NgayCham.HasValue)
                         {
                             <a href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-primary btn-sm">
                                 <i class="fas fa-upload me-1"></i>Nộp lại bài tập
                             </a>
                         }
-                        else if(!string.IsNullOrEmpty(Model.FileHocVien) && Model.NgayCham.HasValue)
+                        else if(!string.IsNullOrEmpty(Model.FileUpload) && Model.NgayCham.HasValue)
                         {
                             <div class="d-flex gap-2 align-items-center">
                                 <a style="pointer-events: none; opacity: 0.5;" href="@Url.Action("NopBaiTap", "HocVien", new { maBaiTap = Model.MaBaiTap })" class="btn btn-primary btn-sm">
@@ -138,20 +138,21 @@
                 <div class="row mb-3">
                     <div class="col-sm-4 d-flex align-items-center">
                         <i class="fas fa-graduation-cap me-2 text-warning"></i>
-                        <strong>Khóa Học:</strong>
+                        <strong>Bài tập được giao:</strong>
                     </div>
-                    <div class="col-sm-8">
-                        <span>@Model.TenKhoaHoc</span>
-                    </div>
+                    @*<div class="col-sm-8">
+                        <span>@Model.</span>
+                    </div>*@
                 </div>
                 <div class="row mb-3">
-                    @if (!string.IsNullOrEmpty(Model.FileUpload))
+                    @if (Model.NgayNop == null)
                     {
-                        <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/BaiTap/" + Model.FileUpload)" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
-                    }
-                    else
+                        <p style="color: red; text-align: center">Bài tập chưa nộp</p>
+                        <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/BaiTap/" + Model.BaiTap.FileUpload)" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
+                    } else
                     {
-                        <p class="text-muted">Không có tệp bài tập nào được tải lên.</p>
+                        <p style="color: red; text-align: center">Bài tập đã nộp</p>
+                        <iframe id="avatarPreview" src="@Url.Content("~/Content/HinhAnh/DangKy_BaiTap/" + Model.FileUpload)" width="100%" height="600px" style="border: 1px solid #ddd;"></iframe>
                     }
                 </div>
             }

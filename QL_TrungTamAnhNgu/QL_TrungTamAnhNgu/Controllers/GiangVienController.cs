@@ -238,7 +238,7 @@ namespace QL_TrungTamAnhNgu.Controllers
         {
             DangKy_BaiTap moi = data.DangKy_BaiTaps.FirstOrDefault(t => t.MaDangKy == k.MaDangKy && t.MaBaiTap == k.MaBaiTap);
 
-            if (k.Diem != null)
+            if (k.Diem != null && moi.FileUpload != null)
             {
                 moi.Diem = k.Diem;
                 moi.NgayCham = DateTime.Now;
@@ -254,10 +254,11 @@ namespace QL_TrungTamAnhNgu.Controllers
             var lst = data.HocViens.Where(t => t.ThanhToans.Where(u => u.DangKies.Where(i => i.MaLop == malop).Any()).Any());
 
             List<BangDiem> ds = new List<BangDiem>();
-
+            
             foreach (HocVien item in lst)
             {
-                BangDiem a = new BangDiem(item.MaHocVien, malop, data);
+                string madk = data.DangKies.FirstOrDefault(t => t.MaLop == malop && t.ThanhToan.MaHocVien == item.MaHocVien).MaDangKy;
+                BangDiem a = new BangDiem(item.MaHocVien, malop, madk, data);
                 ds.Add(a);
             }
 

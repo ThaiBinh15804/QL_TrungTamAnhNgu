@@ -17,7 +17,7 @@
                     <th>Tên học viên</th>
                     @if (Model.Any() && Model.First().ds.Any())
                     {
-                        foreach (var diemBaiTap in Model.SingleOrDefault().ds)
+                        foreach (var diemBaiTap in Model.FirstOrDefault().ds)
                         {
                             <th>@diemBaiTap.bt.TenBaiTap</th> <!-- Tên bài tập -->
                         }
