@@ -62,16 +62,13 @@
                         <div class="d-flex justify-content-between gap-4">
                             <div style="width: 100%">
                                 <label style="font-size: 15px; color: #374151; font-weight: 500;" for="TaiKhoan">Tài khoản: </label>
-                                @Html.TextBoxFor(model => model.NguoiDung.TenTaiKhoan, new { @readonly = "readonly", @id = "TaiKhoan", @class = "form-control mt-2" })
+                                @Html.TextBoxFor(model => model.NguoiDung.TenTaiKhoan, new { @readonly = "readonly", @id = "TaiKhoan", @class = "form-control mt-2 pr-4" })
                                 <span style="min-height: 20px; display: inline-block; color: red; font-size: 14px; margin-top: 5px;" class="errMoTa"></span>
                             </div>
                             <div style="width: 100%">
                                 <label style="font-size: 15px; color: #374151; font-weight: 500;" for="MatKhau">Mật khẩu: </label>
                                 <div style="position: relative">
-                                    @Html.TextBoxFor(model => model.NguoiDung.MatKhau, new { @readonly = "readonly", @type = "password", @id = "MatKhau", @class = "form-control mt-2", placeholder = "Nhập mật khẩu" })
-                                    <button type="button" style="position: absolute; right: 8px; top: 12px;" onclick="handleClickChangeEye('MatKhau')">
-                                        <i class="iconEye fa-solid fa-eye-slash"></i>
-                                    </button>
+                                    <input type="text" name="NguoiDung.MatKhau" value="" class="form-control mt-2" style="padding-right: 20px;" id="MatKhau" readonly placeholder="Nhập mật khẩu mới"/>
                                     <span style="min-height: 20px; display: inline-block; color: red; font-size: 14px; margin-top: 5px;" class="errMatKhau"></span>
                                 </div>
                             </div>

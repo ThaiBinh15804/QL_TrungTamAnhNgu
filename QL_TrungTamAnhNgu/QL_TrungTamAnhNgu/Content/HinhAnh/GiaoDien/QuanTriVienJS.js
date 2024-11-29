@@ -101,6 +101,7 @@ const viTriInput = document.getElementById("ViTri")
 const thoiGianBatDauInput = document.getElementById("ThoiGianBatDau")
 const thoiGianKetThucInput = document.getElementById("ThoiGianKetThuc")
 const ngayHocInput = document.getElementById("NgayHoc")
+const matKhau = document.getElementById("MatKhau")
 
 const btnSua = document.getElementById("btnSua")
 const btnLuu = document.getElementById("btnLuu")
@@ -213,6 +214,9 @@ if (btnSua) {
 
         if (ngayHocInput) {
             ngayHocInput.removeAttribute("readonly")
+        }
+        if (matKhau) {
+            matKhau.removeAttribute("readonly")
         }
     })
 }

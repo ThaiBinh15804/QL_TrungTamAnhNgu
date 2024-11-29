@@ -12,7 +12,6 @@ using QL_TrungTamAnhNgu.Models;
 using QL_TrungTamAnhNgu.ViewModel;
 using System.IO;
 using System.Data;
-using static System.Net.WebRequestMethods;
 using System.Web.UI.WebControls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -27,6 +26,67 @@ namespace QL_TrungTamAnhNgu.Controllers
     {
         public static string connn = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123";
         DataClasses1DataContext db = new DataClasses1DataContext(connn);
+
+        public ActionResult ThongTinNguoiDung()
+        {
+            NguoiDung user = Session["User"] as NguoiDung;
+            QuanTriVien qtv = db.QuanTriViens.FirstOrDefault(t => t.NguoiDung.MaNguoiDung == user.MaNguoiDung);
+            return View(qtv);
+        }
+        [HttpPost]
+        public ActionResult ThongTinNguoiDung(QuanTriVien qtv, HttpPostedFileBase AnhDaiDien)
+        {
+            var quanTriVienExists = db.QuanTriViens.FirstOrDefault(k => k.MaQTV == qtv.MaQTV);
+            NguoiDung user = db.NguoiDungs.FirstOrDefault(k => k.MaNguoiDung == qtv.MaQTV);
+            if (AnhDaiDien != null && AnhDaiDien.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(AnhDaiDien.FileName);
+                string path = Path.Combine(Server.MapPath("~/Content/HinhAnh/Avatar"), fileName);
+                AnhDaiDien.SaveAs(path); // lưu vào dự án
+                qtv.NguoiDung.AnhDaiDien = fileName; // Gán giá trị file upload
+            }
+            try
+            {
+                if (quanTriVienExists != null)
+                {
+                    if (string.IsNullOrEmpty(qtv.NguoiDung.AnhDaiDien))
+                    {
+                        qtv.NguoiDung.AnhDaiDien = quanTriVienExists.NguoiDung.AnhDaiDien;
+                    }
+                    quanTriVienExists.HoTen = qtv.HoTen;
+                    quanTriVienExists.Email = qtv.Email;
+                    quanTriVienExists.SoDienThoai = qtv.SoDienThoai;
+                    quanTriVienExists.NguoiDung.AnhDaiDien = qtv.NguoiDung.AnhDaiDien;
+
+
+
+                    db.SubmitChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(string.Format("Giao dịch thất bại: {0}", ex.Message));
+            }
+            
+
+            if (qtv.NguoiDung.MatKhau != "")
+            {
+                using (db = new DataClasses1DataContext("Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=sa;Password=123"))
+                {
+                    // Đổi mật khẩu
+                    db.CapLaiMatKhau(quanTriVienExists.NguoiDung.TenTaiKhoan, qtv.NguoiDung.MatKhau);
+
+                }
+
+                Session["User"] = user;
+                string newConnectionString = "Data Source=PHAMTHUAN\\MSSQLSERVER01;Initial Catalog=QL_TrungTamAnhNgu;Persist Security Info=True;User ID=" + quanTriVienExists.NguoiDung.TenTaiKhoan + ";Password=" + qtv.NguoiDung.MatKhau;
+                connn = newConnectionString;
+                db = new DataClasses1DataContext(connn);
+
+            }
+
+            return RedirectToAction("Index");
+        }
 
         public ActionResult Error()
         {
@@ -625,6 +685,9 @@ namespace QL_TrungTamAnhNgu.Controllers
                 quanTriVienExists.SoDienThoai = qtv.SoDienThoai;
                 quanTriVienExists.NguoiDung.TrangThai = qtv.NguoiDung.TrangThai;
                 quanTriVienExists.NguoiDung.AnhDaiDien = qtv.NguoiDung.AnhDaiDien;
+
+                db.CapLaiMatKhau(quanTriVienExists.NguoiDung.TenTaiKhoan, qtv.NguoiDung.MatKhau);
+               
                 db.SubmitChanges();
                 return RedirectToAction("QuanTriVien");
             }
@@ -797,6 +860,8 @@ namespace QL_TrungTamAnhNgu.Controllers
                 giangVienExists.TrinhDo = gv.TrinhDo;
                 giangVienExists.MucLuong = gv.MucLuong;
                 giangVienExists.DiaChi = gv.DiaChi;
+
+                db.CapLaiMatKhau(giangVienExists.NguoiDung.TenTaiKhoan, gv.NguoiDung.MatKhau);
 
                 giangVienExists.NguoiDung.AnhDaiDien = gv.NguoiDung.AnhDaiDien;
                 giangVienExists.NguoiDung.TrangThai = gv.NguoiDung.TrangThai;
@@ -998,7 +1063,7 @@ namespace QL_TrungTamAnhNgu.Controllers
 
                 hocVienExists.NguoiDung.AnhDaiDien = hv.NguoiDung.AnhDaiDien;
                 hocVienExists.NguoiDung.TrangThai = hv.NguoiDung.TrangThai;
-
+                db.CapLaiMatKhau(hocVienExists.NguoiDung.TenTaiKhoan, hv.NguoiDung.MatKhau);
                 db.SubmitChanges();
                 return RedirectToAction("HocVien");
             }
@@ -2495,6 +2560,8 @@ namespace QL_TrungTamAnhNgu.Controllers
             var tienGiam = giamGia != null ? soTien * giamGia.TiLeGiam / 100 : 0;
             var thucTra = soTien - tienGiam;
 
+            var thanhToan = Session["ThanhToan"] as ThanhToan;
+
             string ma = db.DangKies.OrderByDescending(t => t.MaDangKy).FirstOrDefault().MaDangKy;
 
             int k;
@@ -2509,8 +2576,24 @@ namespace QL_TrungTamAnhNgu.Controllers
             }
 
             string mamoi = "DK" + k.ToString("D3");
-            var thanhToan = Session["ThanhToan"] as ThanhToan;
 
+            if (thanhToan.DangKies.Any())
+            {
+                DangKy tmp = thanhToan.DangKies.OrderByDescending(t => t.MaDangKy).Take(1).FirstOrDefault();
+                ma = tmp.MaDangKy;
+                if (ma != null)
+                {
+                    k = int.Parse(ma.Substring(2, 3)) + 1;
+                }
+                else
+                {
+                    k = 1;
+                }
+
+                mamoi = "DK" + k.ToString("D3");
+            }    
+
+            
             // Tạo đăng ký mới
             var dangKy = new DangKy
             {
